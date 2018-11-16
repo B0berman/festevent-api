@@ -9,7 +9,7 @@ import org.mongodb.morphia.annotations.Reference;
 import java.util.Date;
 
 @Entity
-@QueriesAllowed(values = {"start", "end", "title", "valid"})
+@QueriesAllowed(fields = {"start", "end", "title", "valid"}, operators = {"<", ">", "contains", "=", "order", "limit"})
 public class Event {
 
     @Id

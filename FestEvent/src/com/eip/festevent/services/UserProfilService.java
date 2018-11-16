@@ -2,24 +2,22 @@ package com.eip.festevent.services;
 
 import com.eip.festevent.authentication.Authenticated;
 import com.eip.festevent.beans.Media;
+import com.eip.festevent.beans.Publication;
 import com.eip.festevent.beans.User;
 import com.eip.festevent.dao.DAO;
 import com.eip.festevent.dao.DAOManager;
+import com.eip.festevent.dao.morphia.QueriesAllowed;
 import com.eip.festevent.dao.morphia.QueryHelper;
 import com.eip.festevent.utils.Utils;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.*;
-import org.bson.types.ObjectId;
-import org.glassfish.jersey.media.multipart.FormDataParam;
+
 
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.UUID;
 
 @Api(tags = {"Users"})
 @Path("/profil")
@@ -37,6 +35,7 @@ public class UserProfilService {
     @GET
     @Authenticated
     @Path("/research")
+    @QueriesAllowed(fields = {"email", "lastName", "firstName"}, operators = {"contains", "=", "order", "limit", "offset"})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 204, message = "No content"),
@@ -45,15 +44,30 @@ public class UserProfilService {
     public Response searchUser(@ApiParam(value = "filter keys", required = true) @QueryParam("key") List<String> keys,
                                             @ApiParam(value = "filter values", required = true) @QueryParam("value") List<String> values,
                                             @ApiParam(value = "token of sender", required = true) @HeaderParam("token") final String token) {
-        int i = 0;
         DAO<User> dao = DAOManager.getFactory().getUserDAO();
         QueryHelper<User> helper = new QueryHelper<User>(dao, keys, values);
         if (helper.isValidQuery(User.class))
             helper.performQueries();
+        else
+            return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Invalid queries.")).build();
         List<User> result = helper.getDao().getAll();
-        // Recherche à faire
         return Response.ok(result).build();
     }
+
+    @GET
+    @Path("/publications")
+    @Authenticated
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Unauthorized") })
+    @ApiOperation(value = "Get user publicatons.", response = Publication.class, responseContainer = "List")
+    public Response getUserPublications(@ApiParam(value = "Token of sender", required = true) @HeaderParam("token") String token) {
+        User user = DAOManager.getFactory().getUserDAO().filter("accessToken", token).getFirst();
+
+        List<Publication> publications = DAOManager.getFactory().getPublicationDAO().filter("publisher", user).getAll();
+        return Response.ok(publications).build();
+    }
+
 
     @GET
     @Path("/admins")
@@ -111,28 +125,20 @@ public class UserProfilService {
     @POST
     @Authenticated
     @Path("/profil-image")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 401, message = "Unauthorized") })
     @ApiOperation(value = "set user profil image.", response = Response.class)
     public Response setProfilImage(@ApiParam(value = "Token of sender", required = true) @HeaderParam("token") final String token,
-                                   @ApiParam(value = "input stream", required = true) @FormDataParam("uploadFile") InputStream fileInputStream) {
+                                   @ApiParam(value = "input stream", required = true) final Media media) {
         User user = DAOManager.getFactory().getUserDAO().filter("accessToken", token).getFirst();
-        String fileName = UUID.randomUUID().toString();
-        String uploadFilePath = null;
-        try {
-            uploadFilePath = Utils.writeToFileServer(fileInputStream, fileName);
-        }
-        catch(IOException ioe){
-            ioe.printStackTrace();
-        }
-        finally{
-            // release resources, if any
-        }
-        user.setProfilPicture("92.222.82.30:8080/eip-dev/resources/image" + fileName);
+        if (Utils.writeToFileServer(media.getBytes(), media.getId()))
+            return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Image upload failed.")).build();
+        user.removePicture(user.getProfilPicture());
+        media.setUrl("92.222.82.30:8080/eip-dev/resources/image" + media.getId());
+        user.setProfilPicture(media);
         DAOManager.getFactory().getUserDAO().push(user);
-        return Response.ok(new Utils.Response("File uploaded successfully at " + uploadFilePath)).build();
+        return Response.ok(media).build();
     }
 
     //Modification du user

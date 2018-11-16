@@ -3,8 +3,10 @@ package com.eip.festevent.beans;
 import com.eip.festevent.authentication.TokenHelper;
 import com.eip.festevent.dao.morphia.QueriesAllowed;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Lists;
 import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
@@ -12,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@QueriesAllowed(values = {"email", "lastName", "firstName"})
+@QueriesAllowed(fields = {"email", "lastName", "firstName"}, operators = {"contains", "=", "order", "limit", "offset"})
 public class User {
 	
 	@Id
@@ -22,6 +24,15 @@ public class User {
 
 	@JsonIgnore
 	protected String password;
+	@JsonIgnore
+	public String getPassword() {
+		return password;
+	}
+
+	@JsonProperty
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	protected String role;
 
 	protected String  email;
@@ -31,7 +42,7 @@ public class User {
 
 	protected String  phone;
 	protected Date birthdate;
-	protected String profilPicture;
+	protected Media profilPicture;
 
 	@JsonIgnore
 	protected List<FriendRequest> friendsRequestsSent = Lists.newArrayList();
@@ -42,6 +53,7 @@ public class User {
 	protected List<String> friends = Lists.newArrayList();
 
 	@JsonIgnore
+	@Embedded
 	protected List<Media> pictures;
 
 	@JsonIgnore
@@ -101,11 +113,11 @@ public class User {
 		this.birthdate = birthdate;
 	}
 
-	public String getProfilPicture() {
+	public Media getProfilPicture() {
 		return profilPicture;
 	}
 
-	public void setProfilPicture(String profilPicture) {
+	public void setProfilPicture(Media profilPicture) {
 		this.profilPicture = profilPicture;
 	}
 
@@ -182,14 +194,6 @@ public class User {
 
 	public String getAccessToken() {
 		return accessToken;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getRole() {

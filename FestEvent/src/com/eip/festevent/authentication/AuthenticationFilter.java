@@ -11,7 +11,6 @@ import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
-import java.io.IOException;
 import java.lang.reflect.Method;
 
 
@@ -22,7 +21,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 	private ResourceInfo resourceInfo;
 
 	@Override
-	public void filter(ContainerRequestContext requestContext) throws IOException {
+	public void filter(ContainerRequestContext requestContext) {
 		Method method = resourceInfo.getResourceMethod();
 		if (method.isAnnotationPresent(Authenticated.class)) {
 			String roleAllowed = "ALL";

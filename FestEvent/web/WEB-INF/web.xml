@@ -21,13 +21,13 @@
             <param-value>org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
+
     </servlet>
     <servlet>
         <servlet-name>SwaggerServlet</servlet-name>
         <servlet-class>com.eip.festevent.utils.SwaggerServlet</servlet-class>
         <load-on-startup>2</load-on-startup>
     </servlet>
-
 
     <servlet-mapping>
         <servlet-name>FestEvent API</servlet-name>

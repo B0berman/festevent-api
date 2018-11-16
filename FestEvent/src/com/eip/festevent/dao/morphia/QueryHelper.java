@@ -18,15 +18,17 @@ public class QueryHelper<T> {
     }
 
     public boolean isValidQuery(Class<T> c) {
-        if (c.isAnnotationPresent(QueriesAllowed.class)) {
-            List<String> allowed = Lists.newArrayList(c.getAnnotation(QueriesAllowed.class).values());
-
-            for (String key : keys) {
-                if (!key.contains(" ") && !key.contains("limit") && !key.contains("offset"))
-                    key.concat(" =");
-                if (key.contains(" ") && !allowed.contains(key.split(" ")[0]))
-                    return false;
-            }
+        QueriesAllowed annotation = c.getAnnotation(QueriesAllowed.class);
+        if (annotation == null)
+            return false;
+        List<String> fieldsAllowed = Lists.newArrayList(annotation.fields());
+        List<String> operatorsAllowed = Lists.newArrayList(annotation.operators());
+        for (String key : keys) {
+            if (!key.contains(" ") && !key.contains("limit") && !key.contains("offset"))
+                key.concat(" =");
+            if ((key.contains(" ") && (!fieldsAllowed.contains(key.split(" ")[0]) || !operatorsAllowed.contains(key.split(" ")[1]))) ||
+                    !operatorsAllowed.contains(key))
+                return false;
         }
         return true;
     }
@@ -36,9 +38,9 @@ public class QueryHelper<T> {
         for (String key : keys) {
             String[] split = key.split(" ");
             if (key.equals("limit"))
-                dao = dao.limit(new Integer(values.get(i)).intValue());
-            if (key.equals("offset"))
-                dao = dao.offset(new Integer(values.get(i)).intValue());
+                dao = dao.limit(Integer.valueOf(values.get(i)).intValue());
+            else if (key.equals("offset"))
+                dao = dao.offset(Integer.valueOf(values.get(i)).intValue());
             else
                 switch (split[1]) {
                     case "contains":

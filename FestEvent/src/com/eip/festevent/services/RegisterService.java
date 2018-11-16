@@ -58,7 +58,7 @@ public class RegisterService {
                 .filter("email", user.getEmail())
                 .getFirst();
         if (existingUser != null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("This email is already taken.")).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("This email is already taken." + user.getPassword())).build();
         }
 
         String salt = BCrypt.gensalt(12);

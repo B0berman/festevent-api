@@ -1,41 +1,23 @@
 package com.eip.festevent.beans;
 
-import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
+
+import java.util.UUID;
 
 @Entity
 public class Media {
 
 	public enum TYPE {
-		IMAGE,
+		IMAGE_PNG,
+		IMAGE_JPG,
 		VIDEO,
 		GIF
 	}
-	
-	@Id
-    protected String		id = ObjectId.get().toString();
 
 	protected TYPE			type;
 	protected String		url;
-	protected String		title;
-	protected int			size;
-	protected int			width;
-	protected int			height;
+	protected String		id = UUID.randomUUID().toString();
 	protected byte[]		bytes;
-	protected String		base64;
-
-	public String getId() {
-		return id;
-	}
-
-	public String getBase64() {
-		return base64;
-	}
-
-	public void setBase64(String base64) {
-		this.base64 = base64;
-	}
 
 	public byte[] getBytes() {
 		return bytes;
@@ -60,36 +42,12 @@ public class Media {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	
-	public String getTitle() {
-		return title;
+
+	public String getId() {
+		return id;
 	}
-	
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
-	public int getSize() {
-		return size;
-	}
-	
-	public void setSize(int size) {
-		this.size = size;
-	}
-	
-	public int getWidth() {
-		return width;
-	}
-	
-	public void setWidth(int width) {
-		this.width = width;
-	}
-	
-	public int getHeight() {
-		return height;
-	}
-	
-	public void setHeight(int height) {
-		this.height = height;
+
+	public void setId(String title) {
+		this.id = title;
 	}
 }

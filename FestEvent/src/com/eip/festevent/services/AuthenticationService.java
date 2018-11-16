@@ -3,9 +3,12 @@ package com.eip.festevent.services;
 import com.eip.festevent.utils.Utils;
 import com.eip.festevent.beans.User;
 import com.eip.festevent.dao.DAOManager;
+import io.jsonwebtoken.Jwts;
 import io.swagger.annotations.*;
 import org.mindrot.jbcrypt.BCrypt;
 
+import javax.crypto.KeyGenerator;
+import javax.inject.Inject;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -14,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import java.io.IOException;
+import java.security.Key;
 import java.util.Base64;
 import java.util.StringTokenizer;
 
@@ -22,6 +26,9 @@ import java.util.StringTokenizer;
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/signin")
 public class AuthenticationService {
+
+	@Inject
+	private KeyGenerator keyGenerator;
 
 	@POST
 	@ApiResponses(value = { 
@@ -66,4 +73,17 @@ public class AuthenticationService {
 
 		return Response.status(Status.BAD_REQUEST).build();
 	}
+
+/*	private String issueToken(String login) {
+		Key key = keyGenerator.generateKey();
+		Jwts.parser().
+		String jwtToken = Jwts.builder()
+				.setSubject(login)
+				.setIssuer(uriInfo.getAbsolutePath().toString())
+				.setIssuedAt(new Date())
+				.setExpiration(toDate(LocalDateTime.now().plusMinutes(15L)))
+				.signWith(SignatureAlgorithm.HS512, key)
+				.compact();
+		return jwtToken;
+	}*/
 }

@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@QueriesAllowed(values = {"created"})
+@QueriesAllowed(fields = {"created", "like_nb", "content", "comment_nb"}, operators = {"contains", "=", "order", "limit", "offset", "<", ">"})
 public class Publication {
     @Id
     protected String id = ObjectId.get().toString();
@@ -21,6 +21,7 @@ public class Publication {
     protected Date created = new Date();
     protected String		content;
     protected int           like_nb = 0;
+    protected int           comment_nb = 0;
     protected List<Media>			medias = Lists.newArrayList();
 
     @Reference
@@ -67,10 +68,12 @@ public class Publication {
 
     public void addComment(Comment comment) {
         comments.add(comment);
+        comment_nb++;
     }
 
     public void removeComment(Comment comment) {
         comments.remove(comment);
+        comment_nb--;
     }
 
     public List<User> getLikes() {

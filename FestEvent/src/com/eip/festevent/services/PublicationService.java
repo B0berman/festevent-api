@@ -7,12 +7,9 @@ import com.eip.festevent.dao.DAOManager;
 import com.eip.festevent.dao.morphia.QueryHelper;
 import com.eip.festevent.utils.Utils;
 import io.swagger.annotations.*;
-import org.glassfish.jersey.media.multipart.FormDataParam;
-
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -35,17 +32,15 @@ public class PublicationService {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 204, message = "No content"),
             @ApiResponse(code = 401, message = "Unauthorized") })
-    @ApiOperation(value = "Search publication", response = Publication.class, responseContainer = "List")
+    @ApiOperation(value = "Search publication(s)", response = Publication.class, responseContainer = "List")
     public Response searchPublication(@ApiParam(value = "filter keys", required = true) @QueryParam("key") List<String> keys,
-                               @ApiParam(value = "filter values", required = true) @QueryParam("value") List<String> values,
-                               @ApiParam(value = "token of sender", required = true) @HeaderParam("token") final String token) {
-        int i = 0;
+                                      @ApiParam(value = "filter values", required = true) @QueryParam("value") List<String> values,
+                                      @ApiParam(value = "token of sender", required = true) @HeaderParam("token") final String token) {
         DAO<Publication> dao = DAOManager.getFactory().getPublicationDAO();
         QueryHelper<Publication> helper = new QueryHelper<Publication>(dao, keys, values);
         if (helper.isValidQuery(Publication.class))
             helper.performQueries();
         List<Publication> result = helper.getDao().getAll();
-        // Recherche à faire
         return Response.ok(result).build();
     }
 
@@ -70,7 +65,7 @@ public class PublicationService {
             @ApiResponse(code = 401, message = "Unauthorized") })
     @ApiOperation(value = "Get publication likes.", response = User.class, responseContainer = "List")
     public Response getPublicationLikes(@ApiParam(value = "Token of sender", required = true) @HeaderParam("token") String token,
-                                           @ApiParam(value = "id of publication", required = true) @QueryParam("id") final String id) {
+                                        @ApiParam(value = "id of publication", required = true) @QueryParam("id") final String id) {
         Publication publication = DAOManager.getFactory().getPublicationDAO().filter("id", id).getFirst();
         if (publication == null)
             return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Wrond id.")).build();
@@ -85,26 +80,12 @@ public class PublicationService {
             @ApiResponse(code = 401, message = "Unauthorized") })
     @ApiOperation(value = "Get publication comments.", response = Comment.class, responseContainer = "List")
     public Response getPublicationComments(@ApiParam(value = "Token of sender", required = true) @HeaderParam("token") String token,
-                                        @ApiParam(value = "id of publication", required = true) @QueryParam("id") final String id) {
+                                           @ApiParam(value = "id of publication", required = true) @QueryParam("id") final String id) {
         Publication publication = DAOManager.getFactory().getPublicationDAO().filter("id", id).getFirst();
         if (publication == null)
             return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Wrond id.")).build();
         return Response.ok(publication.getComments()).build();
     }
-
-    @GET
-    @Authenticated
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK"),
-            @ApiResponse(code = 401, message = "Unauthorized") })
-    @ApiOperation(value = "Get sender publicatons.", response = Publication.class, responseContainer = "List")
-    public Response getUserPublications(@ApiParam(value = "Token of sender", required = true) @HeaderParam("token") String token) {
-        User user = DAOManager.getFactory().getUserDAO().filter("accessToken", token).getFirst();
-
-        List<Publication> publications = DAOManager.getFactory().getPublicationDAO().filter("publisher", user).getAll();
-        return Response.ok(publications).build();
-    }
-
 
     @POST
     @Path("/publicate")
@@ -121,7 +102,7 @@ public class PublicationService {
             return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Content null or empty.")).build();
 
         DAOManager.getFactory().getPublicationDAO().push(entity);
-        return Response.status(Response.Status.CREATED).entity(entity.getId()).build();
+        return Response.status(Response.Status.CREATED).header("publicationId", entity.getId()).build();
     }
 
     @POST
@@ -133,7 +114,7 @@ public class PublicationService {
     @Authenticated
     @ApiOperation(value = "Create a publication.", response = Response.class)
     public Response publicateAsEvent(@ApiParam(value = "Token of sender", required = true) @HeaderParam("token") String token, final Publication entity,
-                                     @ApiParam(value = "id of event that publicate", required = true) @QueryParam("id") final String eId) {
+                                     @ApiParam(value = "id of event that publicated", required = true) @QueryParam("id") final String eId) {
         User sender = DAOManager.getFactory().getUserDAO().filter("accessToken", token).getFirst();
 
         Event e = DAOManager.getFactory().getEventDAO().filter("id", eId).getFirst();

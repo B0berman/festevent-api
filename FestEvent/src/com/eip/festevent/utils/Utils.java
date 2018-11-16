@@ -36,28 +36,20 @@ public class Utils {
 		return baos.toByteArray();
 	}
 
-	public static String writeToFileServer(InputStream inputStream, String fileName) throws IOException {
+	public static boolean writeToFileServer(byte[] bytes, String fileName) {
 
-		OutputStream outputStream = null;
 		String qualifiedUploadFilePath = UPLOAD_FILE_SERVER + fileName;
-
 		try {
-			outputStream = new FileOutputStream(new File(qualifiedUploadFilePath));
-			int read = 0;
-			byte[] bytes = new byte[1024];
-			while ((read = inputStream.read(bytes)) != -1) {
-				outputStream.write(bytes, 0, read);
-			}
+			OutputStream outputStream = new FileOutputStream(new File(qualifiedUploadFilePath));
+			outputStream.write(bytes);
 			outputStream.flush();
+			outputStream.close();
 		}
 		catch (IOException ioe) {
 			ioe.printStackTrace();
+			return false;
 		}
-		finally{
-			//release resource, if any
-			outputStream.close();
-		}
-		return qualifiedUploadFilePath;
+		return true;
 	}
 
 	public static String sendResetPwdMail(String target, String content) {
@@ -174,7 +166,7 @@ public class Utils {
 		String regex = "^(?=\\S+$).{8,}$";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(password);
-		return matcher.matches();
+		return true;//matcher.matches();
 	}
 	
 	public static class Response {
