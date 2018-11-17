@@ -30,7 +30,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 				roleAllowed = roleAnnotation.value()[0];
 			}
 
-
 			String token = requestContext.getHeaderString("token");
 			User user = DAOManager.getFactory().getUserDAO().filter("accessToken", token).getFirst();
 			if (token == null) {

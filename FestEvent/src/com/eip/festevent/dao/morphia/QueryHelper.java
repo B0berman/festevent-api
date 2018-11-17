@@ -27,7 +27,7 @@ public class QueryHelper<T> {
             if (!key.contains(" ") && !key.contains("limit") && !key.contains("offset"))
                 key.concat(" =");
             if ((key.contains(" ") && (!fieldsAllowed.contains(key.split(" ")[0]) || !operatorsAllowed.contains(key.split(" ")[1]))) ||
-                    !operatorsAllowed.contains(key))
+                    (!key.contains(" ") && !operatorsAllowed.contains(key)))
                 return false;
         }
         return true;

@@ -1,15 +1,18 @@
 package com.eip.festevent.beans;
 
 import com.eip.festevent.dao.morphia.QueriesAllowed;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Reference;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@QueriesAllowed(fields = {"start", "end", "title", "valid"}, operators = {"<", ">", "contains", "=", "order", "limit"})
+@QueriesAllowed(fields = {"start", "end", "title", "valid"}, operators = {"<", ">", "contains", "=", "order", "limit", "offset"})
 public class Event {
 
     @Id
@@ -22,14 +25,37 @@ public class Event {
     protected int	   edition = 1;
     protected String   address;
     protected boolean valid = false;
+    protected Media     mainPicture;
 
     @Reference
     protected User creator;
 
+    @JsonIgnore
+    @Embedded
+    protected List<Media> pictures;
 
     // STAFF
     // ALERTS
+    public void addPicture(Media media) {
+        pictures.add(media);
+    }
 
+    public void removePicture(Media media) {
+        pictures.remove(media);
+    }
+
+
+    public Media getMainPicture() {
+        return mainPicture;
+    }
+
+    public void setMainPicture(Media picture) {
+        this.mainPicture = picture;
+    }
+
+    public List<Media> getPictures() {
+        return pictures;
+    }
 
     public String getTitle() {
         return title;

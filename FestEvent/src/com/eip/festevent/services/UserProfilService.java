@@ -6,11 +6,12 @@ import com.eip.festevent.beans.Publication;
 import com.eip.festevent.beans.User;
 import com.eip.festevent.dao.DAO;
 import com.eip.festevent.dao.DAOManager;
-import com.eip.festevent.dao.morphia.QueriesAllowed;
 import com.eip.festevent.dao.morphia.QueryHelper;
+import com.eip.festevent.utils.RandomString;
 import com.eip.festevent.utils.Utils;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.*;
+import org.mindrot.jbcrypt.BCrypt;
 
 
 import javax.annotation.security.RolesAllowed;
@@ -35,12 +36,11 @@ public class UserProfilService {
     @GET
     @Authenticated
     @Path("/research")
-    @QueriesAllowed(fields = {"email", "lastName", "firstName"}, operators = {"contains", "=", "order", "limit", "offset"})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 204, message = "No content"),
             @ApiResponse(code = 401, message = "Unauthorized") })
-    @ApiOperation(value = "Search user", response = User.class, responseContainer = "List")
+    @ApiOperation(value = "Search user", response = User.class, responseContainer = "List", notes = "Queries :\\n keys: \"email, firstName, lastName\"\\nvalues: \"contains, order, limit, offset, =\"")
     public Response searchUser(@ApiParam(value = "filter keys", required = true) @QueryParam("key") List<String> keys,
                                             @ApiParam(value = "filter values", required = true) @QueryParam("value") List<String> values,
                                             @ApiParam(value = "token of sender", required = true) @HeaderParam("token") final String token) {
@@ -130,7 +130,7 @@ public class UserProfilService {
             @ApiResponse(code = 401, message = "Unauthorized") })
     @ApiOperation(value = "set user profil image.", response = Response.class)
     public Response setProfilImage(@ApiParam(value = "Token of sender", required = true) @HeaderParam("token") final String token,
-                                   @ApiParam(value = "input stream", required = true) final Media media) {
+                                   @ApiParam(value = "Media object", required = true) final Media media) {
         User user = DAOManager.getFactory().getUserDAO().filter("accessToken", token).getFirst();
         if (Utils.writeToFileServer(media.getBytes(), media.getId()))
             return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Image upload failed.")).build();
@@ -139,6 +139,31 @@ public class UserProfilService {
         user.setProfilPicture(media);
         DAOManager.getFactory().getUserDAO().push(user);
         return Response.ok(media).build();
+    }
+
+    @PUT
+    @Path("/password-forget")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Bad request") } )
+    @ApiOperation(value = "Reset lost password.", response = Response.class)
+    public Response resetPassword(@QueryParam("email") final String email, @QueryParam("login") final String login) {
+        User user = DAOManager.getFactory().getUserDAO().filter("authentication.login", login).getFirst();
+        if (user == null)
+            return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Invalid login")).build();
+        if (!user.getEmail().equals(email))
+            return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Login and email don't match")).build();
+        RandomString random = new RandomString(8);
+        String newPwd = random.nextString();
+
+        String salt = BCrypt.gensalt(12);
+        String hashed = BCrypt.hashpw(newPwd, salt);
+        user.setPassword(hashed);
+        DAOManager.getFactory().getUserDAO().push(user);
+
+        String res = Utils.sendResetPwdMail(email, "Dear " + user.getFirstName()
+                + ",\n\n\tHere is your new password : " + newPwd + "\n\n Do not give your password or login.\nThe team Festevent thanks you!");
+        return Response.ok(new Utils.Response(res)).build();
     }
 
     //Modification du user
@@ -201,6 +226,12 @@ public class UserProfilService {
                 .filter("accessToken", token)
                 .getFirst();
         // delete in friends
+        List<User> users = DAOManager.getFactory().getUserDAO().filter("friends in", user.getEmail()).getAll();
+        for (User u : users) {
+            u.removeFriend(user.getEmail());
+            DAOManager.getFactory().getUserDAO().push(u);
+        }
+        DAOManager.getFactory().getEventDAO().filter("creator", user).clear();
         DAOManager.getFactory().getPublicationDAO().filter("publisher", user).clear();
         DAOManager.getFactory().getUserDAO().remove(user);
         return Response.ok().build();

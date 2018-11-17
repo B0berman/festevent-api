@@ -12,7 +12,7 @@ public class MorphiaDB implements DataBase {
     private Datastore datastore;
 
     protected String		url = "localhost";
-    protected String		dbName = "dbeip-dev";
+    protected String		dbName = "dbeip";
 
     public boolean connect() {
         client = new MongoClient(url);

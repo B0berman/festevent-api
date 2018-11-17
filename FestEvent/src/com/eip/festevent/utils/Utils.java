@@ -171,14 +171,14 @@ public class Utils {
 	
 	public static class Response {
 		
-		protected String msg;
+		protected String message;
 		
 		public String getMsg() {
-			return msg;
+			return message;
 		}
 
-		public Response(String msg) {
-			this.msg = msg;
+		public Response(String message) {
+			this.message = message;
 		}
 	}
 	

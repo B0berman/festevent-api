@@ -20,7 +20,7 @@ public class SwaggerServlet extends HttpServlet {
         beanConfig.setTitle("FestEvent-API");
         beanConfig.setSchemes(new String[]{"http"});
         beanConfig.setHost("92.222.82.30:8080");
-        beanConfig.setBasePath("/dev-eip");
+        beanConfig.setBasePath("/eip");
         beanConfig.setResourcePackage("com.eip.festevent.services");
         beanConfig.setScan(true);
     }

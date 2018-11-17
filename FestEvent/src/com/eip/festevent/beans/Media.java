@@ -1,5 +1,6 @@
 package com.eip.festevent.beans;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.mongodb.morphia.annotations.Entity;
 
 import java.util.UUID;
@@ -17,6 +18,7 @@ public class Media {
 	protected TYPE			type;
 	protected String		url;
 	protected String		id = UUID.randomUUID().toString();
+
 	protected byte[]		bytes;
 
 	public byte[] getBytes() {

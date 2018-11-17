@@ -50,7 +50,7 @@ public class EventService {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 204, message = "No content"),
             @ApiResponse(code = 401, message = "Unauthorized") })
-    @ApiOperation(value = "Get events created by a user.", response = Event.class, responseContainer = "List")
+    @ApiOperation(value = "Get events created by a user.", response = Event.class, responseContainer = "List", notes = "Queries :\\n keys: \"email, firstName, lastName\"\\nvalues: \"contains, order, limit, offset, =, >, <\"")
     public Response searchEvents(@ApiParam(value = "filter keys", required = true) @QueryParam("key") List<String> keys,
                                   @ApiParam(value = "filter values", required = true) @QueryParam("value") List<String> values,
                                   @ApiParam(value = "token of sender", required = true) @HeaderParam("token") final String token) {
@@ -58,6 +58,8 @@ public class EventService {
         QueryHelper<Event> helper = new QueryHelper<Event>(dao, keys, values);
         if (helper.isValidQuery(Event.class))
             helper.performQueries();
+        else
+            return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Invalid queries.")).build();
         List<Event> result = helper.getDao().getAll();
         // Recherche à faire
         return Response.ok(result).build();
@@ -83,6 +85,20 @@ public class EventService {
             result.add(ticket.getOwner());
         }
         return Response.ok(result).build();
+    }
+
+    @GET
+    @Path("/pictures")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Bad request"),
+            @ApiResponse(code = 401, message = "Unauthorized") })
+    @ApiOperation(value = "Get event pictures.", response = Media.class, responseContainer = "List")
+    public Response getEventPictures(@ApiParam(value = "id of event", required = true) @QueryParam("id") String id) {
+        Event event = DAOManager.getFactory().getEventDAO().filter("id", id).getFirst();
+        if (event == null)
+            return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Invalid event id")).build();
+        return Response.ok(event.getPictures()).build();
     }
 
     @GET
@@ -124,6 +140,31 @@ public class EventService {
         return Response.ok().build();
     }
 
+    @POST
+    @Path("/picture")
+    @Authenticated
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 400, message = "Bad request"),
+            @ApiResponse(code = 401, message = "Unauthorized") })
+    @ApiOperation(value = "Create a new event.", response = Response.class)
+    public Response addPicture(final Media entity, @ApiParam(value = "Token of sender", required = true) @HeaderParam("token") final String token,
+                               @ApiParam(value = "id of event", required = true) @QueryParam("id") final String id) {
+        User user = DAOManager.getFactory().getUserDAO().filter("accessToken", token).getFirst();
+        Event event = DAOManager.getFactory().getEventDAO().filter("id", id).getFirst();
+        if (event == null)
+            return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Invalid event id")).build();
+        if (!event.getCreator().equals(user))
+            return Response.status(Response.Status.UNAUTHORIZED).entity(new Utils.Response("You cannot add a picture to this event")).build();
+        if (entity != null) {
+            if (Utils.writeToFileServer(entity.getBytes(), entity.getId()))
+                return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Image upload failed.")).build();
+            entity.setUrl("92.222.82.30:8080/eip-dev/resources/image" + entity.getId());
+            event.addPicture(entity);
+        }
+        DAOManager.getFactory().getEventDAO().push(event);
+        return Response.status(Response.Status.CREATED).build();
+    }
 
     @POST
     @Authenticated
@@ -136,6 +177,11 @@ public class EventService {
         User user = DAOManager.getFactory().getUserDAO().filter("accessToken", token).getFirst();
         if (entity == null)
             return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Please fill the event fields.")).build();
+        if (entity.getMainPicture() != null) {
+            if (Utils.writeToFileServer(entity.getMainPicture().getBytes(), entity.getMainPicture().getId()))
+                return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Image upload failed.")).build();
+            entity.getMainPicture().setUrl("92.222.82.30:8080/eip-dev/resources/image" + entity.getMainPicture().getId());
+        }
         entity.setCreator(user);
         DAOManager.getFactory().getEventDAO().push(entity);
         return Response.status(Response.Status.CREATED).build();

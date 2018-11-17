@@ -6,6 +6,7 @@ import com.eip.festevent.dao.DAO;
 import com.eip.festevent.dao.DAOManager;
 import com.eip.festevent.dao.morphia.QueryHelper;
 import com.eip.festevent.utils.Utils;
+import com.google.common.collect.Lists;
 import io.swagger.annotations.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -40,8 +41,24 @@ public class PublicationService {
         QueryHelper<Publication> helper = new QueryHelper<Publication>(dao, keys, values);
         if (helper.isValidQuery(Publication.class))
             helper.performQueries();
+        else
+            return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Invalid queries.")).build();
         List<Publication> result = helper.getDao().getAll();
         return Response.ok(result).build();
+    }
+
+    @GET
+    @Path("/pictures")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Bad request"),
+            @ApiResponse(code = 401, message = "Unauthorized") })
+    @ApiOperation(value = "Get publication pictures.", response = Media.class, responseContainer = "List")
+    public Response getPublicationPictures(@ApiParam(value = "id of event", required = true) @QueryParam("id") String id) {
+        Publication publication = DAOManager.getFactory().getPublicationDAO().filter("id", id).getFirst();
+        if (publication == null)
+            return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Invalid publication id")).build();
+        return Response.ok(publication.getMedias()).build();
     }
 
     @GET
@@ -97,10 +114,18 @@ public class PublicationService {
     @ApiOperation(value = "Create a publication.", response = Response.class)
     public Response publicate(@ApiParam(value = "Token of sender", required = true) @HeaderParam("token") String token, final Publication entity) {
         entity.setPublisher(DAOManager.getFactory().getUserDAO().filter("accessToken", token).getFirst());
-
+        List<Media> medias = Lists.newArrayList();
         if (entity.getContent() == null || entity.getContent().isEmpty())
             return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Content null or empty.")).build();
-
+        if (entity.getMedias() != null) {
+            for (Media media : entity.getMedias()) {
+                if (Utils.writeToFileServer(media.getBytes(), entity.getId()))
+                    return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Image upload failed.")).build();
+                media.setUrl("92.222.82.30:8080/eip-dev/resources/image" + entity.getId());
+                medias.add(media);
+            }
+        }
+        entity.setMedias(medias);
         DAOManager.getFactory().getPublicationDAO().push(entity);
         return Response.status(Response.Status.CREATED).header("publicationId", entity.getId()).build();
     }

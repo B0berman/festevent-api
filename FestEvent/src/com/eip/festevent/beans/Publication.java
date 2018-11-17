@@ -54,6 +54,10 @@ public class Publication {
         like_nb--;
     }
 
+    public void setMedias(List<Media> medias) {
+        this.medias = medias;
+    }
+
     public int getLike_nb() {
         return like_nb;
     }

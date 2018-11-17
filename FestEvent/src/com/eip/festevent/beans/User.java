@@ -33,7 +33,7 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	protected String role;
+	protected String role = "STANDARD";
 
 	protected String  email;
 
