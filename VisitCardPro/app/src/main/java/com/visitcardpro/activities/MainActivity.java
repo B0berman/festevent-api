@@ -9,10 +9,6 @@ import android.view.MenuItem;
 
 import com.visitcardpro.R;
 import com.visitcardpro.adapters.MainPagerAdapter;
-import com.visitcardpro.beans.Authentication;
-import com.visitcardpro.beans.User;
-import com.visitcardpro.database.dao.AuthenticationDAO;
-import com.visitcardpro.database.dao.UserDAO;
 
 public class MainActivity extends AppCompatActivity {
 

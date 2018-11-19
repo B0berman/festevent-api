@@ -1,8 +1,6 @@
 package com.visitcardpro.api;
 
 import com.visitcardpro.api.services.AuthenticationService;
-import com.visitcardpro.api.services.CardService;
-import com.visitcardpro.api.services.ContactService;
 import com.visitcardpro.api.services.UserService;
 import com.visitcardpro.beans.User;
 
@@ -11,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class Client {
-    private final String BASE_URI = "http://92.222.82.30:8080/server/api/";
+    private final String BASE_URI = "http://92.222.82.30:8080/eip/";
     private User user;
     private static Client INSTANCE = new Client();
 
@@ -22,8 +20,6 @@ public class Client {
     private MyRetrofit retrofit;
 
     private UserService userService;
-    private ContactService contactService;
-    private CardService cardService;
     private AuthenticationService authenticationService;
 
     private Client() {
@@ -34,8 +30,6 @@ public class Client {
                 .create(MyRetrofit.class);
 
         userService = new UserService(retrofit);
-        contactService = new ContactService(retrofit);
-        cardService = new CardService(retrofit);
         authenticationService = new AuthenticationService(retrofit);
     }
 
@@ -47,24 +41,14 @@ public class Client {
         return userService;
     }
 
-    public ContactService getContactService() {
-        return contactService;
-    }
-
-    public CardService getCardService() {
-        return cardService;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
-        String token = user.getAuthentication().getAccessToken();
+        String token = user.getAccessToken();
         userService.setToken(token);
-        cardService.setToken(token);
-        contactService.setToken(token);
         authenticationService.setToken(token);
     }
 

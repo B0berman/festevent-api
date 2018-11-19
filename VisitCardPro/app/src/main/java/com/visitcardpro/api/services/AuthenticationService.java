@@ -5,18 +5,11 @@ import com.visitcardpro.api.MyRetrofit;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 
-public class AuthenticationService {
-
-    private MyRetrofit retrofit;
-    private String     token;
+public class AuthenticationService extends Service {
 
     public AuthenticationService(MyRetrofit r) {
-        retrofit = r;
-        token = "";
-    }
+        super(r);
 
-    public void setToken(String token) {
-        this.token = token;
     }
 
     public Call<ResponseBody> signIn(String key)  {

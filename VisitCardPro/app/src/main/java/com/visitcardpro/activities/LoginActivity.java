@@ -20,14 +20,9 @@ import android.widget.TextView;
 import com.visitcardpro.R;
 import com.visitcardpro.api.Client;
 import com.visitcardpro.api.CustomCallback;
-import com.visitcardpro.beans.Authentication;
-import com.visitcardpro.beans.User;
 import com.visitcardpro.database.dao.AuthenticationDAO;
 import com.visitcardpro.database.dao.UserDAO;
 import com.visitcardpro.utils.JobHelper;
-import com.visitcardpro.utils.PreferencesHelper;
-
-import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

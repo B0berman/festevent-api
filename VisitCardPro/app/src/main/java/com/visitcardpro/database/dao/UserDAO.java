@@ -4,8 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.visitcardpro.beans.User;
-
 public class UserDAO extends BasicDAO {
 
     private static final String TABLE_NAME = "user";

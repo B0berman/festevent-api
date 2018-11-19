@@ -20,18 +20,14 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.visitcardpro.R;
 import com.visitcardpro.api.Client;
 import com.visitcardpro.api.CustomCallback;
-import com.visitcardpro.beans.Authentication;
-import com.visitcardpro.beans.User;
 import com.visitcardpro.utils.JobHelper;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Callback;
 
 
 public class RegisterActivity extends AppCompatActivity {

@@ -1,12 +1,13 @@
 package com.visitcardpro.api;
 
 
-import com.visitcardpro.beans.Card;
-import com.visitcardpro.beans.Contact;
+
+import com.visitcardpro.beans.Event;
+import com.visitcardpro.beans.Group;
+import com.visitcardpro.beans.Publication;
 import com.visitcardpro.beans.User;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -18,13 +19,19 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
- /*
+/*
   *
   *  Created by walbecq on 02/12/17.
   */
 
 public interface MyRetrofit {
+
+
+    @POST("signup")
+    @Headers("Content-Type: application/json")
+    Call<ResponseBody> signUp(@Body User user);
 
     /*
      *  Auth Services
@@ -42,71 +49,153 @@ public interface MyRetrofit {
      *
      */
 
-    @POST("user")
-    @Headers("Content-Type: application/json")
-    Call<ResponseBody> createUser(@Body User user);
+    @GET("profil")
+    Call<ResponseBody> getUser(@Header("accessToken") String token);
 
-    @GET("user")
-    Call<User> getUser(@Header("accessToken") String token);
-
-    @PUT("user")
+    @PUT("profil")
     Call<ResponseBody> setUser(@Body User user, @Header("accessToken") String token);
 
-    @DELETE("user")
+    @DELETE("profil")
     Call<ResponseBody> deleteUser(@Header("accessToken") String token);
 
-    @GET("user/update")
+    @GET("profil/friends")
+    Call<ResponseBody> getUserUpdate(@Header("accessToken") String token);
+
+    @POST("profil/research")
     @Headers("Content-Type: application/json")
-    Call<ResponseBody> getUserUpdate(@Header("accessToken") String token, @Body Date lastUpdate);
+    Call<ResponseBody> searchUsers(@Header("accessToken") String token, @Query("keys") List<String> keys, @Query("values") List<String> values);
+
+    @GET("profil/friends")
+    Call<ResponseBody> getUserFriends(@Header("accessToken") String token);
+
+    @GET("profil/pictures")
+    Call<ResponseBody> getUserPictures(@Header("accessToken") String token);
+
+    @GET("profil/groups")
+    Call<ResponseBody> getUserGroups(@Header("accessToken") String token);
+
+    @GET("profil/profil-image")
+    Call<ResponseBody> getUserProfilImage(@Header("accessToken") String token);
+
+    @GET("profil/publications")
+    Call<ResponseBody> getUserPublications(@Header("accessToken") String token);
 
     /*
-     *  Contact Services
+     *  Resource Services
      *
      */
 
-    @POST("user/contacts")
-    @Headers("Content-Type: application/json")
-    Call<ResponseBody> createContact(@Header("accessToken") String token, @Body String cardKey);
-
-    @GET("user/contacts/{cardKey}")
-    Call<ResponseBody> getContact(@Header("accessToken") String token, @Path("cardKey") String cardKey);
-
-    @GET("user/contacts")
-    @Headers("Content-Type: application/json")
-    Call<ArrayList<Contact>> getContacts(@Header("accessToken") String token);
-
-    @DELETE("user/contacts/{cardKey}")
-    Call<ResponseBody> deleteContact(@Header("accessToken") String token, @Path("cardKey") String cardKey);
-
-    @GET("user/contacts/update")
-    @Headers("Content-Type: application/json")
-    Call<ResponseBody> getContactUpdate(@Header("accessToken") String token, @Body Date lastUpdate);
-
+    @GET("resource/image/{id}")
+    Call<ResponseBody> getImage(@Path("id") String id);
 
     /*
-     *  Card Services
+     *  Group Services
      *
      */
 
-    @POST("user/cards")
+
+    @POST("groups")
     @Headers("Content-Type: application/json")
-    Call<Card> createCard(@Body Card card, @Header("accessToken") String token);
+    Call<ResponseBody> createGroup(@Body Group group, @Header("accessToken") String token);
 
-    @GET("user/cards")
-    Call<ArrayList<Card>> getCards(@Header("accessToken") String token);
+    @PUT("groups/leave")
+    Call<ResponseBody> leaveGroup(@Header("accessToken") String token, @Query("id") String id);
 
-    @GET("user/cards/{cardKey}")
-    Call<ResponseBody> getCard(@Header("accessToken") String token, @Path("cardKey") String cardKey);
+    @PUT("groups/member/add")
+    Call<ResponseBody> addGroupMember(@Header("accessToken") String token, @Query("id") String id, @Query("email") String email);
 
-    @PUT("user/cards/{cardKey}")
-    @Headers("Content-Type: application/json")
-    Call<ResponseBody> editCard(@Body Card user, @Header("accessToken") String token, @Path("cardKey") String cardKey);
+    @GET("groups/members")
+    Call<ResponseBody> getGroupMembers(@Header("accessToken") String token, @Query("id") String id);
 
-    @DELETE("user/cards/{cardKey}")
-    Call<ResponseBody> deleteCard(@Header("accessToken") String token, @Path("cardKey") String cardKey);
+    /*
+    *
+    *   Event Service
+    *
+    *
+     */
 
-    @GET("user/cards/update")
-    @Headers("Content-Type: application/json")
-    Call<ResponseBody> getCardUpdate(@Header("accessToken") String token, @Body Date lastUpdate);
+    @POST("events")
+    Call<ResponseBody> createEvent(@Header("accessToken") String token, @Body Event event);
 
+    @PUT("events")
+    Call<ResponseBody> modifyEvent(@Header("accessToken") String token, @Body Event event);
+
+    @DELETE("events")
+    Call<ResponseBody> deleteEvent(@Header("accessToken") String token, @Query("id") String id);
+
+    @GET("events/participants")
+    Call<ResponseBody> getEventParticipants(@Header("accessToken") String token, @Query("id") String id);
+
+    @GET("events/pictures")
+    Call<ResponseBody> getEventPictures(@Header("accessToken") String token, @Query("id") String id);
+
+    @GET("events/tickets")
+    Call<ResponseBody> getEventTickets(@Header("accessToken") String token, @Query("id") String id);
+
+    @GET("events/user")
+    Call<ResponseBody> getUserEvents(@Header("accessToken") String token);
+
+    @PUT("events/participate")
+    Call<ResponseBody> eventParticipate(@Header("accessToken") String token, @Query("id") String id);
+
+    /*
+    *
+    *
+    *   Publication Service
+    *
+     */
+    @POST("publications/publicate")
+    Call<ResponseBody> createPublicaton(@Header("accessToken") String token, @Body Publication publication);
+
+    @POST("publications/event/publicate")
+    Call<ResponseBody> createEventPublicaton(@Header("accessToken") String token, @Body Publication publication);
+
+    @PUT("publications")
+    Call<ResponseBody> modifyPublication(@Header("accessToken") String token, @Body Publication publication);
+
+    @DELETE("publications")
+    Call<ResponseBody> deletePublication(@Header("accessToken") String token, @Query("id") String id);
+
+    @PUT("publicatiosn/like")
+    Call<ResponseBody> likePublication(@Header("accessToken") String token, @Query("id") String id);
+
+    @PUT("publications/unlike")
+    Call<ResponseBody> unlikePublication(@Header("accessToken") String token, @Query("id") String id);
+
+    @GET("publications/pictures")
+    Call<ResponseBody> getPublicationPictures(@Header("accessToken") String token, @Query("id") String id);
+
+    @GET("publications/likes")
+    Call<ResponseBody> getPublicationLikes(@Header("accessToken") String token, @Query("id") String id);
+
+    @GET("publications/friends")
+    Call<ResponseBody> getFriendsPublications(@Header("accessToken") String token, @Query("id") String id);
+
+    @GET("publications/comments")
+    Call<ResponseBody> getPublicationComments(@Header("accessToken") String token, @Query("id") String id);
+
+    /*
+     *
+     *
+     *   Friend Service
+     *
+     */
+
+    @POST("friends/request")
+    Call<ResponseBody> requestFriend(@Header("accessToken") String token, @Query("email") String email);
+
+    @POST("friends/request-answer")
+    Call<ResponseBody> friendRequestAnswer(@Header("accessToken") String token, @Query("email") String email, @Query("answer") boolean answer);
+
+    @DELETE("friends")
+    Call<ResponseBody> deleteFriend(@Header("accessToken") String token, @Query("email") String email);
+
+    @POST("friends/request-cancel")
+    Call<ResponseBody> friendRequestCancel(@Header("accessToken") String token, @Query("email") String email);
+
+    @GET("friends/requests-received")
+    Call<ResponseBody> getFriendsRequestsReceived(@Header("accessToken") String token);
+
+    @GET("friends/requests-sent")
+    Call<ResponseBody> getFriendsRequestsSent(@Header("accessToken") String token);
 }

@@ -4,8 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.visitcardpro.beans.Authentication;
-
 public class AuthenticationDAO extends BasicDAO {
 
     public static final String TABLE_NAME = "authentication";
