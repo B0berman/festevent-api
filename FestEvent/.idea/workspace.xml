@@ -7,151 +7,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f14f2d7-a6ef-4f1a-8880-53a5120a4844" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/FestEvent_war.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/FestEvent_war.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/FestEvent_war_exploded.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/FestEvent_war_exploded.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/eip/festevent/authentication/AuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/eip/festevent/authentication/AuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/eip/festevent/beans/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/eip/festevent/beans/Event.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/eip/festevent/beans/Media.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/eip/festevent/beans/Media.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/eip/festevent/beans/Publication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/eip/festevent/beans/Publication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/eip/festevent/beans/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/eip/festevent/beans/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/eip/festevent/dao/morphia/MorphiaDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/eip/festevent/dao/morphia/MorphiaDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/eip/festevent/dao/morphia/QueryHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/eip/festevent/dao/morphia/QueryHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/eip/festevent/dao/morphia/QueryValidationFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/eip/festevent/services/EventService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/eip/festevent/services/EventService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/eip/festevent/services/PublicationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/eip/festevent/services/PublicationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/eip/festevent/services/RegisterService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/eip/festevent/services/RegisterService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/eip/festevent/services/UserProfilService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/eip/festevent/services/UserProfilService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/eip/festevent/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/eip/festevent/utils/Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/authentication/AuthenticationFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eip/festevent/authentication/AuthenticationFilter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/beans/Event.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eip/festevent/beans/Event.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/beans/Publication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eip/festevent/beans/Publication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/beans/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eip/festevent/beans/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/dao/morphia/MorphiaDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eip/festevent/dao/morphia/MorphiaDAO.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/dao/morphia/MorphiaDB.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eip/festevent/dao/morphia/MorphiaDB.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/dao/morphia/QueryHelper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eip/festevent/dao/morphia/QueryHelper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/dao/morphia/QueryValidationFilter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/services/AuthenticationService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eip/festevent/services/AuthenticationService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/services/EventService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eip/festevent/services/EventService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/services/FriendService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eip/festevent/services/FriendService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/services/GroupService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eip/festevent/services/GroupService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/services/PublicationService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eip/festevent/services/PublicationService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/services/RegisterService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eip/festevent/services/RegisterService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/services/UserProfilService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eip/festevent/services/UserProfilService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/utils/RandomString.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eip/festevent/utils/RandomString.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/utils/Utils$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eip/festevent/utils/Utils$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/eip/festevent/utils/Utils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/eip/festevent/utils/Utils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev.war" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/META-INF/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/authentication/Authenticated.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/authentication/AuthenticationFilter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/authentication/TokenHelper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/beans/Appointment.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/beans/Comment.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/beans/Event.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/beans/FriendRequest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/beans/Group.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/beans/Media$TYPE.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/beans/Media.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/beans/Publication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/beans/Service.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/beans/Ticket.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/beans/User.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/dao/DAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/dao/DAOFactory.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/dao/DAOManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/dao/DataBase.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/dao/morphia/MorphiaDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/dao/morphia/MorphiaDAOFactory.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/dao/morphia/MorphiaDB.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/dao/morphia/MorphiaEvent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/dao/morphia/MorphiaGroup.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/dao/morphia/MorphiaPublication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/dao/morphia/MorphiaTicket.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/dao/morphia/MorphiaUser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/dao/morphia/QueriesAllowed.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/dao/morphia/QueryHelper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/services/AuthenticationService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/services/EventService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/services/FriendService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/services/GroupService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/services/PublicationService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/services/RegisterService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/services/ResourceService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/services/UserProfilService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/utils/RandomString.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/utils/SwaggerServlet.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/utils/Utils$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/utils/Utils$Response.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/classes/com/eip/festevent/utils/Utils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/activation-1.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/annotations-2.0.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/aopalliance-repackaged-2.5.0-b05.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/cglib-nodep-2.2.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/commons-lang3-3.3.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/guava-15.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/hk2-api-2.5.0-b05.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/hk2-locator-2.5.0-b05.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/hk2-utils-2.5.0-b05.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jackson-annotations-2.5.4.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jackson-core-2.5.4.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jackson-databind-2.5.4.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jackson-dataformat-xml-2.4.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jackson-dataformat-yaml-2.4.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jackson-datatype-joda-2.4.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jackson-jaxrs-base-2.5.4.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jackson-jaxrs-json-provider-2.5.4.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jackson-module-jaxb-annotations-2.5.4.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/javassist-3.20.0-GA.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/javax.annotation-api-1.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/javax.inject-2.5.0-b05.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/javax.servlet-api-4.0.0-b01.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/javax.ws.rs-api-2.0.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jbcrypt-0.3m.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jersey-client-2.22.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jersey-common-2.24.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jersey-container-jetty-http-2.22.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jersey-container-jetty-servlet-2.22.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jersey-container-servlet-2.22.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jersey-container-servlet-core-2.24.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jersey-entity-filtering-2.24.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jersey-guava-2.24.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jersey-media-jaxb-2.22.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jersey-media-json-jackson-2.24.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jersey-media-multipart-2.24.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jersey-server-2.22.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jetty-continuation-9.1.1.v20140108.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jetty-http-9.1.1.v20140108.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jetty-io-9.1.1.v20140108.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jetty-security-9.1.1.v20140108.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jetty-server-9.1.1.v20140108.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jetty-servlet-9.1.1.v20140108.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jetty-util-9.1.1.v20140108.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jetty-webapp-9.1.1.v20140108.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jetty-xml-9.1.1.v20140108.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/jjwt-0.8.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/joda-time-2.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/mail-1.5.0-b01.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/mimepull-1.9.6.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/mongo-java-driver-3.2.2.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/morphia-1.2.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/osgi-resource-locator-1.0.1.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/proxytoys-1.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/reflections-0.9.9.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/slf4j-api-1.6.3.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/stax2-api-3.1.4.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/swagger-annotations-1.5.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/swagger-core-1.5.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/swagger-jaxrs-1.5.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/swagger-jersey2-jaxrs-1.5.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/swagger-models-1.5.0.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/lib/validation-api-1.1.0.Final.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/WEB-INF/web.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/eip-dev/index.jsp" beforeDir="false" />
-    </list>
+    <list default="true" id="7f14f2d7-a6ef-4f1a-8880-53a5120a4844" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -275,6 +131,7 @@
     <session id="-631003153">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="1" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.opened" value="1" />
         </counts>
@@ -291,13 +148,13 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="12" />
+          <entry key="java" value="13" />
           <entry key="xml" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="12" />
+          <entry key="JAVA" value="13" />
           <entry key="XML" value="1" />
         </counts>
       </usages-collector>
@@ -366,6 +223,18 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/eip/festevent/utils/SwaggerServlet.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="330">
+              <caret line="22" column="33" lean-forward="true" selection-start-line="22" selection-start-column="33" selection-end-line="22" selection-end-column="33" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/eip/festevent/services/RegisterService.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -391,7 +260,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/eip/festevent/services/PublicationService.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="645">
@@ -458,7 +327,6 @@
         <option value="$PROJECT_DIR$/src/com/eip/festevent/dao/morphia/MorphiaUser.java" />
         <option value="$PROJECT_DIR$/src/com/eip/festevent/dao/morphia/MorphiaEventPass.java" />
         <option value="$PROJECT_DIR$/src/com/eip/festevent/beans/PublicationInfos.java" />
-        <option value="$PROJECT_DIR$/src/com/eip/festevent/utils/SwaggerServlet.java" />
         <option value="$PROJECT_DIR$/src/com/eip/festevent/dao/morphia/MorphiaGroup.java" />
         <option value="$PROJECT_DIR$/src/com/eip/festevent/beans/EventInfos.java" />
         <option value="$PROJECT_DIR$/src/com/eip/festevent/beans/Service.java" />
@@ -495,6 +363,7 @@
         <option value="$PROJECT_DIR$/src/com/eip/festevent/services/EventService.java" />
         <option value="$PROJECT_DIR$/src/com/eip/festevent/beans/Publication.java" />
         <option value="$PROJECT_DIR$/src/com/eip/festevent/services/PublicationService.java" />
+        <option value="$PROJECT_DIR$/src/com/eip/festevent/utils/SwaggerServlet.java" />
       </list>
     </option>
   </component>
@@ -791,7 +660,7 @@
       <workItem from="1541496663547" duration="65801000" />
       <workItem from="1541766728699" duration="21134000" />
       <workItem from="1542127012285" duration="22639000" />
-      <workItem from="1542442323310" duration="10545000" />
+      <workItem from="1542442323310" duration="11178000" />
     </task>
     <servers />
   </component>
@@ -813,7 +682,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="145131000" />
+    <option name="totallyTimeSpent" value="145764000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1090,16 +959,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/eip/festevent/utils/SwaggerServlet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="56" selection-start-line="23" selection-start-column="56" selection-end-line="23" selection-end-column="56" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/eip/festevent/authentication/AuthenticationFilter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
@@ -1236,6 +1095,16 @@
             <element signature="imports" expanded="true" />
             <element signature="e#700#701#0" expanded="true" />
             <element signature="e#775#776#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/eip/festevent/utils/SwaggerServlet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="33" lean-forward="true" selection-start-line="22" selection-start-column="33" selection-end-line="22" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
