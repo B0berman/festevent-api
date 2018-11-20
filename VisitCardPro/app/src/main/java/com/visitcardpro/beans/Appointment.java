@@ -1,32 +1,15 @@
 package com.visitcardpro.beans;
 
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Reference;
-
 import java.util.Date;
 
-@Entity
 public class Appointment {
-    @Id
-    protected String id = ObjectId.get().toString();
 
-    @Reference
     protected User creator;
 
     protected String name;
     protected float longitude = 0.0f;
     protected float latitude = 0.0f;
     protected Date created = new Date();
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public User getCreator() {
         return creator;

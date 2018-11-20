@@ -1,12 +1,15 @@
 package com.visitcardpro.api;
 
 import com.visitcardpro.api.services.AuthenticationService;
+import com.visitcardpro.api.services.EventService;
+import com.visitcardpro.api.services.FriendService;
+import com.visitcardpro.api.services.GroupService;
+import com.visitcardpro.api.services.PublicationService;
 import com.visitcardpro.api.services.UserService;
 import com.visitcardpro.beans.User;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
 
 public class Client {
     private final String BASE_URI = "http://92.222.82.30:8080/eip/";
@@ -17,20 +20,42 @@ public class Client {
         return INSTANCE;
     }
 
-    private MyRetrofit retrofit;
-
     private UserService userService;
+    private EventService eventService;
+    private PublicationService publicationService;
+    private GroupService groupService;
     private AuthenticationService authenticationService;
+    private FriendService friendService;
 
     private Client() {
-        retrofit = new Retrofit.Builder()
+        MyRetrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URI)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(MyRetrofit.class);
 
         userService = new UserService(retrofit);
+        eventService = new EventService(retrofit);
+        groupService = new GroupService(retrofit);
+        publicationService = new PublicationService(retrofit);
         authenticationService = new AuthenticationService(retrofit);
+        friendService = new FriendService(retrofit);
+    }
+
+    public FriendService getFriendService() {
+        return friendService;
+    }
+
+    public EventService getEventService() {
+        return eventService;
+    }
+
+    public PublicationService getPublicationService() {
+        return publicationService;
+    }
+
+    public GroupService getGroupService() {
+        return groupService;
     }
 
     public AuthenticationService getAuthenticationService() {

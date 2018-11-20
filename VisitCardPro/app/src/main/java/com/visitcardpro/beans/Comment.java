@@ -1,14 +1,10 @@
 package com.visitcardpro.beans;
 
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Reference;
-
+import java.io.Serializable;
 import java.util.Date;
 
-@Entity
-public class Comment {
+public class Comment implements Serializable {
 
-	@Reference
 	protected User			commenter;
 	protected String		content;
 	protected Date			date = new Date();

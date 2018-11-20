@@ -53,6 +53,7 @@ public interface MyRetrofit {
     Call<ResponseBody> getUser(@Header("accessToken") String token);
 
     @PUT("profil")
+    @Headers("Content-Type: application/json")
     Call<ResponseBody> setUser(@Body User user, @Header("accessToken") String token);
 
     @DELETE("profil")
@@ -73,6 +74,12 @@ public interface MyRetrofit {
 
     @GET("profil/groups")
     Call<ResponseBody> getUserGroups(@Header("accessToken") String token);
+
+    @GET("profil/events")
+    Call<ResponseBody> getUserEvents(@Header("accessToken") String token);
+
+    @GET("profil/tickets")
+    Call<ResponseBody> getUserTickets(@Header("accessToken") String token);
 
     @GET("profil/profil-image")
     Call<ResponseBody> getUserProfilImage(@Header("accessToken") String token);
@@ -115,9 +122,11 @@ public interface MyRetrofit {
      */
 
     @POST("events")
+    @Headers("Content-Type: application/json")
     Call<ResponseBody> createEvent(@Header("accessToken") String token, @Body Event event);
 
     @PUT("events")
+    @Headers("Content-Type: application/json")
     Call<ResponseBody> modifyEvent(@Header("accessToken") String token, @Body Event event);
 
     @DELETE("events")
@@ -131,9 +140,6 @@ public interface MyRetrofit {
 
     @GET("events/tickets")
     Call<ResponseBody> getEventTickets(@Header("accessToken") String token, @Query("id") String id);
-
-    @GET("events/user")
-    Call<ResponseBody> getUserEvents(@Header("accessToken") String token);
 
     @PUT("events/participate")
     Call<ResponseBody> eventParticipate(@Header("accessToken") String token, @Query("id") String id);

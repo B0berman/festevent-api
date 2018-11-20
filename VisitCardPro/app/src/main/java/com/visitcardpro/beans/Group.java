@@ -1,31 +1,20 @@
 package com.visitcardpro.beans;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.collect.Lists;
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Reference;
+import com.beust.jcommander.internal.Lists;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-public class Group {
-    @Id
-    protected String id = ObjectId.get().toString();
+public class Group implements Serializable {
 
     protected String name;
 
-    @Reference
     protected Event event;
 
-    @Reference
     protected User creator;
     protected Date created = new Date();
 
-    @JsonIgnore
-    @Reference
     protected List<User> members = Lists.newArrayList();
 
     public List<User> getMembers() {
@@ -38,14 +27,6 @@ public class Group {
 
     public void removeMember(User p) {
         members.remove(p);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getName() {

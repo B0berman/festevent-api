@@ -2,10 +2,11 @@ package com.visitcardpro.beans;
 
 import com.beust.jcommander.internal.Lists;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
 
 	protected String accessToken;
 
@@ -17,6 +18,7 @@ public class User {
 	protected String lastName;
 	protected String firstName;
 
+	protected String password;
 	protected String  phone;
 	protected Date birthdate;
 	protected Media profilPicture;
@@ -30,6 +32,14 @@ public class User {
 
 	protected double  locationLongitude;
 	protected double  locationLatitude;
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	public void addPicture(Media media) {
 		pictures.add(media);

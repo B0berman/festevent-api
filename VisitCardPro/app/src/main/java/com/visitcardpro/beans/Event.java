@@ -1,22 +1,10 @@
 package com.visitcardpro.beans;
 
-import com.eip.festevent.dao.morphia.QueriesAllowed;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Embedded;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Reference;
-
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@QueriesAllowed(fields = {"start", "end", "title", "valid"}, operators = {"<", ">", "contains", "=", "order", "limit", "offset"})
 public class Event {
 
-    @Id
-    protected String id = ObjectId.get().toString();
 
     protected String   title;
     protected String   description;
@@ -26,12 +14,9 @@ public class Event {
     protected String   address;
     protected boolean valid = false;
     protected Media     mainPicture;
-
-    @Reference
+    protected String    id;
     protected User creator;
 
-    @JsonIgnore
-    @Embedded
     protected List<Media> pictures;
 
     // STAFF
@@ -103,14 +88,6 @@ public class Event {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public boolean isValid() {

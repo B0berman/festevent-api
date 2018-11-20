@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.visitcardpro.R;
 import com.visitcardpro.api.Client;
 import com.visitcardpro.api.CustomCallback;
+import com.visitcardpro.beans.User;
 import com.visitcardpro.utils.JobHelper;
 
 import okhttp3.ResponseBody;
@@ -133,12 +134,11 @@ public class RegisterActivity extends AppCompatActivity {
             // perform the user login attempt.
             showProgress(true);
             User user = new User();
-            user.setAuthentication(new Authentication());
-            user.getAuthentication().setLogin(email);
+            user.setEmail(email);
             user.setFirstName(fname);
             user.setLastName(lname);
-            user.getAuthentication().setPassword(password);
-            Call<ResponseBody> call = Client.getInstance().getUserService().createUser(user);
+            user.setPassword(password);
+            Call<ResponseBody> call = Client.getInstance().getUserService().signUp(user);
             call.enqueue(new CustomCallback<ResponseBody>(RegisterActivity.this, 201) {
                 @Override
                 public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {

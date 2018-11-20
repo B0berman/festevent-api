@@ -1,25 +1,13 @@
 package com.visitcardpro.beans;
 
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Reference;
+import java.io.Serializable;
 
-@Entity
-public class  Ticket {
+public class  Ticket implements Serializable {
 
-    @Id
-    protected String id = ObjectId.get().toString();
 
-    @Reference
     protected User owner;
 
-    @Reference
     protected Event event;
-
-    public String getId() {
-        return id;
-    }
 
     public Event getEvent() {
         return event;

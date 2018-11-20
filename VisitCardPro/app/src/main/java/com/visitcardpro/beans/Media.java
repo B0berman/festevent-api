@@ -1,12 +1,9 @@
 package com.visitcardpro.beans;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.mongodb.morphia.annotations.Entity;
-
+import java.io.Serializable;
 import java.util.UUID;
 
-@Entity
-public class Media {
+public class Media implements Serializable {
 
 	public enum TYPE {
 		IMAGE_PNG,

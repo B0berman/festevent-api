@@ -1,39 +1,25 @@
 package com.visitcardpro.beans;
 
-import com.eip.festevent.dao.morphia.QueriesAllowed;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.collect.Lists;
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.annotations.Embedded;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.Reference;
+import com.beust.jcommander.internal.Lists;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@QueriesAllowed(fields = {"created", "like_nb", "content", "comment_nb"}, operators = {"contains", "=", "order", "limit", "offset", "<", ">"})
-public class Publication {
-    @Id
-    protected String id = ObjectId.get().toString();
+public class Publication implements Serializable {
 
+    protected String id;
     protected Date created = new Date();
     protected String		content;
     protected int           like_nb = 0;
     protected int           comment_nb = 0;
     protected List<Media>			medias = Lists.newArrayList();
 
-    @Reference
     protected Event event;
-    @Embedded
     protected User publisher;
 
-    @JsonIgnore
-    @Reference
     protected List<User> likes = Lists.newArrayList();
 
-    @JsonIgnore
     protected List<Comment> comments = Lists.newArrayList();
 
     public void addLike(User user) {
@@ -122,14 +108,6 @@ public class Publication {
 
     public void setPublisher(User publisher) {
         this.publisher = publisher;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
 }

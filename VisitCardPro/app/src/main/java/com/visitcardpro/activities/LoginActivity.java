@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.visitcardpro.R;
 import com.visitcardpro.api.Client;
 import com.visitcardpro.api.CustomCallback;
+import com.visitcardpro.beans.User;
 import com.visitcardpro.database.dao.AuthenticationDAO;
 import com.visitcardpro.database.dao.UserDAO;
 import com.visitcardpro.utils.JobHelper;
@@ -118,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                 public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                     super.onResponse(call, response);
                     String token = response.headers().get("accessToken");
-                    Authentication auth = new Authentication(email, token);
+                    User user = response.body();
                     setUser(auth);
                 }
             });
