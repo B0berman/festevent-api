@@ -13,8 +13,6 @@ import com.visitcardpro.R;
 import com.visitcardpro.activities.LoginActivity;
 import com.visitcardpro.api.Client;
 import com.visitcardpro.api.CustomCallback;
-import com.visitcardpro.database.dao.AuthenticationDAO;
-import com.visitcardpro.database.dao.CardDAO;
 import com.visitcardpro.database.dao.UserDAO;
 
 import okhttp3.ResponseBody;
@@ -39,14 +37,6 @@ public class UserFragment extends Fragment {
                         userDAO.open();
                         userDAO.delete();
                         userDAO.close();
-                        AuthenticationDAO authenticationDAO = new AuthenticationDAO(getContext());
-                        authenticationDAO.open();
-                        authenticationDAO.delete();
-                        authenticationDAO.close();
-                        CardDAO cardDAO = new CardDAO(getContext());
-                        cardDAO.open();
-                        cardDAO.clear();
-                        cardDAO.close();
                         Intent launchNextActivity = new Intent(getActivity(), LoginActivity.class);
                         launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

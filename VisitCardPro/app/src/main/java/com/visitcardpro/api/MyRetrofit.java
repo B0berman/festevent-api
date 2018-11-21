@@ -2,9 +2,13 @@ package com.visitcardpro.api;
 
 
 
+import com.visitcardpro.beans.Comment;
 import com.visitcardpro.beans.Event;
+import com.visitcardpro.beans.FriendRequest;
 import com.visitcardpro.beans.Group;
+import com.visitcardpro.beans.Media;
 import com.visitcardpro.beans.Publication;
+import com.visitcardpro.beans.Ticket;
 import com.visitcardpro.beans.User;
 
 import java.util.List;
@@ -39,7 +43,7 @@ public interface MyRetrofit {
      */
 
     @POST("signin")
-    Call<ResponseBody> signIn(@Header("Authorization") String key);
+    Call<User> signIn(@Header("Authorization") String key);
 
     @POST("signout")
     Call<ResponseBody> signOut(@Header("accessToken") String token);
@@ -50,7 +54,7 @@ public interface MyRetrofit {
      */
 
     @GET("profil")
-    Call<ResponseBody> getUser(@Header("accessToken") String token);
+    Call<User> getUser(@Header("accessToken") String token);
 
     @PUT("profil")
     @Headers("Content-Type: application/json")
@@ -59,33 +63,30 @@ public interface MyRetrofit {
     @DELETE("profil")
     Call<ResponseBody> deleteUser(@Header("accessToken") String token);
 
-    @GET("profil/friends")
-    Call<ResponseBody> getUserUpdate(@Header("accessToken") String token);
-
     @POST("profil/research")
     @Headers("Content-Type: application/json")
-    Call<ResponseBody> searchUsers(@Header("accessToken") String token, @Query("keys") List<String> keys, @Query("values") List<String> values);
+    Call<List<User>> searchUsers(@Header("accessToken") String token, @Query("keys") List<String> keys, @Query("values") List<String> values);
 
     @GET("profil/friends")
-    Call<ResponseBody> getUserFriends(@Header("accessToken") String token);
+    Call<List<User>> getUserFriends(@Header("accessToken") String token);
 
     @GET("profil/pictures")
-    Call<ResponseBody> getUserPictures(@Header("accessToken") String token);
+    Call<List<Media>> getUserPictures(@Header("accessToken") String token);
 
     @GET("profil/groups")
-    Call<ResponseBody> getUserGroups(@Header("accessToken") String token);
+    Call<List<Group>> getUserGroups(@Header("accessToken") String token);
 
     @GET("profil/events")
-    Call<ResponseBody> getUserEvents(@Header("accessToken") String token);
+    Call<List<Event>> getUserEvents(@Header("accessToken") String token);
 
     @GET("profil/tickets")
-    Call<ResponseBody> getUserTickets(@Header("accessToken") String token);
+    Call<List<Ticket>> getUserTickets(@Header("accessToken") String token);
 
     @GET("profil/profil-image")
-    Call<ResponseBody> getUserProfilImage(@Header("accessToken") String token);
+    Call<Media> getUserProfilImage(@Header("accessToken") String token);
 
     @GET("profil/publications")
-    Call<ResponseBody> getUserPublications(@Header("accessToken") String token);
+    Call<List<Publication>> getUserPublications(@Header("accessToken") String token);
 
     /*
      *  Resource Services
@@ -103,7 +104,7 @@ public interface MyRetrofit {
 
     @POST("groups")
     @Headers("Content-Type: application/json")
-    Call<ResponseBody> createGroup(@Body Group group, @Header("accessToken") String token);
+    Call<Group> createGroup(@Body Group group, @Header("accessToken") String token);
 
     @PUT("groups/leave")
     Call<ResponseBody> leaveGroup(@Header("accessToken") String token, @Query("id") String id);
@@ -112,7 +113,7 @@ public interface MyRetrofit {
     Call<ResponseBody> addGroupMember(@Header("accessToken") String token, @Query("id") String id, @Query("email") String email);
 
     @GET("groups/members")
-    Call<ResponseBody> getGroupMembers(@Header("accessToken") String token, @Query("id") String id);
+    Call<List<User>> getGroupMembers(@Header("accessToken") String token, @Query("id") String id);
 
     /*
     *
@@ -123,7 +124,7 @@ public interface MyRetrofit {
 
     @POST("events")
     @Headers("Content-Type: application/json")
-    Call<ResponseBody> createEvent(@Header("accessToken") String token, @Body Event event);
+    Call<Event> createEvent(@Header("accessToken") String token, @Body Event event);
 
     @PUT("events")
     @Headers("Content-Type: application/json")
@@ -133,13 +134,13 @@ public interface MyRetrofit {
     Call<ResponseBody> deleteEvent(@Header("accessToken") String token, @Query("id") String id);
 
     @GET("events/participants")
-    Call<ResponseBody> getEventParticipants(@Header("accessToken") String token, @Query("id") String id);
+    Call<List<User>> getEventParticipants(@Header("accessToken") String token, @Query("id") String id);
 
     @GET("events/pictures")
-    Call<ResponseBody> getEventPictures(@Header("accessToken") String token, @Query("id") String id);
+    Call<List<Media>> getEventPictures(@Header("accessToken") String token, @Query("id") String id);
 
     @GET("events/tickets")
-    Call<ResponseBody> getEventTickets(@Header("accessToken") String token, @Query("id") String id);
+    Call<List<Ticket>> getEventTickets(@Header("accessToken") String token, @Query("id") String id);
 
     @PUT("events/participate")
     Call<ResponseBody> eventParticipate(@Header("accessToken") String token, @Query("id") String id);
@@ -151,10 +152,10 @@ public interface MyRetrofit {
     *
      */
     @POST("publications/publicate")
-    Call<ResponseBody> createPublicaton(@Header("accessToken") String token, @Body Publication publication);
+    Call<Publication> createPublicaton(@Header("accessToken") String token, @Body Publication publication);
 
     @POST("publications/event/publicate")
-    Call<ResponseBody> createEventPublicaton(@Header("accessToken") String token, @Body Publication publication);
+    Call<Publication> createEventPublicaton(@Header("accessToken") String token, @Body Publication publication);
 
     @PUT("publications")
     Call<ResponseBody> modifyPublication(@Header("accessToken") String token, @Body Publication publication);
@@ -169,16 +170,16 @@ public interface MyRetrofit {
     Call<ResponseBody> unlikePublication(@Header("accessToken") String token, @Query("id") String id);
 
     @GET("publications/pictures")
-    Call<ResponseBody> getPublicationPictures(@Header("accessToken") String token, @Query("id") String id);
+    Call<List<Media>> getPublicationPictures(@Header("accessToken") String token, @Query("id") String id);
 
     @GET("publications/likes")
-    Call<ResponseBody> getPublicationLikes(@Header("accessToken") String token, @Query("id") String id);
+    Call<List<User>> getPublicationLikes(@Header("accessToken") String token, @Query("id") String id);
 
     @GET("publications/friends")
-    Call<ResponseBody> getFriendsPublications(@Header("accessToken") String token, @Query("id") String id);
+    Call<List<Publication>> getFriendsPublications(@Header("accessToken") String token, @Query("id") String id);
 
     @GET("publications/comments")
-    Call<ResponseBody> getPublicationComments(@Header("accessToken") String token, @Query("id") String id);
+    Call<List<Comment>> getPublicationComments(@Header("accessToken") String token, @Query("id") String id);
 
     /*
      *
@@ -200,8 +201,8 @@ public interface MyRetrofit {
     Call<ResponseBody> friendRequestCancel(@Header("accessToken") String token, @Query("email") String email);
 
     @GET("friends/requests-received")
-    Call<ResponseBody> getFriendsRequestsReceived(@Header("accessToken") String token);
+    Call<List<FriendRequest>> getFriendsRequestsReceived(@Header("accessToken") String token);
 
     @GET("friends/requests-sent")
-    Call<ResponseBody> getFriendsRequestsSent(@Header("accessToken") String token);
+    Call<List<FriendRequest>> getFriendsRequestsSent(@Header("accessToken") String token);
 }

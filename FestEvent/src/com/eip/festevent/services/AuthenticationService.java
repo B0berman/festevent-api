@@ -3,12 +3,9 @@ package com.eip.festevent.services;
 import com.eip.festevent.utils.Utils;
 import com.eip.festevent.beans.User;
 import com.eip.festevent.dao.DAOManager;
-import io.jsonwebtoken.Jwts;
 import io.swagger.annotations.*;
 import org.mindrot.jbcrypt.BCrypt;
 
-import javax.crypto.KeyGenerator;
-import javax.inject.Inject;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -17,7 +14,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import java.io.IOException;
-import java.security.Key;
 import java.util.Base64;
 import java.util.StringTokenizer;
 
@@ -26,9 +22,6 @@ import java.util.StringTokenizer;
 @Produces(MediaType.APPLICATION_JSON)
 @Path("/signin")
 public class AuthenticationService {
-
-	@Inject
-	private KeyGenerator keyGenerator;
 
 	@POST
 	@ApiResponses(value = { 
@@ -61,14 +54,14 @@ public class AuthenticationService {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
 
-		User user = DAOManager.getFactory().getUserDAO().filter("authentication.login", login).filter("deleted", false).getFirst();
+		User user = DAOManager.getFactory().getUserDAO().filter("email", login).getFirst();
 		if (user == null) {
 			return Response.status(Status.BAD_REQUEST).entity(new Utils.Response("This user does not exist.")).build();
 		}
 		if (BCrypt.checkpw(password, user.getPassword())) {
 			user.signIn();
 			DAOManager.getFactory().getUserDAO().push(user);
-			return Response.status(Status.ACCEPTED).header("accessToken", user.getAccessToken()).build();
+			return Response.status(Status.ACCEPTED).header("accessToken", user.getAccessToken()).entity(user).build();
 		}
 
 		return Response.status(Status.BAD_REQUEST).build();

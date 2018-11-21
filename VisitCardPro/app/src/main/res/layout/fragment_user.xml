@@ -1,9 +1,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_user"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.v7.widget.CardView
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:elevation="12dp"
+        android:id="@+id/view2"
+        app:cardCornerRadius="40dp"
+        android:layout_centerHorizontal="true">
+        <ImageView
+            android:layout_height="80dp"
+            android:layout_width="match_parent"
+            android:src="@drawable/me"
+            android:id="@+id/imageView1"
+            android:scaleType="centerCrop"/>
+    </android.support.v7.widget.CardView>
     <Button
         android:id="@+id/signout_button"
         android:layout_width="match_parent"

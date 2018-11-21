@@ -1,6 +1,9 @@
 package com.visitcardpro.api.services;
 
 import com.visitcardpro.api.MyRetrofit;
+import com.visitcardpro.beans.FriendRequest;
+
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -19,18 +22,18 @@ public class FriendService extends Service {
     }
 
     public Call<ResponseBody> deleteFriend(String email) {
-        return retrofit.deleteEvent(token, email);
+        return retrofit.deleteFriend(token, email);
     }
 
     public Call<ResponseBody> friendRequestCancel(String email) {
         return retrofit.friendRequestCancel(token, email);
     }
 
-    public Call<ResponseBody> getFriendsRequestsReceived() {
+    public Call<List<FriendRequest>> getFriendsRequestsReceived() {
         return retrofit.getFriendsRequestsReceived(token);
     }
 
-    public Call<ResponseBody> getFriendsRequestsSent() {
+    public Call<List<FriendRequest>> getFriendsRequestsSent() {
         return retrofit.getFriendsRequestsSent(token);
     }
 }

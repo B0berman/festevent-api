@@ -2,6 +2,9 @@ package com.visitcardpro.api.services;
 
 import com.visitcardpro.api.MyRetrofit;
 import com.visitcardpro.beans.Group;
+import com.visitcardpro.beans.User;
+
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -13,7 +16,7 @@ public class GroupService extends Service {
     }
 
 
-    public Call<ResponseBody> createGroup(Group group) {
+    public Call<Group> createGroup(Group group) {
         return retrofit.createGroup(group, token);
     }
 
@@ -25,7 +28,7 @@ public class GroupService extends Service {
         return retrofit.addGroupMember(token, id, email);
     }
 
-    public Call<ResponseBody> getGroupMembers(String id) {
+    public Call<List<User>> getGroupMembers(String id) {
         return retrofit.getGroupMembers(token, id);
     }
 }

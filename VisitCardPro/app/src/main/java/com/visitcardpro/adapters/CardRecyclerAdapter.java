@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.visitcardpro.R;
-import com.visitcardpro.beans.Card;
 
 import java.util.ArrayList;
 
@@ -20,18 +19,18 @@ import java.util.ArrayList;
 public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapter.CardHolder> {
 
     private final Activity activity;
-    private ArrayList<Card> cards;
+    private ArrayList<String> cards;
     private boolean updateEnable = true;
 
-    public CardRecyclerAdapter(Activity context, ArrayList<Card> list) {
+    public CardRecyclerAdapter(Activity context, ArrayList<String> list) {
         activity = context;
         cards = list;
     }
 
-    public ArrayList<Card> getCurrentContent() {
+    public ArrayList<String> getCurrentContent() {
         return cards;
     }
-    public void updateContent(ArrayList<Card> cards) {
+    public void updateContent(ArrayList<String> cards) {
         if (updateEnable) {
             this.cards = cards;
             notifyDataSetChanged();
@@ -55,9 +54,9 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardRecyclerAdapte
 
     @Override
     public void onBindViewHolder(CardHolder holder, int position) {
-        Card card = cards.get(position);
+        String card = cards.get(position);
 
-        holder.title.setText(card.getTitle());
+        holder.title.setText(card);
     }
 
     @Override

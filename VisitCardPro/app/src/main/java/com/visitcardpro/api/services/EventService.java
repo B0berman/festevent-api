@@ -2,19 +2,15 @@ package com.visitcardpro.api.services;
 
 import com.visitcardpro.api.MyRetrofit;
 import com.visitcardpro.beans.Event;
+import com.visitcardpro.beans.Media;
+import com.visitcardpro.beans.Ticket;
+import com.visitcardpro.beans.User;
 
-import java.util.ArrayList;
-import java.util.Date;
 
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.DELETE;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
 
 public class EventService extends Service {
 
@@ -29,7 +25,7 @@ public class EventService extends Service {
         this.token = token;
     }
 
-    public Call<ResponseBody> createEvent(Event event) {
+    public Call<Event> createEvent(Event event) {
         return retrofit.createEvent(token, event);
     }
 
@@ -41,15 +37,15 @@ public class EventService extends Service {
         return retrofit.deleteEvent(token, id);
     }
 
-    public Call<ResponseBody> getEventParticipants(String id) {
+    public Call<List<User>> getEventParticipants(String id) {
         return retrofit.getEventParticipants(token, id);
     }
 
-    public Call<ResponseBody> getEventPictures(String id) {
+    public Call<List<Media>> getEventPictures(String id) {
         return retrofit.getEventPictures(token, id);
     }
 
-    public Call<ResponseBody> getEventTickets(String id) {
+    public Call<List<Ticket>> getEventTickets(String id) {
         return retrofit.getEventTickets(token, id);
     }
 

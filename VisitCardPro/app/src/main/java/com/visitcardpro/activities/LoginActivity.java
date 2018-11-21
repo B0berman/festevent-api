@@ -21,11 +21,8 @@ import com.visitcardpro.R;
 import com.visitcardpro.api.Client;
 import com.visitcardpro.api.CustomCallback;
 import com.visitcardpro.beans.User;
-import com.visitcardpro.database.dao.AuthenticationDAO;
 import com.visitcardpro.database.dao.UserDAO;
 import com.visitcardpro.utils.JobHelper;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 
@@ -113,43 +110,24 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             showProgress(true);
-            Call<ResponseBody> call = Client.getInstance().getAuthenticationService().signIn(JobHelper.generateAuthorization(email + ":" + password));
-            call.enqueue(new CustomCallback<ResponseBody>(LoginActivity.this, 202) {
+            Call<User> call = Client.getInstance().getAuthenticationService().signIn(JobHelper.generateAuthorization(email + ":" + password));
+            call.enqueue(new CustomCallback<User>(LoginActivity.this, 202) {
                 @Override
-                public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                public void onResponse(Call<User> call, retrofit2.Response<User> response) {
                     super.onResponse(call, response);
                     String token = response.headers().get("accessToken");
                     User user = response.body();
-                    setUser(auth);
+                    UserDAO uDao = new UserDAO(LoginActivity.this);
+                    uDao.open();
+
+                    uDao.add(user);
+                    uDao.close();
+
+                    Client.getInstance().setUser(user);
+                    onConnected();
                 }
             });
         }
-    }
-
-    private void setUser(final Authentication auth) {
-        Call<User> call = Client.getInstance().getUserService().getUser(auth.getAccessToken());
-        call.enqueue(new CustomCallback<User>(LoginActivity.this) {
-            @Override
-            public void onResponse(Call<User> call, retrofit2.Response<User> response) {
-                super.onResponse(call, response);
-                User user = response.body();
-                user.setAuthentication(auth);
-                UserDAO uDao = new UserDAO(LoginActivity.this);
-                AuthenticationDAO aDao = new AuthenticationDAO(LoginActivity.this);
-
-                aDao.open();
-                uDao.open();
-
-                aDao.add(auth);
-                uDao.add(user);
-
-                aDao.close();
-                uDao.close();
-
-                Client.getInstance().setUser(user);
-                onConnected();
-            }
-        });
     }
 
     private void onConnected() {
@@ -161,20 +139,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void checkConnected() {
-        AuthenticationDAO authenticationDAO = new AuthenticationDAO(LoginActivity.this);
-        authenticationDAO.open();
-        Authentication auth = authenticationDAO.get();
-        if (auth != null) {
-            authenticationDAO.close();
-            UserDAO uDao = new UserDAO(LoginActivity.this);
-            uDao.open();
-            User user = uDao.get();
-            if (user != null) {
-                uDao.close();
-                user.setAuthentication(auth);
-                Client.getInstance().setUser(user);
-                onConnected();
-            }
+        UserDAO uDao = new UserDAO(LoginActivity.this);
+        uDao.open();
+        User user = uDao.get();
+        if (user != null) {
+            uDao.close();
+            Client.getInstance().setUser(user);
+            onConnected();
         }
     }
 

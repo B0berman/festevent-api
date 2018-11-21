@@ -1,6 +1,7 @@
 package com.visitcardpro.api.services;
 
 import com.visitcardpro.api.MyRetrofit;
+import com.visitcardpro.beans.User;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -12,7 +13,7 @@ public class AuthenticationService extends Service {
 
     }
 
-    public Call<ResponseBody> signIn(String key)  {
+    public Call<User> signIn(String key)  {
         return retrofit.signIn(key);
     }
 

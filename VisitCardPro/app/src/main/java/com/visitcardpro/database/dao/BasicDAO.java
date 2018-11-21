@@ -8,7 +8,7 @@ import com.visitcardpro.database.DatabaseHandler;
 public abstract class BasicDAO {
 
     protected final static int VERSION = 1;
-    protected final static String NOM = "visitcardpro.db";
+    protected final static String NOM = "festevent.db";
     protected SQLiteDatabase mDb = null;
     protected DatabaseHandler mHandler = null;
 

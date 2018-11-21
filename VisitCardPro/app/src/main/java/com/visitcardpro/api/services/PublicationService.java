@@ -1,7 +1,12 @@
 package com.visitcardpro.api.services;
 
 import com.visitcardpro.api.MyRetrofit;
+import com.visitcardpro.beans.Comment;
+import com.visitcardpro.beans.Media;
 import com.visitcardpro.beans.Publication;
+import com.visitcardpro.beans.User;
+
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -16,11 +21,11 @@ public class PublicationService extends Service {
         this.token = token;
     }
 
-    public Call<ResponseBody> createPublicaton(Publication publication) {
+    public Call<Publication> createPublicaton(Publication publication) {
         return retrofit.createPublicaton(token, publication);
     }
 
-    public Call<ResponseBody> createEventPublicaton(Publication publication) {
+    public Call<Publication> createEventPublicaton(Publication publication) {
         return retrofit.createEventPublicaton(token, publication);
     }
 
@@ -40,19 +45,19 @@ public class PublicationService extends Service {
         return retrofit.unlikePublication(token, id);
     }
 
-    public Call<ResponseBody> getPublicationPictures(String id) {
+    public Call<List<Media>> getPublicationPictures(String id) {
         return retrofit.getPublicationPictures(token, id);
     }
 
-    public Call<ResponseBody> getPublicationLikes(String id) {
+    public Call<List<User>> getPublicationLikes(String id) {
         return retrofit.getPublicationLikes(token, id);
     }
 
-    public Call<ResponseBody> getFriendsPublications(String id) {
+    public Call<List<Publication>> getFriendsPublications(String id) {
         return retrofit.getFriendsPublications(token, id);
     }
 
-    public Call<ResponseBody> getPublicationComments(String id) {
+    public Call<List<Comment>> getPublicationComments(String id) {
         return retrofit.getPublicationComments(token, id);
     }
 }

@@ -4,8 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.visitcardpro.fragments.CardsFragment;
-import com.visitcardpro.fragments.ContactsFragment;
 import com.visitcardpro.fragments.UserFragment;
 
 import java.util.ArrayList;
@@ -17,8 +15,8 @@ import java.util.ArrayList;
 public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
     ArrayList<Fragment> fragments = new ArrayList<Fragment>() {{
-        add(new ContactsFragment());
-        add(new CardsFragment());
+        add(new UserFragment());
+        add(new UserFragment());
         add(new UserFragment());
     }};
 
