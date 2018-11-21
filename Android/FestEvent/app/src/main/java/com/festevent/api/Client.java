@@ -1,5 +1,6 @@
 package com.festevent.api;
 
+import com.festevent.activities.LoginActivity;
 import com.festevent.api.services.AuthenticationService;
 import com.festevent.api.services.EventService;
 import com.festevent.api.services.FriendService;
@@ -7,6 +8,12 @@ import com.festevent.api.services.GroupService;
 import com.festevent.api.services.PublicationService;
 import com.festevent.api.services.UserService;
 import com.festevent.beans.User;
+import com.festevent.database.dao.UserDAO;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -40,6 +47,18 @@ public class Client {
         publicationService = new PublicationService(retrofit);
         authenticationService = new AuthenticationService(retrofit);
         friendService = new FriendService(retrofit);
+    }
+
+    public void signout(Context context, Activity activity) {
+        UserDAO userDAO = new UserDAO(context);
+        userDAO.open();
+        userDAO.delete();
+        userDAO.close();
+        Intent launchNextActivity = new Intent(activity, LoginActivity.class);
+        launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        activity.startActivity(launchNextActivity);
     }
 
     public FriendService getFriendService() {
