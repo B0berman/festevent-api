@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -48,10 +49,12 @@
             android:layout_weight="50"
             android:textStyle="bold"/>
     </LinearLayout>
+
     <Button
-        android:drawableTop="@drawable/icn_account"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="center_vertical"
-        android:background="@color/zxing_transparent"/>
+        android:background="@color/zxing_transparent"
+        android:drawableTop="@drawable/icn_account"
+        tools:drawableTop="@android:drawable/ic_input_add" />
 </LinearLayout>

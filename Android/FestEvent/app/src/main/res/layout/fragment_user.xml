@@ -39,42 +39,48 @@
                 style="?android:attr/listSeparatorTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="15dp"
                 android:text="robert robert"
                 android:textStyle="bold" />
-
-            <LinearLayout
+            <android.support.v7.widget.CardView
+                android:id="@+id/view5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:layout_marginHorizontal="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/friends_link"
-                    android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:elevation="12dp"
+                app:cardCornerRadius="10dp">
+                <LinearLayout
+                    android:padding="5dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="33"
-                    android:gravity="center"
-                    android:text="1
-amis" />
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="33"
-                    android:gravity="center"
-                    android:text="0
-Evénements" />
+                    <TextView
+                        android:id="@+id/friends_link"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="33"
+                        android:gravity="center"
+                        android:text="1\namis" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="33"
-                    android:gravity="center"
-                    android:text="0
-Souvenirs" />
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="33"
+                        android:gravity="center"
+                        android:text="0\nEvénements" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="33"
+                        android:gravity="center"
+                        android:text="0\nSouvenirs" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
         </LinearLayout>
     </LinearLayout>
     <TextView
