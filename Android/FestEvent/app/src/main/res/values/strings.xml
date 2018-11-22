@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">FestEvent</string>
     <string name="title_home">Home</string>
-    <string name="title_cards">Cards</string>
+    <string name="title_events">Events</string>
     <string name="title_profil">Profil</string>
+    <string name="title_nav_page">All</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
@@ -21,4 +22,11 @@
     <string name="prompt_password_confirm">Confirm password</string>
     <string name="error_no_match_password">Passwords don\'t match</string>
     <string name="photos_text">Photos</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 </resources>

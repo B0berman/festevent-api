@@ -39,23 +39,22 @@
 
             <TextView
                 style="?android:attr/listSeparatorTextViewStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="robert robert"
                 android:textStyle="bold"
                 android:id="@+id/publisherNameView"/>
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:textStyle="bold"
                 android:id="@+id/publicationContentView" />
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/publicationImageView"
-                android:src="@drawable/usr_img"/>
         </LinearLayout>
     </LinearLayout>
-
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/publicationImageView"
+        android:src="@drawable/usr_img"/>
 </LinearLayout>

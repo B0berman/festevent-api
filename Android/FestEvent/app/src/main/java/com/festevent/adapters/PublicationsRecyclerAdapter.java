@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.festevent.R;
@@ -85,9 +86,11 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<Publicatio
         public ImageView imagePublisher;
         public TextView  namePublisher;
         public TextView  publicationContent;
+        private boolean isImageFitToScreen = false;
 
         public PublicationHolder(View itemView) {
             super(itemView);
+
             imagePublication = itemView.findViewById(R.id.publicationImageView);
             imagePublisher = itemView.findViewById(R.id.publisher_image_view);
             publicationContent = itemView.findViewById(R.id.publicationContentView);

@@ -22,11 +22,14 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_actuality:
                     viewPager.setCurrentItem(0);
                     return true;
-                case R.id.navigation_perso_cards:
+                case R.id.navigation_event:
                     viewPager.setCurrentItem(1);
                     return true;
                 case R.id.navigation_profil:
                     viewPager.setCurrentItem(2);
+                    return true;
+                case R.id.navigation_all:
+                    viewPager.setCurrentItem(3);
                     return true;
             }
             return false;
