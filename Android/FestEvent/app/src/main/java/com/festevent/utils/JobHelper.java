@@ -127,7 +127,7 @@ public class JobHelper {
     }
 
     public static String formatDate(Date date) {
-        return (new SimpleDateFormat("dd-MM-yyyy").format(date));
+        return (new SimpleDateFormat("dd-MMM").format(date));
     }
 
     public static Date getDateFromDatePicker(DatePicker datePicker){

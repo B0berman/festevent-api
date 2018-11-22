@@ -9,7 +9,7 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="false"
+        android:clickable="true"
         android:orientation="vertical"
         android:id="@+id/friendsRecyclerView"
         android:background="@color/colorBackground"/>

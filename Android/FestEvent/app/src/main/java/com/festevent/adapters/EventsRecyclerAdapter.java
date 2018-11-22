@@ -1,6 +1,7 @@
 package com.festevent.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -12,8 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.festevent.R;
+import com.festevent.activities.EventActivity;
+import com.festevent.activities.FriendsActivity;
+import com.festevent.beans.Event;
 import com.festevent.beans.Media;
 import com.festevent.beans.Publication;
+import com.festevent.utils.JobHelper;
 
 import java.util.List;
 
@@ -21,48 +26,49 @@ import java.util.List;
  * Created by walbecq on 22/04/18.
  */
 
-public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<PublicationsRecyclerAdapter.PublicationHolder> {
+public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAdapter.EventHolder> {
 
     private final Activity activity;
-    private List<Publication> publications;
+    private List<Event> events;
     private boolean updateEnable = true;
 
-    public PublicationsRecyclerAdapter(Activity context, List<Publication> list) {
+    public EventsRecyclerAdapter(Activity context, List<Event> list) {
         activity = context;
-        publications = list;
+        events = list;
     }
 
-    public List<Publication> getCurrentContent() {
-        return publications;
+    public List<Event> getCurrentContent() {
+        return events;
     }
 
-    public void updateContent(List<Publication> publications) {
+    public void updateContent(List<Event> publications) {
         if (updateEnable) {
-            this.publications = publications;
+            this.events = publications;
             notifyDataSetChanged();
         }
     }
 
     @Override
-    public PublicationHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EventHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View itemView;
-        itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.publication_item, parent, false);
+        itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_item, parent, false);
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int pos = (Integer) ((RecyclerView) view.getParent()).getChildLayoutPosition(view);
-
+                Intent intent = new Intent(activity, EventActivity.class);
+                activity.startActivity(intent);
                 // start activity
             }
         });
-        return new PublicationHolder(itemView);
+        return new EventHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(PublicationHolder holder, int position) {
-        Publication publication = publications.get(position);
-        holder.namePublisher.setText(publication.getPublisher().getFirstName() + " " + publication.getPublisher().getLastName());
-        holder.publicationContent.setText(publication.getContent());
+    public void onBindViewHolder(EventHolder holder, int position) {
+        Event event = events.get(position);
+        holder.eventTitle.setText(event.getTitle());
+        holder.eventDate.setText(JobHelper.formatDate(event.getStart()));
 //        holder.imagePublisher.setImageBitmap(BitmapFactory.decodeByteArray(publication.getPublisher().getProfilPicture().getBytes(), 0,
 //                publication.getPublisher().getProfilPicture().getBytes().length));
 //        holder.imagePublication.setImageBitmap(BitmapFactory.decodeByteArray(publication.getMedias().get(0).getBytes(), 0, publication.getMedias().get(0).getBytes().length));
@@ -70,7 +76,7 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<Publicatio
 
     @Override
     public int getItemCount() {
-        return publications.size();
+        return events.size();
     }
 
     public boolean isUpdateEnable() {
@@ -81,19 +87,19 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<Publicatio
         this.updateEnable = updateEnable;
     }
 
-    public class PublicationHolder extends ViewHolder {
-        public ImageView imagePublication;
-        public ImageView imagePublisher;
-        public TextView  namePublisher;
-        public TextView  publicationContent;
+    public class EventHolder extends ViewHolder {
+        public ImageView eventImage;
+        public TextView  eventDetails;
+        public TextView  eventDate;
+        public TextView  eventTitle;
 
-        public PublicationHolder(View itemView) {
+        public EventHolder(View itemView) {
             super(itemView);
 
-            imagePublication = itemView.findViewById(R.id.publicationImageView);
-            imagePublisher = itemView.findViewById(R.id.publisher_image_view);
-            publicationContent = itemView.findViewById(R.id.publicationContentView);
-            namePublisher = itemView.findViewById(R.id.publisherNameView);
+            eventDate = itemView.findViewById(R.id.eventItemDateTextView);
+            eventDetails = itemView.findViewById(R.id.eventItemDetailView);
+            eventImage = itemView.findViewById(R.id.eventItemImageView);
+            eventTitle = itemView.findViewById(R.id.eventItemNameView);
         }
     }
 }
