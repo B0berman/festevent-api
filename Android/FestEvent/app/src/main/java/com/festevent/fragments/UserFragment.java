@@ -1,5 +1,6 @@
 package com.festevent.fragments;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -13,9 +14,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.beust.jcommander.internal.Lists;
 import com.festevent.R;
+import com.festevent.activities.FriendsActivity;
+import com.festevent.activities.LoginActivity;
+import com.festevent.activities.RegisterActivity;
 import com.festevent.adapters.PicturesRecyclerAdapter;
 import com.festevent.adapters.PublicationsRecyclerAdapter;
 import com.festevent.api.Client;
@@ -33,6 +38,7 @@ public class UserFragment extends Fragment {
 
         final RecyclerView recyclerView = view.findViewById(R.id.picturesRecyclerView);
         final RecyclerView precyclerView = view.findViewById(R.id.profilPublicationsRecyclerView);
+        final TextView      friendsView = view.findViewById(R.id.friends_link);
 
         List<Media> medias = Lists.newArrayList();
         Media media = new Media();
@@ -71,6 +77,14 @@ public class UserFragment extends Fragment {
         precyclerView.setItemAnimator(new DefaultItemAnimator());
         precyclerView.setAdapter(pAdapter);
         ((PublicationsRecyclerAdapter) precyclerView.getAdapter()).updateContent(publications);
+
+        friendsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), FriendsActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 

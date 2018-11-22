@@ -22,6 +22,7 @@ public class User implements Serializable {
 	protected String  phone;
 	protected Date birthdate;
 	protected Media profilPicture;
+	protected int	friendsNumber;
 
 	protected List<FriendRequest> friendsRequestsSent = Lists.newArrayList();
 	protected List<FriendRequest> friendsRequestsReceived = Lists.newArrayList();
@@ -32,6 +33,14 @@ public class User implements Serializable {
 
 	protected double  locationLongitude;
 	protected double  locationLatitude;
+
+	public int getFriendsNumber() {
+		return friendsNumber;
+	}
+
+	public void setFriendsNumber(int friendsNumber) {
+		this.friendsNumber = friendsNumber;
+	}
 
 	public String getPassword() {
 		return password;
