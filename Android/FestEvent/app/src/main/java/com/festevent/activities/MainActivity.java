@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_contacts:
+                case R.id.navigation_actuality:
                     viewPager.setCurrentItem(0);
                     return true;
                 case R.id.navigation_perso_cards:

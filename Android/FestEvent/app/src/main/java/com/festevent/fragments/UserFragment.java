@@ -30,6 +30,7 @@ public class UserFragment extends Fragment {
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         final RecyclerView recyclerView = view.findViewById(R.id.picturesRecyclerView);
         final RecyclerView precyclerView = view.findViewById(R.id.profilPublicationsRecyclerView);
 
@@ -70,6 +71,7 @@ public class UserFragment extends Fragment {
         precyclerView.setItemAnimator(new DefaultItemAnimator());
         precyclerView.setAdapter(pAdapter);
         ((PublicationsRecyclerAdapter) precyclerView.getAdapter()).updateContent(publications);
+
     }
 
     @Override
