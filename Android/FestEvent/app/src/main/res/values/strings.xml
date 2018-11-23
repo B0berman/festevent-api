@@ -4,6 +4,7 @@
     <string name="title_events">Events</string>
     <string name="title_profil">Profil</string>
     <string name="title_nav_page">All</string>
+    <string name="search_title">Search</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->

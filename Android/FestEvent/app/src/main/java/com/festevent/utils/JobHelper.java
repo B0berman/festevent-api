@@ -126,8 +126,8 @@ public class JobHelper {
         return Base64.encodeToString(baos.toByteArray(), Base64.NO_WRAP | Base64.URL_SAFE);
     }
 
-    public static String formatDate(Date date) {
-        return (new SimpleDateFormat("dd-MMM").format(date));
+    public static String formatDate(Date date, String format) {
+        return (new SimpleDateFormat(format).format(date));
     }
 
     public static Date getDateFromDatePicker(DatePicker datePicker){

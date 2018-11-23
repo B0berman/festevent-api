@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/me" />
+                android:src="@drawable/icn_account" />
         </android.support.v7.widget.CardView>
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"

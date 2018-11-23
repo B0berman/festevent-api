@@ -19,8 +19,6 @@ import android.widget.TextView;
 import com.beust.jcommander.internal.Lists;
 import com.festevent.R;
 import com.festevent.activities.FriendsActivity;
-import com.festevent.activities.LoginActivity;
-import com.festevent.activities.RegisterActivity;
 import com.festevent.adapters.PicturesRecyclerAdapter;
 import com.festevent.adapters.PublicationsRecyclerAdapter;
 import com.festevent.api.Client;
