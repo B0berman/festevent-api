@@ -7,9 +7,16 @@ package com.festevent.activities;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -19,13 +26,20 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.festevent.R;
 import com.festevent.api.Client;
 import com.festevent.api.CustomCallback;
+import com.festevent.beans.Media;
 import com.festevent.beans.User;
 import com.festevent.utils.JobHelper;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -41,6 +55,10 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mPasswordConfirmView;
     private View mProgressView;
     private View mLoginFormView;
+    private String mCurrentPhotoPath;
+    private Activity context = this;
+    private Media       profil_pic;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +92,65 @@ public class RegisterActivity extends AppCompatActivity {
 
         mLoginFormView = findViewById(R.id.register_form);
         mProgressView = findViewById(R.id.register_progress);
+
+        final ImageView profilImage = findViewById(R.id.register_profil_image_view);
+        profilImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(view.getContext());
+                alert.setTitle(R.string.add_profil_pic);
+                alert.setMessage(R.string.src_profil_pic);
+
+                alert.setPositiveButton(R.string.picture_string, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String fileUri = "";
+                        File image = null;
+                        try {
+                            image = JobHelper.createImageFile(context);
+                            mCurrentPhotoPath = image.getAbsolutePath();
+                            fileUri = FileProvider.getUriForFile(context, "com.festevent", image).toString();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                        startActivityForResult(intent, 1);
+                    }});
+
+                alert.setNegativeButton(R.string.cancel_string , new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                    }
+                });
+
+                alert.show();
+            }
+        });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        if (resultCode == RESULT_OK) {
+
+            switch (requestCode) {
+                case 1:
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] byteArray = stream.toByteArray();
+                    profil_pic = new Media();
+                    profil_pic.setType(Media.TYPE.IMAGE_PNG);
+                    profil_pic.setBytes(byteArray);
+                    break;
+                default:
+                    Toast.makeText(this, "Something went wrong...", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+
+        }
+    }
     private void attemptLogin() {
 
         // Reset errors.
@@ -138,23 +213,29 @@ public class RegisterActivity extends AppCompatActivity {
             user.setFirstName(fname);
             user.setLastName(lname);
             user.setPassword(password);
+            if (profil_pic != null) {
+                user.setProfilPicture(profil_pic);
+            }
             Call<ResponseBody> call = Client.getInstance().getUserService().signUp(user);
             call.enqueue(new CustomCallback<ResponseBody>(RegisterActivity.this, 201) {
                 @Override
                 public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                    builder.setMessage(R.string.email_confirm_sent);
-                    builder.setCancelable(true);
-                    builder.setPositiveButton(
-                            "Ok",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                    finish();
-                                }
-                            });
-                    AlertDialog alert = builder.create();
-                    alert.show();
+                    super.onResponse(call, response);
+                    if (response.code() == 201) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                        builder.setMessage(R.string.email_confirm_sent);
+                        builder.setCancelable(true);
+                        builder.setPositiveButton(
+                                "Ok",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                        finish();
+                                    }
+                                });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
                 }
             });
         }

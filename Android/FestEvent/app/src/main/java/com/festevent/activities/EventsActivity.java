@@ -1,53 +1,35 @@
-package com.festevent.fragments;
+package com.festevent.activities;
 
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.view.LayoutInflater;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.beust.jcommander.internal.Lists;
 import com.festevent.R;
 import com.festevent.adapters.EventsRecyclerAdapter;
-import com.festevent.adapters.PublicationsRecyclerAdapter;
-import com.festevent.api.Client;
 import com.festevent.beans.Event;
-import com.festevent.beans.Publication;
 
 import java.util.Date;
 import java.util.List;
 
-public class EventsFragment extends Fragment implements SearchView.OnQueryTextListener {
-
+public class EventsActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private SearchView searchView = null;
 
-    public EventsFragment() {
-        // Required empty public constructor
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+        setContentView(R.layout.fragment_events);
 
-    @Override
-    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setHasOptionsMenu(true);
 
-        final RecyclerView precyclerView = view.findViewById(R.id.eventsRecyclerView);
+        final RecyclerView precyclerView = findViewById(R.id.eventsRecyclerView);
 
         List<Event> events = Lists.newArrayList();
         Event event = new Event();
@@ -59,20 +41,12 @@ public class EventsFragment extends Fragment implements SearchView.OnQueryTextLi
         events.add(event);
         events.add(event);
 
-        EventsRecyclerAdapter pAdapter = new EventsRecyclerAdapter(getActivity(), events);
-        RecyclerView.LayoutManager pLayoutManager = new LinearLayoutManager(getActivity());
+        EventsRecyclerAdapter pAdapter = new EventsRecyclerAdapter(this, events);
+        RecyclerView.LayoutManager pLayoutManager = new LinearLayoutManager(this);
         precyclerView.setLayoutManager(pLayoutManager);
         precyclerView.setItemAnimator(new DefaultItemAnimator());
         precyclerView.setAdapter(pAdapter);
         ((EventsRecyclerAdapter) precyclerView.getAdapter()).updateContent(events);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_events, container, false);
     }
 
     @Override
@@ -86,19 +60,19 @@ public class EventsFragment extends Fragment implements SearchView.OnQueryTextLi
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.research, menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.research, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager)this.getSystemService(Context.SEARCH_SERVICE);
 
         if (searchItem != null) {
             searchView = (SearchView) searchItem.getActionView();
         }
         if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
             searchView.setOnQueryTextListener(this);
         }
-        super.onCreateOptionsMenu(menu, inflater);
+        return true;
     }
 
     @Override
@@ -112,5 +86,4 @@ public class EventsFragment extends Fragment implements SearchView.OnQueryTextLi
         }
         searchView.setOnQueryTextListener(this);
         return super.onOptionsItemSelected(item);
-    }
-}
+    }}

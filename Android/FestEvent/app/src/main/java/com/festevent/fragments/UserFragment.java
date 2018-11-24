@@ -18,7 +18,9 @@ import android.widget.TextView;
 
 import com.beust.jcommander.internal.Lists;
 import com.festevent.R;
+import com.festevent.activities.EventsActivity;
 import com.festevent.activities.FriendsActivity;
+import com.festevent.activities.GroupsActivity;
 import com.festevent.adapters.PicturesRecyclerAdapter;
 import com.festevent.adapters.PublicationsRecyclerAdapter;
 import com.festevent.api.Client;
@@ -37,6 +39,8 @@ public class UserFragment extends Fragment {
         final RecyclerView recyclerView = view.findViewById(R.id.picturesRecyclerView);
         final RecyclerView precyclerView = view.findViewById(R.id.profilPublicationsRecyclerView);
         final TextView      friendsView = view.findViewById(R.id.friends_link);
+        final TextView      eventsView = view.findViewById(R.id.events_link);
+        final TextView      groupsView = view.findViewById(R.id.groups_link);
 
         List<Media> medias = Lists.newArrayList();
         Media media = new Media();
@@ -83,7 +87,20 @@ public class UserFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
+        eventsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), EventsActivity.class);
+                startActivity(intent);
+            }
+        });
+        groupsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), GroupsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
