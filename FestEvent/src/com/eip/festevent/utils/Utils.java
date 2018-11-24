@@ -29,7 +29,7 @@ public class Utils {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
-			ImageIO.write(mapmodifiable, "png", baos);
+			ImageIO.write(mapmodifiable, "jpg", baos);
 		} catch (IOException e) {
 			return null;
 		}
@@ -46,6 +46,7 @@ public class Utils {
 			outputStream.close();
 		}
 		catch (IOException ioe) {
+			System.out.print(ioe.getCause());
 			ioe.printStackTrace();
 			return false;
 		}

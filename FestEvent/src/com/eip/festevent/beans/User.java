@@ -39,7 +39,7 @@ public class User {
 
 	protected String lastName;
 	protected String firstName;
-
+	protected int		friendsNumber = 0;
 	protected String  phone;
 	protected Date birthdate;
 	protected Media profilPicture;
@@ -60,6 +60,10 @@ public class User {
 	protected double  locationLongitude;
 	@JsonIgnore
 	protected double  locationLatitude;
+
+	public int getFriendsNumber() {
+		return friendsNumber;
+	}
 
 	public void addPicture(Media media) {
 		pictures.add(media);
@@ -139,10 +143,12 @@ public class User {
 
 	public void addFriend(String email) {
 		friends.add(email);
+		friendsNumber++;
 	}
 
 	public void removeFriend(String email) {
 		friends.remove(email);
+		friendsNumber--;
 	}
 
 	public List<String> getFriends() {

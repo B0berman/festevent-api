@@ -50,9 +50,9 @@ public class AuthenticationService {
 			password = tokenizer.nextToken();
 		}
 
-		if (!Utils.checkPassword(password)) {
+/*		if (!Utils.checkPassword(password)) {
 			return Response.status(Status.BAD_REQUEST).build();
-		}
+		}*/
 
 		User user = DAOManager.getFactory().getUserDAO().filter("email", login).getFirst();
 		if (user == null) {
@@ -64,7 +64,7 @@ public class AuthenticationService {
 			return Response.status(Status.ACCEPTED).header("accessToken", user.getAccessToken()).entity(user).build();
 		}
 
-		return Response.status(Status.BAD_REQUEST).build();
+		return Response.status(Status.BAD_REQUEST).entity(user).build();
 	}
 
 /*	private String issueToken(String login) {
