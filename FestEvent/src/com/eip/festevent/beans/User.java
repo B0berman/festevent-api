@@ -54,7 +54,7 @@ public class User {
 
 	@JsonIgnore
 	@Embedded
-	protected List<Media> pictures;
+	protected List<Media> pictures = Lists.newArrayList();;
 
 	@JsonIgnore
 	protected double  locationLongitude;
@@ -123,6 +123,7 @@ public class User {
 
 	public void setProfilPicture(Media profilPicture) {
 		this.profilPicture = profilPicture;
+		pictures.add(profilPicture);
 	}
 
 	public double getLocationLongitude() {

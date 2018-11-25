@@ -64,7 +64,7 @@ public class UserProfilService {
     public Response getUserPublications(@ApiParam(value = "Token of sender", required = true) @HeaderParam("token") String token) {
         User user = DAOManager.getFactory().getUserDAO().filter("accessToken", token).getFirst();
 
-        List<Publication> publications = DAOManager.getFactory().getPublicationDAO().filter("publisher", user).getAll();
+        List<Publication> publications = DAOManager.getFactory().getPublicationDAO().filter("publisher.email", user.getEmail()).getAll();
         return Response.ok(publications).build();
     }
 

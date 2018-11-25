@@ -119,15 +119,15 @@ public class PublicationService {
             return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Content null or empty.")).build();
         if (entity.getMedias() != null) {
             for (Media media : entity.getMedias()) {
-                if (Utils.writeToFileServer(media.getBytes(), entity.getId()))
+                if (!Utils.writeToFileServer(media.getBytes(), media.getId()))
                     return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Image upload failed.")).build();
-                media.setUrl("92.222.82.30:8080/eip-dev/resources/image" + entity.getId());
+                media.setUrl("92.222.82.30:8080/eip/festevent-resources/image/" + entity.getId());
                 medias.add(media);
             }
         }
         entity.setMedias(medias);
         DAOManager.getFactory().getPublicationDAO().push(entity);
-        return Response.status(Response.Status.CREATED).header("publicationId", entity.getId()).build();
+        return Response.status(Response.Status.CREATED).entity(entity).build();
     }
 
     @POST

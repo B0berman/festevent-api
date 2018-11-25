@@ -18,7 +18,7 @@ public class Media {
 
 	protected TYPE			type;
 	protected String		url;
-	protected String		id = UUID.randomUUID().toString();
+	protected String		id;
 
 	@JsonIgnore
 	protected byte[]		bytes;
