@@ -39,12 +39,13 @@ public class UserFragment extends Fragment {
 
     private List<Publication> publications = Lists.newArrayList();
     private List<Media> medias = Lists.newArrayList();
+    private RecyclerView precyclerView;
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final RecyclerView recyclerView = view.findViewById(R.id.picturesRecyclerView);
-        final RecyclerView precyclerView = view.findViewById(R.id.profilPublicationsRecyclerView);
+        precyclerView = view.findViewById(R.id.profilPublicationsRecyclerView);
         final TextView      friendsView = view.findViewById(R.id.friends_link);
         final TextView      eventsView = view.findViewById(R.id.events_link);
         final TextView      groupsView = view.findViewById(R.id.groups_link);
@@ -58,14 +59,13 @@ public class UserFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-        ((PicturesRecyclerAdapter) recyclerView.getAdapter()).updateContent(medias);
+        recyclerView.setVisibility(View.GONE);
 
         PublicationsRecyclerAdapter pAdapter = new PublicationsRecyclerAdapter(getActivity(), publications);
         RecyclerView.LayoutManager pLayoutManager = new LinearLayoutManager(getActivity());
         precyclerView.setLayoutManager(pLayoutManager);
         precyclerView.setItemAnimator(new DefaultItemAnimator());
         precyclerView.setAdapter(pAdapter);
-        ((PublicationsRecyclerAdapter) precyclerView.getAdapter()).updateContent(publications);
 
         Call<List<Media>> mediasCall = Client.getInstance().getUserService().getUserPictures();
         mediasCall.enqueue(new CustomCallback<List<Media>>(getActivity(), 200) {
@@ -73,17 +73,15 @@ public class UserFragment extends Fragment {
             public void onResponse(Call<List<Media>> call, retrofit2.Response<List<Media>> response) {
                 super.onResponse(call, response);
                 if (response.code() != 200 || response.body() == null || response.body().isEmpty()) {
-/*                    Media media = new Media();
-                    Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.usr_img, null);
-                    Bitmap bitmap = ((BitmapDrawable)d).getBitmap();
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                    media.setBytes(stream.toByteArray());*/
+
                 } else {
                     medias = response.body();
                 }
-                if (recyclerView.getAdapter() != null)
+                if (recyclerView.getAdapter() != null && medias.size() > 0) {
+                    if (recyclerView.getVisibility() == View.GONE)
+                        recyclerView.setVisibility(View.VISIBLE);
                     ((PicturesRecyclerAdapter) recyclerView.getAdapter()).updateContent(medias);
+                }
             }
         });
 
