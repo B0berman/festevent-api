@@ -25,7 +25,11 @@
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
         <activity
+            android:windowSoftInputMode="adjustPan"
             android:name=".activities.MainActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".activities.PublicateActivity"
             android:label="@string/app_name" />
         <activity
             android:name=".activities.EventActivity"
@@ -40,9 +44,15 @@
             android:name=".activities.FriendsActivity"
             android:label="@string/app_name" />
         <activity
+            android:windowSoftInputMode="adjustPan"
             android:name=".activities.RegisterActivity"
             android:label="@string/app_name" />
-        <activity android:name=".activities.LoginActivity">
+        <activity
+            android:windowSoftInputMode="adjustPan"
+            android:name=".activities.ProfileModifyActivity"
+            android:label="@string/app_name" />
+        <activity android:name=".activities.LoginActivity"
+            android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,9 +1,13 @@
 package com.festevent.activities;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,7 +33,7 @@ import retrofit2.Call;
 public class LoginActivity extends AppCompatActivity {
 
 
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
@@ -39,7 +43,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE }, 0);
+        }
         checkConnected();
         mEmailView = findViewById(R.id.email);
 
@@ -115,16 +122,21 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<User> call, retrofit2.Response<User> response) {
                     super.onResponse(call, response);
-                    String token = response.headers().get("accessToken");
-                    User user = response.body();
-                    UserDAO uDao = new UserDAO(LoginActivity.this);
-                    uDao.open();
+                    if (response.code() == 202) {
+                        String token = response.headers().get("accessToken");
+                        User user = response.body();
+                        user.setAccessToken(token);
+                        UserDAO uDao = new UserDAO(LoginActivity.this);
+                        uDao.open();
 
-                    uDao.add(user);
-                    uDao.close();
+                        uDao.add(user);
+                        uDao.close();
 
-                    Client.getInstance().setUser(user);
-                    onConnected();
+                        Client.getInstance().setUser(user);
+                        onConnected();
+                    } else {
+                        showProgress(false);
+                    }
                 }
             });
         }

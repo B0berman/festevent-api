@@ -11,7 +11,6 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,83 +19,75 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.beust.jcommander.internal.Lists;
 import com.festevent.R;
+import com.festevent.adapters.PicturesRecyclerAdapter;
 import com.festevent.api.Client;
 import com.festevent.api.CustomCallback;
 import com.festevent.beans.Media;
-import com.festevent.beans.User;
+import com.festevent.beans.Publication;
 import com.festevent.utils.JobHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 
-public class RegisterActivity extends AppCompatActivity {
+public class PublicateActivity extends AppCompatActivity {
 
 
-    private EditText mEmailView;
-    private EditText mLNameView;
-    private EditText mFNameView;
-    private EditText mPasswordView;
-    private EditText mPasswordConfirmView;
+    private EditText publicateContentView;
     private View mProgressView;
     private View mLoginFormView;
+    private ImageButton publicateButton;
+    private ImageButton pictureButton;
     private String mCurrentPhotoPath;
     private Activity context = this;
     private Media       profil_pic;
     private ImageView profilImage;
-    File image = null;
+    private File image = null;
+    private RecyclerView recyclerView;
+    private List<Media> medias = Lists.newArrayList();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_publicate);
         // Set up the login form.
-        mEmailView = findViewById(R.id.email_create);
+        recyclerView = findViewById(R.id.picturesRecyclerView);
 
-        mPasswordView = findViewById(R.id.password_create);
-        mLNameView = findViewById(R.id.lname_create);
-        mFNameView = findViewById(R.id.fname_create);
-        mPasswordConfirmView = findViewById(R.id.password_confirm);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+        publicateContentView = findViewById(R.id.publicate_content_view);
+        publicateButton = findViewById(R.id.publicate_button);
+        pictureButton = findViewById(R.id.publicate_picture_button);
 
-        Button mEmailSignInButton = findViewById(R.id.register_button);
-        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
+        PicturesRecyclerAdapter mAdapter = new PicturesRecyclerAdapter(this, medias);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setVisibility(View.GONE);
+
+        publicateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
             }
         });
-
-        mLoginFormView = findViewById(R.id.register_form);
-        mProgressView = findViewById(R.id.register_progress);
-
-        profilImage = findViewById(R.id.register_profil_image_view);
-        profilImage.setOnClickListener(new View.OnClickListener() {
+        pictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(view.getContext());
@@ -146,6 +137,11 @@ public class RegisterActivity extends AppCompatActivity {
                 alert.show();
             }
         });
+
+        mLoginFormView = findViewById(R.id.publicate_form);
+        mProgressView = findViewById(R.id.publicate_progress);
+
+        profilImage = findViewById(R.id.publicate_profil_image_view);
     }
 
     @Override
@@ -157,13 +153,17 @@ public class RegisterActivity extends AppCompatActivity {
                 case 100:
                     Bundle extras = data.getExtras();
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
+
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] byteArray = stream.toByteArray();
-                    profil_pic = new Media();
-                    profil_pic.setType(Media.TYPE.IMAGE_PNG);
-                    profil_pic.setBytes(byteArray);
-                    profilImage.setImageBitmap(imageBitmap);
+                    Media media = new Media();
+                    media.setType(Media.TYPE.IMAGE_JPG);
+                    media.setBytes(byteArray);
+                    if (recyclerView.getVisibility() == View.GONE)
+                        recyclerView.setVisibility(View.VISIBLE);
+                    medias.add(media);
+                    ((PicturesRecyclerAdapter) recyclerView.getAdapter()).updateContent(medias);
                     break;
                 default:
                     Toast.makeText(this, "Something went wrong...", Toast.LENGTH_SHORT).show();
@@ -175,52 +175,22 @@ public class RegisterActivity extends AppCompatActivity {
     private void attemptLogin() {
 
         // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+        publicateContentView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-        String passwordConfirm = mPasswordConfirmView.getText().toString();
-        String fname = mFNameView.getText().toString();
-        String lname = mLNameView.getText().toString();
+        String content = publicateContentView.getText().toString();
+
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (TextUtils.isEmpty(password) || !JobHelper.isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-        if (!passwordConfirm.equals(password)) {
-            mPasswordView.setError(getString(R.string.error_no_match_password));
-            focusView = mPasswordView;
+        if (content == null || TextUtils.isEmpty(content)) {
+            publicateContentView.setError(getString(R.string.error_empty_field));
+            focusView = publicateContentView;
             cancel = true;
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!JobHelper.isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        if (TextUtils.isEmpty(fname)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mFNameView;
-            cancel = true;
-        }
-        if (TextUtils.isEmpty(lname)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mFNameView;
-            cancel = true;
-        }
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -229,22 +199,21 @@ public class RegisterActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            User user = new User();
-            user.setEmail(email);
-            user.setFirstName(fname);
-            user.setLastName(lname);
-            user.setPassword(password);
-            if (profil_pic != null) {
-                user.setProfilPicture(profil_pic);
+
+            Publication publication = new Publication();
+            publication.setContent(content);
+            if (medias != null && !medias.isEmpty()) {
+                publication.setMedias(medias);
+                // set publication pictures
             }
-            Call<ResponseBody> call = Client.getInstance().getUserService().signUp(user);
-            call.enqueue(new CustomCallback<ResponseBody>(RegisterActivity.this, 201) {
+            Call<Publication> call = Client.getInstance().getPublicationService().createPublicaton(publication);
+            call.enqueue(new CustomCallback<Publication>(PublicateActivity.this, 201) {
                 @Override
-                public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                public void onResponse(Call<Publication> call, retrofit2.Response<Publication> response) {
                     super.onResponse(call, response);
                     if (response.code() == 201) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                        builder.setMessage(R.string.email_confirm_sent);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(PublicateActivity.this);
+                        builder.setMessage(R.string.publicate_success);
                         builder.setCancelable(true);
                         builder.setPositiveButton(
                                 "Ok",

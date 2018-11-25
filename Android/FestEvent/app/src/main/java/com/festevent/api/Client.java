@@ -15,8 +15,12 @@ import android.content.Context;
 import android.content.Intent;
 
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 public class Client {
     private final String BASE_URI = "http://92.222.82.30:8080/eip/";
@@ -58,22 +62,28 @@ public class Client {
         launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         activity.startActivity(launchNextActivity);
+        activity.finish();
     }
 
     public FriendService getFriendService() {
+        friendService.setToken(user.getAccessToken());
         return friendService;
     }
 
     public EventService getEventService() {
+        eventService.setToken(user.getAccessToken());
         return eventService;
     }
 
     public PublicationService getPublicationService() {
+        publicationService.setToken(user.getAccessToken());
         return publicationService;
     }
 
     public GroupService getGroupService() {
+        groupService.setToken(user.getAccessToken());
         return groupService;
     }
 
@@ -82,6 +92,7 @@ public class Client {
     }
 
     public UserService getUserService() {
+        userService.setToken(user.getAccessToken());
         return userService;
     }
 
@@ -90,10 +101,7 @@ public class Client {
     }
 
     public void setUser(User user) {
-        this.user = user;
-        String token = user.getAccessToken();
-        userService.setToken(token);
-        authenticationService.setToken(token);
+        this.user = user;;
     }
 
 }

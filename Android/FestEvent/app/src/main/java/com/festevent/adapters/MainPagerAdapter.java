@@ -20,7 +20,6 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
         add(new ActualityFragment());
         add(new EventsFragment());
         add(new UserFragment());
-        add(new ActualityFragment());
     }};
 
     public MainPagerAdapter(FragmentManager fm) {

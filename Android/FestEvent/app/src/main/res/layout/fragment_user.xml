@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_user"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -32,16 +35,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_weight="99"
-            android:gravity="center_horizontal"
             android:orientation="vertical">
-
             <TextView
                 style="?android:attr/listSeparatorTextViewStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15dp"
+                android:layout_gravity="center_horizontal"
                 android:text="robert robert"
                 android:textStyle="bold" />
+
             <android.support.v7.widget.CardView
                 android:id="@+id/view5"
                 android:layout_width="match_parent"
@@ -110,9 +113,13 @@
         android:orientation="vertical"
         android:id="@+id/profilPublicationsRecyclerView"
         android:background="@color/colorBackground"/>
-    <Button
-        android:id="@+id/signout_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="signout" />
 </LinearLayout>
+    <ImageButton
+        android:id="@+id/pmodify_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_menu_manage"
+        android:background="@color/zxing_transparent"/>
+</android.support.design.widget.CoordinatorLayout>

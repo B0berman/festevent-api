@@ -14,6 +14,7 @@
     <string name="prompt_fname">First name</string>
     <string name="prompt_lname">Last name</string>
     <string name="action_sign_in">Sign in</string>
+    <string name="error_empty_field">Field must not be empty</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
@@ -34,4 +35,7 @@
     <string name="src_profil_pic">Select source</string>
     <string name="picture_string">Picture</string>
     <string name="cancel_string">cancel</string>
+    <string name="publicate_title">publicate</string>
+    <string name="ok">OK</string>
+    <string name="publicate_success">Publication uploaded !</string>
 </resources>

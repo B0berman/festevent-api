@@ -34,6 +34,10 @@ public class User implements Serializable {
 	protected double  locationLongitude;
 	protected double  locationLatitude;
 
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
 	public int getFriendsNumber() {
 		return friendsNumber;
 	}

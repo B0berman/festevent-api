@@ -9,10 +9,10 @@ import java.util.List;
 public class Publication implements Serializable {
 
     protected String id;
-    protected Date created = new Date();
+    protected String date;
     protected String		content;
-    protected int           like_nb = 0;
-    protected int           comment_nb = 0;
+//    protected int           like_nb = 0;
+//    protected int           comment_nb = 0;
     protected List<Media>			medias = Lists.newArrayList();
 
     protected Event event;
@@ -24,7 +24,7 @@ public class Publication implements Serializable {
 
     public void addLike(User user) {
         likes.add(user);
-        like_nb++;
+//        like_nb++;
     }
 
     public void removeLike(User user) {
@@ -37,16 +37,16 @@ public class Publication implements Serializable {
             i++;
         }
         likes.remove(user);
-        like_nb--;
+//        like_nb--;
     }
 
     public void setMedias(List<Media> medias) {
         this.medias = medias;
     }
 
-    public int getLike_nb() {
-        return like_nb;
-    }
+//    public int getLike_nb() {
+//        return like_nb;
+//    }
 
     public void addMedia(Media media) {
         medias.add(media);
@@ -58,12 +58,12 @@ public class Publication implements Serializable {
 
     public void addComment(Comment comment) {
         comments.add(comment);
-        comment_nb++;
+//        comment_nb++;
     }
 
     public void removeComment(Comment comment) {
         comments.remove(comment);
-        comment_nb--;
+//        comment_nb--;
     }
 
     public List<User> getLikes() {
@@ -78,12 +78,12 @@ public class Publication implements Serializable {
         return comments;
     }
 
-    public Date getDate() {
-        return created;
+    public String getDate() {
+        return date;
     }
 
-    public void setDate(Date date) {
-        this.created = date;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getContent() {
