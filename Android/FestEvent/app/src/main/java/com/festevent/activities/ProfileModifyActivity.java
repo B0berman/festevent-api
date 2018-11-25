@@ -109,7 +109,7 @@ public class ProfileModifyActivity extends AppCompatActivity {
                         String fileUri = "";
                         File image = null;
                         try {
-                            image = JobHelper.createImageFile(context);
+                            image = JobHelper.createImageFile();
                             mCurrentPhotoPath = image.getAbsolutePath();
                             fileUri = FileProvider.getUriForFile(context, "com.festevent", image).toString();
                         } catch (IOException e) {

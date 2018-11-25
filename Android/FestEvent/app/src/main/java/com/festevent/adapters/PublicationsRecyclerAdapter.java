@@ -1,6 +1,7 @@
 package com.festevent.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 
 import com.beust.jcommander.internal.Lists;
 import com.festevent.R;
+import com.festevent.activities.ProfileModifyActivity;
+import com.festevent.activities.PublicateActivity;
 import com.festevent.api.Client;
 import com.festevent.beans.Comment;
 import com.festevent.beans.Media;
@@ -120,7 +123,8 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
             ((PublicateHolder) holder).publicateCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    System.out.println("CARD CLICKED");
+                    Intent intent = new Intent(activity, PublicateActivity.class);
+                    activity.startActivity(intent);
                 }
             });
         }

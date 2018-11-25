@@ -146,7 +146,8 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/action_register"
                 android:textStyle="bold"
-                android:background="@color/colorPrimary"/>
+                android:textColor="@color/colorPrimary"
+                android:background="@color/zxing_transparent"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
