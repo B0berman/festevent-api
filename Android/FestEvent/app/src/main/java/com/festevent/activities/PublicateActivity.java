@@ -11,7 +11,6 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,15 +23,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beust.jcommander.internal.Lists;
@@ -42,12 +36,10 @@ import com.festevent.api.Client;
 import com.festevent.api.CustomCallback;
 import com.festevent.beans.Media;
 import com.festevent.beans.Publication;
-import com.festevent.beans.User;
 import com.festevent.utils.JobHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -166,7 +158,7 @@ public class PublicateActivity extends AppCompatActivity {
                     imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] byteArray = stream.toByteArray();
                     Media media = new Media();
-                    media.setType(Media.TYPE.IMAGE_PNG);
+                    media.setType(Media.TYPE.IMAGE_JPG);
                     media.setBytes(byteArray);
                     if (recyclerView.getVisibility() == View.GONE)
                         recyclerView.setVisibility(View.VISIBLE);
@@ -210,7 +202,8 @@ public class PublicateActivity extends AppCompatActivity {
 
             Publication publication = new Publication();
             publication.setContent(content);
-            if (profil_pic != null) {
+            if (medias != null && !medias.isEmpty()) {
+                publication.setMedias(medias);
                 // set publication pictures
             }
             Call<Publication> call = Client.getInstance().getPublicationService().createPublicaton(publication);
