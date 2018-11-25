@@ -235,6 +235,8 @@ public class RegisterActivity extends AppCompatActivity {
                                 });
                         AlertDialog alert = builder.create();
                         alert.show();
+                    } else {
+                        showProgress(false);
                     }
                 }
             });

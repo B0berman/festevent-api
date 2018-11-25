@@ -115,16 +115,21 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<User> call, retrofit2.Response<User> response) {
                     super.onResponse(call, response);
-                    String token = response.headers().get("accessToken");
-                    User user = response.body();
-                    UserDAO uDao = new UserDAO(LoginActivity.this);
-                    uDao.open();
+                    if (response.code() == 202) {
+                        String token = response.headers().get("accessToken");
+                        User user = response.body();
+                        user.setAccessToken(token);
+                        UserDAO uDao = new UserDAO(LoginActivity.this);
+                        uDao.open();
 
-                    uDao.add(user);
-                    uDao.close();
+                        uDao.add(user);
+                        uDao.close();
 
-                    Client.getInstance().setUser(user);
-                    onConnected();
+                        Client.getInstance().setUser(user);
+                        onConnected();
+                    } else {
+                        showProgress(false);
+                    }
                 }
             });
         }

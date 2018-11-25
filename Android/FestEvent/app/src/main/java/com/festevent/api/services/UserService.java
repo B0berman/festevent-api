@@ -23,6 +23,10 @@ public class UserService extends Service {
         this.token = token;
     }
 
+    public Call<ResponseBody> getImage(String id) {
+        return retrofit.getImage(id);
+    }
+
     public Call<ResponseBody> signUp(User user) {
         return retrofit.signUp(user);
     }
