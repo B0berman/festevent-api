@@ -2,6 +2,7 @@ package com.festevent.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -21,11 +22,15 @@ import com.festevent.R;
 import com.festevent.activities.ProfileModifyActivity;
 import com.festevent.activities.PublicateActivity;
 import com.festevent.api.Client;
+import com.festevent.api.CustomCallback;
 import com.festevent.beans.Comment;
 import com.festevent.beans.Media;
 import com.festevent.beans.Publication;
 
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 
 /**
  * Created by walbecq on 22/04/18.
@@ -116,7 +121,21 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
                     }
                 }
             });
-//        holder.imagePublisher.setImageBitmap(BitmapFactory.decodeByteArray(publication.getPublisher().getProfilPicture().getBytes(), 0,
+            if (publication.getMedias() != null && !publication.getMedias().isEmpty()) {
+                Call<ResponseBody> ppCall = Client.getInstance().getUserService().getImage(publication.getMedias().get(0).getId());
+                ppCall.enqueue(new CustomCallback<ResponseBody>(activity, 200) {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                        super.onResponse(call, response);
+                        if (response.code() != 200 || response.body() == null) {
+
+                        } else {
+                            Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+                            ((PublicationHolder) holder).imagePublication.setImageBitmap(bmp);
+                        }
+                    }
+                });
+            }
 //                publication.getPublisher().getProfilPicture().getBytes().length));
 //        holder.imagePublication.setImageBitmap(BitmapFactory.decodeByteArray(publication.getMedias().get(0).getBytes(), 0, publication.getMedias().get(0).getBytes().length));
         } else {

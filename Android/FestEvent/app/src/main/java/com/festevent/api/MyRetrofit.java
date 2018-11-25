@@ -93,7 +93,7 @@ public interface MyRetrofit {
      *
      */
 
-    @GET("resources/image/{id}")
+    @GET("festevent-resources/image/{id}")
     Call<ResponseBody> getImage(@Path("id") String id);
 
     /*
