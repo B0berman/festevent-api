@@ -62,7 +62,9 @@ public class Client {
         launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         activity.startActivity(launchNextActivity);
+        activity.finish();
     }
 
     public FriendService getFriendService() {

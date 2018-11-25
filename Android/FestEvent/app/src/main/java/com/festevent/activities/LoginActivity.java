@@ -29,7 +29,7 @@ import retrofit2.Call;
 public class LoginActivity extends AppCompatActivity {
 
 
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;

@@ -35,4 +35,5 @@
     <string name="picture_string">Picture</string>
     <string name="cancel_string">cancel</string>
     <string name="publicate_title">publicate</string>
+    <string name="ok">OK</string>
 </resources>

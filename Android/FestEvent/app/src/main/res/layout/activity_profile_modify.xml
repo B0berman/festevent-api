@@ -9,11 +9,11 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.festevent.activities.LoginActivity">
+    tools:context="com.festevent.activities.ProfileModifyActivity">
 
     <!-- Login progress -->
     <ProgressBar
-        android:id="@+id/register_progress"
+        android:id="@+id/pmodify_progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,22 +21,18 @@
         android:visibility="gone" />
 
     <ScrollView
-        android:id="@+id/register_form"
+        android:id="@+id/pmodify_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbarStyle="outsideOverlay">
 
         <LinearLayout
-            android:id="@+id/email_register_form"
+            android:id="@+id/linear_pmodify_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
-                android:src="@drawable/logo"
-                android:adjustViewBounds="true"/>
+
+
             <android.support.v7.widget.CardView
                 android:id="@+id/view2"
                 android:layout_width="80dp"
@@ -46,7 +42,7 @@
                 app:cardCornerRadius="40dp">
 
                 <ImageView
-                    android:id="@+id/register_profil_image_view"
+                    android:id="@+id/pmodify_profil_image_view"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:scaleType="centerCrop"
@@ -59,7 +55,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/email_create"
+                    android:id="@+id/email_pmodify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_email"
@@ -73,7 +69,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/fname_create"
+                    android:id="@+id/pmodify_fname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_fname"
@@ -90,7 +86,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/lname_create"
+                    android:id="@+id/pmodify_lname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_lname"
@@ -108,7 +104,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/password_create"
+                    android:id="@+id/pmodify_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
@@ -125,7 +121,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/password_confirm"
+                    android:id="@+id/pmodify_password_confirm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password_confirm"
@@ -137,16 +133,13 @@
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
-
             <Button
-                android:id="@+id/register_button"
-                style="?android:textAppearanceSmall"
+                android:id="@+id/signout_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/action_register"
-                android:textStyle="bold"
-                android:background="@color/colorPrimary"/>
+                android:background="@color/zxing_transparent"
+                android:textColor="@color/colorPrimary"
+                android:text="signout" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

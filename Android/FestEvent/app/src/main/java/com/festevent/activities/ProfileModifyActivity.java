@@ -21,6 +21,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
@@ -45,7 +48,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 
-public class RegisterActivity extends AppCompatActivity {
+public class ProfileModifyActivity extends AppCompatActivity {
 
 
     private EditText mEmailView;
@@ -63,14 +66,14 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_profile_modify);
         // Set up the login form.
-        mEmailView = findViewById(R.id.email_create);
+        mEmailView = findViewById(R.id.email_pmodify);
 
-        mPasswordView = findViewById(R.id.password_create);
-        mLNameView = findViewById(R.id.lname_create);
-        mFNameView = findViewById(R.id.fname_create);
-        mPasswordConfirmView = findViewById(R.id.password_confirm);
+        mPasswordView = findViewById(R.id.pmodify_password);
+        mLNameView = findViewById(R.id.pmodify_lname);
+        mFNameView = findViewById(R.id.pmodify_fname);
+        mPasswordConfirmView = findViewById(R.id.pmodify_password_confirm);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -82,18 +85,18 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        Button mEmailSignInButton = findViewById(R.id.register_button);
-        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
+        Button signOut = findViewById(R.id.signout_button);
+        signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                Client.getInstance().signout(getBaseContext(), ProfileModifyActivity.this);
             }
         });
 
-        mLoginFormView = findViewById(R.id.register_form);
-        mProgressView = findViewById(R.id.register_progress);
+        mLoginFormView = findViewById(R.id.pmodify_form);
+        mProgressView = findViewById(R.id.pmodify_progress);
 
-        final ImageView profilImage = findViewById(R.id.register_profil_image_view);
+        final ImageView profilImage = findViewById(R.id.pmodify_profil_image_view);
         profilImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,28 +132,19 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
-        if (resultCode == RESULT_OK) {
-
-            switch (requestCode) {
-                case 1:
-                    Bundle extras = data.getExtras();
-                    Bitmap imageBitmap = (Bitmap) extras.get("data");
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                    byte[] byteArray = stream.toByteArray();
-                    profil_pic = new Media();
-                    profil_pic.setType(Media.TYPE.IMAGE_PNG);
-                    profil_pic.setBytes(byteArray);
-                    break;
-                default:
-                    Toast.makeText(this, "Something went wrong...", Toast.LENGTH_SHORT).show();
-                    break;
-            }
-
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_validate:
+                // Call API
+                attemptLogin();
+                // Not implemented here
+                return false;
+            default:
+                break;
         }
+        return super.onOptionsItemSelected(item);
     }
+
     private void attemptLogin() {
 
         // Reset errors.
@@ -216,14 +210,14 @@ public class RegisterActivity extends AppCompatActivity {
             if (profil_pic != null) {
                 user.setProfilPicture(profil_pic);
             }
-            Call<ResponseBody> call = Client.getInstance().getUserService().signUp(user);
-            call.enqueue(new CustomCallback<ResponseBody>(RegisterActivity.this, 201) {
+            Call<ResponseBody> call = Client.getInstance().getUserService().setUser(user);
+            call.enqueue(new CustomCallback<ResponseBody>(ProfileModifyActivity.this, 201) {
                 @Override
                 public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                     super.onResponse(call, response);
-                    if (response.code() == 201) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                        builder.setMessage(R.string.email_confirm_sent);
+                    if (response.code() == 200) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileModifyActivity.this);
+                        builder.setMessage("Profile changed.");
                         builder.setCancelable(true);
                         builder.setPositiveButton(
                                 "Ok",
@@ -241,6 +235,37 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        if (resultCode == RESULT_OK) {
+
+            switch (requestCode) {
+                case 1:
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] byteArray = stream.toByteArray();
+                    profil_pic = new Media();
+                    profil_pic.setType(Media.TYPE.IMAGE_PNG);
+                    profil_pic.setBytes(byteArray);
+                    break;
+                default:
+                    Toast.makeText(this, "Something went wrong...", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.modify_menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     /**

@@ -3,18 +3,17 @@ package com.festevent.fragments;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +22,7 @@ import com.festevent.R;
 import com.festevent.activities.EventsActivity;
 import com.festevent.activities.FriendsActivity;
 import com.festevent.activities.GroupsActivity;
+import com.festevent.activities.ProfileModifyActivity;
 import com.festevent.adapters.PicturesRecyclerAdapter;
 import com.festevent.adapters.PublicationsRecyclerAdapter;
 import com.festevent.api.Client;
@@ -31,7 +31,6 @@ import com.festevent.beans.Media;
 import com.festevent.beans.Publication;
 import com.festevent.beans.User;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -45,14 +44,13 @@ public class UserFragment extends Fragment {
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
         final RecyclerView recyclerView = view.findViewById(R.id.picturesRecyclerView);
         final RecyclerView precyclerView = view.findViewById(R.id.profilPublicationsRecyclerView);
         final TextView      friendsView = view.findViewById(R.id.friends_link);
         final TextView      eventsView = view.findViewById(R.id.events_link);
         final TextView      groupsView = view.findViewById(R.id.groups_link);
         final ImageView     profilImage = view.findViewById(R.id.profil_image_view);
+        final ImageButton pmodify_button = view.findViewById(R.id.pmodify_button);
 
         User user = Client.getInstance().getUser();
 
@@ -140,6 +138,14 @@ public class UserFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), GroupsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        pmodify_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ProfileModifyActivity.class);
                 startActivity(intent);
             }
         });
