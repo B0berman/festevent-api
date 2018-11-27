@@ -33,7 +33,7 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 			String token = requestContext.getHeaderString("token");
 			User user = DAOManager.getFactory().getUserDAO().filter("accessToken", token).getFirst();
 			if (token == null) {
-				requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(new Utils.Response("Authentication required : no token found")).build());
+				requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(new Utils.Response("Authentication required : no token" + token + "found")).build());
 			}
 			else if (user == null) {
 				requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity(new Utils.Response("Wrong access token.")).build());

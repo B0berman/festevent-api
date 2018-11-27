@@ -7,7 +7,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
 @Api(tags = {"Resources"})
-@Path("/resources")
+@Path("/festevent-resources")
 @Produces({"image/png", "image/jpg", "image/gif"})
 public class ResourceService {
 
