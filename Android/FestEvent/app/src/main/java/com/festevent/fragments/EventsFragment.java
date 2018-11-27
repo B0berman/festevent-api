@@ -51,7 +51,7 @@ public class EventsFragment extends Fragment implements SearchView.OnQueryTextLi
 
         List<Event> events = Lists.newArrayList();
         Event event = new Event();
-        event.setStart(new Date());
+        event.setStart("27 NOV");
         event.setTitle("Le meilleur Event !");
         events.add(event);
         events.add(event);

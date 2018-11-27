@@ -40,6 +40,10 @@ public class Publication implements Serializable {
 //        like_nb--;
     }
 
+    public String getId() {
+        return this.id;
+    }
+
     public void setMedias(List<Media> medias) {
         this.medias = medias;
     }

@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.beust.jcommander.internal.Lists;
 import com.festevent.R;
+import com.festevent.activities.LoginActivity;
 import com.festevent.activities.ProfileModifyActivity;
 import com.festevent.activities.PublicateActivity;
 import com.festevent.api.Client;
@@ -40,6 +41,7 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
 
     private final Activity activity;
     private List<Publication> publications;
+    private final List<Comment>       comments = null;
     private boolean updateEnable = true;
 
     public PublicationsRecyclerAdapter(Activity context, List<Publication> list) {
@@ -90,22 +92,12 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (holder.getItemViewType() == 1) {
-            Publication publication = publications.get(position - 1);
+            final Publication publication = publications.get(position - 1);
             ((PublicationHolder) holder).namePublisher.setText(publication.getPublisher().getFirstName() + " " + publication.getPublisher().getLastName());
             ((PublicationHolder) holder).publicationContent.setText(publication.getContent());
 
-            Comment c = new Comment();
-            c.setCommenter(Client.getInstance().getUser());
-            c.setContent("Bonjour je suis un commentaire");
-            List<Comment> comments = Lists.newArrayList();
-            comments.add(c);
-            comments.add(c);
-            comments.add(c);
-            comments.add(c);
-            comments.add(c);
-
             RecyclerView commentsView = ((PublicationHolder) holder).commentsView;
-            CommentsRecyclerAdapter pAdapter = new CommentsRecyclerAdapter(activity, comments);
+            final CommentsRecyclerAdapter pAdapter = new CommentsRecyclerAdapter(activity, comments, publication.getId());
             RecyclerView.LayoutManager pLayoutManager = new LinearLayoutManager(activity);
             commentsView.setLayoutManager(pLayoutManager);
             commentsView.setItemAnimator(new DefaultItemAnimator());
@@ -115,6 +107,16 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
                 @Override
                 public void onClick(View view) {
                     if (((PublicationHolder) holder).commentsView.getVisibility() == View.GONE) {
+                        Call<List<Comment>> commentCall = Client.getInstance().getPublicationService().getPublicationComments(publication.getId());
+                        commentCall.enqueue(new CustomCallback<List<Comment>>(activity, 200) {
+                            @Override
+                            public void onResponse(Call<List<Comment>> call, retrofit2.Response<List<Comment>> response) {
+                                super.onResponse(call, response);
+                                if (response.code() == 200) {
+                                    pAdapter.updateContent(response.body());
+                                }
+                            }
+                        });
                         ((PublicationHolder) holder).commentsView.setVisibility(View.VISIBLE);
                     } else {
                         ((PublicationHolder) holder).commentsView.setVisibility(View.GONE);
@@ -132,6 +134,21 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
                         } else {
                             Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
                             ((PublicationHolder) holder).imagePublication.setImageBitmap(bmp);
+                        }
+                    }
+                });
+            }
+            if (publication.getPublisher().getProfilPicture() != null) {
+                Call<ResponseBody> publisherPicCall = Client.getInstance().getUserService().getImage(publication.getPublisher().getProfilPicture().getId());
+                publisherPicCall.enqueue(new CustomCallback<ResponseBody>(activity, 200) {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                        super.onResponse(call, response);
+                        if (response.code() != 200 || response.body() == null) {
+
+                        } else {
+                            Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+                            ((PublicationHolder) holder).imagePublisher.setImageBitmap(bmp);
                         }
                     }
                 });

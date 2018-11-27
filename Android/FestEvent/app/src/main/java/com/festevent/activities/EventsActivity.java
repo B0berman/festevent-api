@@ -16,6 +16,7 @@ import com.beust.jcommander.internal.Lists;
 import com.festevent.R;
 import com.festevent.adapters.EventsRecyclerAdapter;
 import com.festevent.beans.Event;
+import com.festevent.utils.JobHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -33,7 +34,7 @@ public class EventsActivity extends AppCompatActivity implements SearchView.OnQu
 
         List<Event> events = Lists.newArrayList();
         Event event = new Event();
-        event.setStart(new Date());
+        event.setStart(new Date().toString());
         event.setTitle("Le meilleur Event !");
         events.add(event);
         events.add(event);

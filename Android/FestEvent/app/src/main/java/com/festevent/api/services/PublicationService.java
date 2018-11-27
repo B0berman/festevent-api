@@ -10,6 +10,9 @@ import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.Header;
+import retrofit2.http.Query;
 
 public class PublicationService extends Service {
 
@@ -56,6 +59,11 @@ public class PublicationService extends Service {
     public Call<List<Publication>> getFriendsPublications(String id) {
         return retrofit.getFriendsPublications(token, id);
     }
+
+    public Call<Comment> commentPublication(String id, Comment comment) {
+        return retrofit.commentPublication(token, id, comment);
+    }
+
 
     public Call<List<Comment>> getPublicationComments(String id) {
         return retrofit.getPublicationComments(token, id);

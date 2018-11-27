@@ -9,7 +9,7 @@
     android:focusableInTouchMode="true" >
 
     <android.support.v7.widget.CardView
-        android:id="@+id/publicate_card"
+        android:id="@+id/comment_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -25,13 +25,14 @@
             app:cardCornerRadius="20dp">
 
             <ImageView
-                android:id="@+id/commenter_image_view"
+                android:id="@+id/new_comment_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/icn_account" />
         </android.support.v7.widget.CardView>
         <EditText
+            android:id="@+id/new_comment_content_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -43,7 +44,7 @@
             android:textSize="15dp"
             android:background="@color/zxing_transparent" />
         <ImageButton
-            android:id="@+id/pmodify_button"
+            android:id="@+id/send_comment_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"

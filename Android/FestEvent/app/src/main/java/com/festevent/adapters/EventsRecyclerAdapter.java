@@ -20,6 +20,7 @@ import com.festevent.beans.Media;
 import com.festevent.beans.Publication;
 import com.festevent.utils.JobHelper;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -68,7 +69,7 @@ public class EventsRecyclerAdapter extends RecyclerView.Adapter<EventsRecyclerAd
     public void onBindViewHolder(EventHolder holder, int position) {
         Event event = events.get(position);
         holder.eventTitle.setText(event.getTitle());
-        holder.eventDate.setText(JobHelper.formatDate(event.getStart(), "dd\nMMM"));
+//        holder.eventDate.setText(JobHelper.formatDate(Date.valueOf(event.getStart()), "dd\nMMM"));
 //        holder.imagePublisher.setImageBitmap(BitmapFactory.decodeByteArray(publication.getPublisher().getProfilPicture().getBytes(), 0,
 //                publication.getPublisher().getProfilPicture().getBytes().length));
 //        holder.imagePublication.setImageBitmap(BitmapFactory.decodeByteArray(publication.getMedias().get(0).getBytes(), 0, publication.getMedias().get(0).getBytes().length));

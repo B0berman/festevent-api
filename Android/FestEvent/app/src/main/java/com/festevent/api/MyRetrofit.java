@@ -181,6 +181,9 @@ public interface MyRetrofit {
     @GET("publications/comments")
     Call<List<Comment>> getPublicationComments(@Header("token") String token, @Query("id") String id);
 
+    @POST("publications/comment")
+    Call<Comment> commentPublication(@Header("token") String token, @Query("id") String id, @Body Comment comment);
+
     /*
      *
      *

@@ -40,6 +40,7 @@ public class UserFragment extends Fragment {
     private List<Publication> publications = Lists.newArrayList();
     private List<Media> medias = Lists.newArrayList();
     private RecyclerView precyclerView;
+    private TextView     userNameView;
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
@@ -51,8 +52,11 @@ public class UserFragment extends Fragment {
         final TextView      groupsView = view.findViewById(R.id.groups_link);
         final ImageView     profilImage = view.findViewById(R.id.profil_image_view);
         final ImageButton pmodify_button = view.findViewById(R.id.pmodify_button);
+        userNameView = view.findViewById(R.id.profil_username_view);
 
         User user = Client.getInstance().getUser();
+
+        userNameView.setText(user.getFirstName() + " " + user.getLastName());
 
         PicturesRecyclerAdapter mAdapter = new PicturesRecyclerAdapter(getActivity(), medias);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);

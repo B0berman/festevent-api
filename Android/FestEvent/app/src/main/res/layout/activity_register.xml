@@ -11,6 +11,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.festevent.activities.LoginActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
+        android:src="@drawable/logo"
+        android:adjustViewBounds="true"/>
     <!-- Login progress -->
     <ProgressBar
         android:id="@+id/register_progress"
@@ -19,24 +25,17 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
-
     <ScrollView
         android:id="@+id/register_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbarStyle="outsideOverlay">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/email_register_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="20dp"
-                android:src="@drawable/logo"
-                android:adjustViewBounds="true"/>
+
             <android.support.v7.widget.CardView
                 android:id="@+id/view2"
                 android:layout_width="80dp"

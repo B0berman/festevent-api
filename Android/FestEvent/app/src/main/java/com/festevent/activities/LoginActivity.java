@@ -24,7 +24,9 @@ import android.widget.TextView;
 import com.festevent.R;
 import com.festevent.api.Client;
 import com.festevent.api.CustomCallback;
+import com.festevent.beans.Media;
 import com.festevent.beans.User;
+import com.festevent.database.dao.MediaDAO;
 import com.festevent.database.dao.UserDAO;
 import com.festevent.utils.JobHelper;
 import retrofit2.Call;
@@ -127,10 +129,16 @@ public class LoginActivity extends AppCompatActivity {
                         User user = response.body();
                         user.setAccessToken(token);
                         UserDAO uDao = new UserDAO(LoginActivity.this);
+                        MediaDAO mDAO = new MediaDAO(LoginActivity.this);
+
                         uDao.open();
+                        mDAO.open();
 
                         uDao.add(user);
                         uDao.close();
+
+                        mDAO.add(user.getProfilPicture());
+                        mDAO.close();
 
                         Client.getInstance().setUser(user);
                         onConnected();
@@ -152,9 +160,15 @@ public class LoginActivity extends AppCompatActivity {
 
     private void checkConnected() {
         UserDAO uDao = new UserDAO(LoginActivity.this);
+        MediaDAO mDAO = new MediaDAO(LoginActivity.this);
         uDao.open();
+        mDAO.open();
         User user = uDao.get();
         if (user != null) {
+            Media media = mDAO.get();
+            if (media != null)
+                user.setProfilPicture(media);
+            mDAO.close();
             uDao.close();
             Client.getInstance().setUser(user);
             onConnected();

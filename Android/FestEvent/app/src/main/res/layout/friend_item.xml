@@ -53,6 +53,5 @@
         android:layout_height="30dp"
         android:layout_gravity="center_vertical"
         android:background="@color/zxing_transparent"
-        android:drawableTop="@drawable/icn_account"
-        tools:drawableTop="@android:drawable/ic_input_add" />
+        android:drawableTop="@android:drawable/ic_input_add" />
 </LinearLayout>

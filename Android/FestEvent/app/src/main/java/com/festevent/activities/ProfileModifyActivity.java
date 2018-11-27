@@ -15,6 +15,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -58,9 +59,11 @@ public class ProfileModifyActivity extends AppCompatActivity {
     private EditText mPasswordConfirmView;
     private View mProgressView;
     private View mLoginFormView;
+    private ImageView profilImageView;
     private String mCurrentPhotoPath;
     private Activity context = this;
     private Media       profil_pic;
+    private File image = null;
 
 
     @Override
@@ -73,6 +76,7 @@ public class ProfileModifyActivity extends AppCompatActivity {
         mPasswordView = findViewById(R.id.pmodify_password);
         mLNameView = findViewById(R.id.pmodify_lname);
         mFNameView = findViewById(R.id.pmodify_fname);
+        profilImageView = findViewById(R.id.profil_image_view);
         mPasswordConfirmView = findViewById(R.id.pmodify_password_confirm);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -103,25 +107,43 @@ public class ProfileModifyActivity extends AppCompatActivity {
                 android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(view.getContext());
                 alert.setTitle(R.string.add_profil_pic);
                 alert.setMessage(R.string.src_profil_pic);
+                final Uri fileUri;
+
+                try {
+                    image = JobHelper.createImageFile();
+                    mCurrentPhotoPath = image.getAbsolutePath();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                fileUri = Uri.fromFile(image);//FileProvider.getUriForFile(context, "com.festevent", image).toString();
 
                 alert.setPositiveButton(R.string.picture_string, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        String fileUri = "";
-                        File image = null;
-                        try {
-                            image = JobHelper.createImageFile();
-                            mCurrentPhotoPath = image.getAbsolutePath();
-                            fileUri = FileProvider.getUriForFile(context, "com.festevent", image).toString();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
                         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                        startActivityForResult(intent, 1);
+                        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                        StrictMode.setVmPolicy(builder.build());
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri.toString());
+                        intent.putExtra("outputFormat",
+                                Bitmap.CompressFormat.JPEG.toString());
+                        startActivityForResult(intent, 100);
                     }});
 
-                alert.setNegativeButton(R.string.cancel_string , new DialogInterface.OnClickListener() {
+                alert.setNegativeButton("form_galery", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
+                        Intent photoPickerIntent = new Intent(
+                                Intent.ACTION_PICK,
+                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        photoPickerIntent.setType("image/*");
+                        photoPickerIntent.putExtra("crop", "true");
+                        photoPickerIntent.putExtra("outputX", 150);
+                        photoPickerIntent.putExtra("outputY", 150);
+                        photoPickerIntent.putExtra("aspectX", 1);
+                        photoPickerIntent.putExtra("aspectY", 1);
+                        photoPickerIntent.putExtra("scale", true);
+                        photoPickerIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri.toString());
+                        photoPickerIntent.putExtra("outputFormat",
+                                Bitmap.CompressFormat.JPEG.toString());
+                        startActivityForResult(photoPickerIntent, 100);
                         // Canceled.
                     }
                 });
@@ -243,7 +265,7 @@ public class ProfileModifyActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
 
             switch (requestCode) {
-                case 1:
+                case 100:
                     Bundle extras = data.getExtras();
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -252,6 +274,7 @@ public class ProfileModifyActivity extends AppCompatActivity {
                     profil_pic = new Media();
                     profil_pic.setType(Media.TYPE.IMAGE_PNG);
                     profil_pic.setBytes(byteArray);
+                    profilImageView.setImageBitmap(imageBitmap);
                     break;
                 default:
                     Toast.makeText(this, "Something went wrong...", Toast.LENGTH_SHORT).show();

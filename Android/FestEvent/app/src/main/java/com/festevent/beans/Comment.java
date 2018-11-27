@@ -7,7 +7,7 @@ public class Comment implements Serializable {
 
 	protected User			commenter;
 	protected String		content;
-	protected Date			date = new Date();
+	protected String		date;
 
 	public User getCommenter() {
 		return commenter;
@@ -21,10 +21,10 @@ public class Comment implements Serializable {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 	
