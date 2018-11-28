@@ -53,6 +53,9 @@ public class EventActivity extends AppCompatActivity {
         final RecyclerView recyclerView = findViewById(R.id.eventPicturesRecyclerView);
         final RecyclerView precyclerView = findViewById(R.id.eventPublicationsRecyclerView);
 
+        eventNameView.setText(event.getTitle());
+        eventDateView.setText(event.getStart());
+        eventDetailsView.setText(event.getAddress());
 
         PicturesRecyclerAdapter mAdapter = new PicturesRecyclerAdapter(this, event.getPictures());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -61,11 +64,7 @@ public class EventActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
         recyclerView.setVisibility(View.GONE);
 
-        PublicationsRecyclerAdapter pAdapter = new PublicationsRecyclerAdapter(this, publications);
-        RecyclerView.LayoutManager pLayoutManager = new LinearLayoutManager(this);
-        precyclerView.setLayoutManager(pLayoutManager);
-        precyclerView.setItemAnimator(new DefaultItemAnimator());
-        precyclerView.setAdapter(pAdapter);
+
 
         Call<ResponseBody> coverCall = Client.getInstance().getUserService().getImage(event.getMainPicture().getId());
         coverCall.enqueue(new CustomCallback<ResponseBody>(this, 200) {
@@ -77,11 +76,12 @@ public class EventActivity extends AppCompatActivity {
                 } else {
                     Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
                     eventCoverView.setImageBitmap(bmp);
+                    event.getMainPicture().setBitmap(bmp);
                 }
             }
         });
 
-        Call<List<Media>> mediasCall = Client.getInstance().getUserService().getUserPictures();
+        Call<List<Media>> mediasCall = Client.getInstance().getEventService().getEventPictures(event.getId());
         mediasCall.enqueue(new CustomCallback<List<Media>>(this, 200) {
             @Override
             public void onResponse(Call<List<Media>> call, retrofit2.Response<List<Media>> response) {
@@ -99,6 +99,12 @@ public class EventActivity extends AppCompatActivity {
             }
         });
 
+        PublicationsRecyclerAdapter pAdapter = new PublicationsRecyclerAdapter(this, publications);
+        RecyclerView.LayoutManager pLayoutManager = new LinearLayoutManager(this);
+        precyclerView.setLayoutManager(pLayoutManager);
+        precyclerView.setItemAnimator(new DefaultItemAnimator());
+        precyclerView.setAdapter(pAdapter);
+
         Call<List<Publication>> publicationCall = Client.getInstance().getEventService().getEventPublications(event.getId());
         publicationCall.enqueue(new CustomCallback<List<Publication>>(this, 200) {
             @Override
@@ -108,15 +114,15 @@ public class EventActivity extends AppCompatActivity {
 
                 } else {
                     publications = response.body();
+                    for (Publication p : publications) {
+                        if (p.getEvent() != null && event.getMainPicture().getBitmap() != null)
+                            p.getPublisher().getProfilPicture().setBitmap(event.getMainPicture().getBitmap());
+                    }
                 }
                 if (precyclerView.getAdapter() != null)
                     ((PublicationsRecyclerAdapter) precyclerView.getAdapter()).updateContent(publications);
             }
         });
-
-        eventNameView.setText(event.getTitle());
-        eventDateView.setText(event.getStart());
-        eventDetailsView.setText(event.getAddress());
 
     }
 }

@@ -97,6 +97,12 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (holder.getItemViewType() == 1) {
             final Publication publication = publications.get(position - 1);
+            RecyclerView commentsView = ((PublicationHolder) holder).commentsView;
+            final CommentsRecyclerAdapter pAdapter = new CommentsRecyclerAdapter(activity, publication.getComments(), publication.getId());
+            RecyclerView.LayoutManager pLayoutManager = new LinearLayoutManager(activity);
+            commentsView.setLayoutManager(pLayoutManager);
+            commentsView.setItemAnimator(new DefaultItemAnimator());
+            commentsView.setAdapter(pAdapter);
             if (publication.getPublisher() != null) {
                 ((PublicationHolder) holder).namePublisher.setText(publication.getPublisher().getFirstName() + " " + publication.getPublisher().getLastName());
                 ((PublicationHolder) holder).namePublisher.setOnClickListener(new View.OnClickListener() {
@@ -138,19 +144,22 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
                         activity.startActivity(intent);
                     }
                 });
-                Call<ResponseBody> publisherPicCall = Client.getInstance().getUserService().getImage(publication.getEvent().getMainPicture().getId());
-                publisherPicCall.enqueue(new CustomCallback<ResponseBody>(activity, 200) {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                        super.onResponse(call, response);
-                        if (response.code() != 200 || response.body() == null) {
+                if (publication.getEvent().getMainPicture().getBitmap() == null) {
+                    Call<ResponseBody> publisherPicCall = Client.getInstance().getUserService().getImage(publication.getEvent().getMainPicture().getId());
+                    publisherPicCall.enqueue(new CustomCallback<ResponseBody>(activity, 200) {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                            super.onResponse(call, response);
+                            if (response.code() != 200 || response.body() == null) {
 
-                        } else {
-                            Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
-                            ((PublicationHolder) holder).imagePublisher.setImageBitmap(bmp);
+                            } else {
+                                Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+                                ((PublicationHolder) holder).imagePublisher.setImageBitmap(bmp);
+                            }
                         }
-                    }
-                });
+                    });
+                } else
+                    ((PublicationHolder) holder).imagePublisher.setImageBitmap(publication.getEvent().getMainPicture().getBitmap());
             }
             ((PublicationHolder) holder).publicationContent.setText(publication.getContent());
 
@@ -167,14 +176,6 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
                     }
                 }
             });
-            RecyclerView commentsView = ((PublicationHolder) holder).commentsView;
-            final CommentsRecyclerAdapter pAdapter = new CommentsRecyclerAdapter(activity, publication.getComments(), publication.getId());
-            RecyclerView.LayoutManager pLayoutManager = new LinearLayoutManager(activity);
-            commentsView.setLayoutManager(pLayoutManager);
-            commentsView.setItemAnimator(new DefaultItemAnimator());
-            commentsView.setAdapter(pAdapter);
-
-
             ((PublicationHolder) holder).likeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {

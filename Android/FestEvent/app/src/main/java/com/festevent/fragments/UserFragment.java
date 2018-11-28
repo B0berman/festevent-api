@@ -71,6 +71,22 @@ public class UserFragment extends Fragment {
         precyclerView.setItemAnimator(new DefaultItemAnimator());
         precyclerView.setAdapter(pAdapter);
 
+        if (user.getProfilPicture() != null && user.getProfilPicture().getId() != null && !user.getProfilPicture().getId().isEmpty()) {
+            Call<ResponseBody> ppCall = Client.getInstance().getUserService().getImage(user.getProfilPicture().getId());
+            ppCall.enqueue(new CustomCallback<ResponseBody>(getActivity(), 200) {
+                @Override
+                public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                    super.onResponse(call, response);
+                    if (response.code() != 200 || response.body() == null) {
+
+                    } else {
+                        Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+                        profilImage.setImageBitmap(bmp);
+                    }
+                }
+            });
+        }
+
         Call<List<Media>> mediasCall = Client.getInstance().getUserService().getUserPictures();
         mediasCall.enqueue(new CustomCallback<List<Media>>(getActivity(), 200) {
             @Override
@@ -103,22 +119,6 @@ public class UserFragment extends Fragment {
                     ((PublicationsRecyclerAdapter) precyclerView.getAdapter()).updateContent(publications);
             }
         });
-
-        if (user.getProfilPicture() != null && user.getProfilPicture().getId() != null && !user.getProfilPicture().getId().isEmpty()) {
-            Call<ResponseBody> ppCall = Client.getInstance().getUserService().getImage(user.getProfilPicture().getId());
-            ppCall.enqueue(new CustomCallback<ResponseBody>(getActivity(), 200) {
-                @Override
-                public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                    super.onResponse(call, response);
-                    if (response.code() != 200 || response.body() == null) {
-
-                    } else {
-                        Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
-                        profilImage.setImageBitmap(bmp);
-                    }
-                }
-            });
-        }
 
 
         friendsView.setOnClickListener(new View.OnClickListener() {

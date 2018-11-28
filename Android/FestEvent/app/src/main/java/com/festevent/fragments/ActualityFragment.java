@@ -30,7 +30,6 @@ import java.util.List;
 import retrofit2.Call;
 
 public class ActualityFragment extends Fragment {
-    private static int firstVisibleInListview = 0;
     private List <Publication> publications = Lists.newArrayList();
 
     public ActualityFragment() {

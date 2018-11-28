@@ -1,5 +1,7 @@
 package com.festevent.beans;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -15,8 +17,17 @@ public class Media implements Serializable {
 	protected TYPE			type;
 	protected String		url;
 	protected String		id = UUID.randomUUID().toString();
-
+	protected Bitmap		bitmap;
 	protected byte[]		bytes;
+
+
+	public Bitmap getBitmap() {
+		return bitmap;
+	}
+
+	public void setBitmap(Bitmap bitmap) {
+		this.bitmap = bitmap;
+	}
 
 	public byte[] getBytes() {
 		return bytes;
