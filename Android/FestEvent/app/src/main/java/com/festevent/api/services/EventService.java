@@ -3,6 +3,7 @@ package com.festevent.api.services;
 import com.festevent.api.MyRetrofit;
 import com.festevent.beans.Event;
 import com.festevent.beans.Media;
+import com.festevent.beans.Publication;
 import com.festevent.beans.Ticket;
 import com.festevent.beans.User;
 
@@ -13,9 +14,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class EventService extends Service {
-
-    private MyRetrofit retrofit;
-    private String     token;
 
     public EventService(MyRetrofit r) {
         super(r);
@@ -51,5 +49,13 @@ public class EventService extends Service {
 
     public Call<ResponseBody> eventParticipate(String id) {
         return retrofit.eventParticipate(token, id);
+    }
+
+    public Call<List<Publication>> getEventPublications(String id) {
+        return retrofit.getEventPublications(token, id);
+    }
+
+    public Call<List<Event>> getAll() {
+        return retrofit.getAllEvents();
     }
 }

@@ -1,15 +1,16 @@
 package com.festevent.beans;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Event {
+public class Event implements Serializable {
 
 
     protected String   title;
     protected String   description;
-    protected Date start;
-    protected Date     end;
+    protected String start;
+    protected String     end;
     protected int	   edition = 1;
     protected String   address;
     protected boolean valid = false;
@@ -20,6 +21,16 @@ public class Event {
     protected List<Media> pictures;
 
     // STAFF
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setPictures(List<Media> pictures) {
+        this.pictures = pictures;
+    }
+
     // ALERTS
     public void addPicture(Media media) {
         pictures.add(media);
@@ -58,19 +69,19 @@ public class Event {
         this.description = description;
     }
 
-    public Date getStart() {
+    public String getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(String start) {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public String getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(String end) {
         this.end = end;
     }
 

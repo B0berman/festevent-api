@@ -1,6 +1,7 @@
 package com.festevent.adapters;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -10,9 +11,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.festevent.R;
+import com.festevent.api.Client;
+import com.festevent.api.CustomCallback;
 import com.festevent.beans.Media;
 
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
 
 /**
  * Created by walbecq on 22/04/18.
@@ -56,9 +62,25 @@ public class PicturesRecyclerAdapter extends RecyclerView.Adapter<PicturesRecycl
     }
 
     @Override
-    public void onBindViewHolder(PictureHolder holder, int position) {
+    public void onBindViewHolder(final PictureHolder holder, int position) {
         Media picture = pictures.get(position);
-        holder.image.setImageBitmap(BitmapFactory.decodeByteArray(picture.getBytes(), 0, picture.getBytes().length));
+        if (picture.getBytes() != null && picture.getBytes().length > 0) {
+            holder.image.setImageBitmap(BitmapFactory.decodeByteArray(picture.getBytes(), 0, picture.getBytes().length));
+        } else if (picture.getId() != null && !picture.getId().isEmpty()) {
+            Call<ResponseBody> ppCall = Client.getInstance().getUserService().getImage(picture.getId());
+            ppCall.enqueue(new CustomCallback<ResponseBody>(activity, 200) {
+                @Override
+                public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                    super.onResponse(call, response);
+                    if (response.code() != 200 || response.body() == null) {
+
+                    } else {
+                        Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+                        holder.image.setImageBitmap(bmp);
+                    }
+                }
+            });
+        }
     }
 
     @Override

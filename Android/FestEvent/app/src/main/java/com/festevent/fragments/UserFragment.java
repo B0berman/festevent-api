@@ -40,6 +40,7 @@ public class UserFragment extends Fragment {
     private List<Publication> publications = Lists.newArrayList();
     private List<Media> medias = Lists.newArrayList();
     private RecyclerView precyclerView;
+    private TextView     userNameView;
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
@@ -50,9 +51,12 @@ public class UserFragment extends Fragment {
         final TextView      eventsView = view.findViewById(R.id.events_link);
         final TextView      groupsView = view.findViewById(R.id.groups_link);
         final ImageView     profilImage = view.findViewById(R.id.profil_image_view);
-        final ImageButton pmodify_button = view.findViewById(R.id.pmodify_button);
+        final ImageView pmodify_button = view.findViewById(R.id.pmodify_button);
+        userNameView = view.findViewById(R.id.profil_username_view);
 
         User user = Client.getInstance().getUser();
+
+        userNameView.setText(user.getFirstName() + " " + user.getLastName());
 
         PicturesRecyclerAdapter mAdapter = new PicturesRecyclerAdapter(getActivity(), medias);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -66,6 +70,22 @@ public class UserFragment extends Fragment {
         precyclerView.setLayoutManager(pLayoutManager);
         precyclerView.setItemAnimator(new DefaultItemAnimator());
         precyclerView.setAdapter(pAdapter);
+
+        if (user.getProfilPicture() != null && user.getProfilPicture().getId() != null && !user.getProfilPicture().getId().isEmpty()) {
+            Call<ResponseBody> ppCall = Client.getInstance().getUserService().getImage(user.getProfilPicture().getId());
+            ppCall.enqueue(new CustomCallback<ResponseBody>(getActivity(), 200) {
+                @Override
+                public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                    super.onResponse(call, response);
+                    if (response.code() != 200 || response.body() == null) {
+
+                    } else {
+                        Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+                        profilImage.setImageBitmap(bmp);
+                    }
+                }
+            });
+        }
 
         Call<List<Media>> mediasCall = Client.getInstance().getUserService().getUserPictures();
         mediasCall.enqueue(new CustomCallback<List<Media>>(getActivity(), 200) {
@@ -99,22 +119,6 @@ public class UserFragment extends Fragment {
                     ((PublicationsRecyclerAdapter) precyclerView.getAdapter()).updateContent(publications);
             }
         });
-
-        if (user.getProfilPicture() != null && user.getProfilPicture().getId() != null && !user.getProfilPicture().getId().isEmpty()) {
-            Call<ResponseBody> ppCall = Client.getInstance().getUserService().getImage(user.getProfilPicture().getId());
-            ppCall.enqueue(new CustomCallback<ResponseBody>(getActivity(), 200) {
-                @Override
-                public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                    super.onResponse(call, response);
-                    if (response.code() != 200 || response.body() == null) {
-
-                    } else {
-                        Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
-                        profilImage.setImageBitmap(bmp);
-                    }
-                }
-            });
-        }
 
 
         friendsView.setOnClickListener(new View.OnClickListener() {

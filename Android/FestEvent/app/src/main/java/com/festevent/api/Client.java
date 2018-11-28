@@ -8,6 +8,7 @@ import com.festevent.api.services.GroupService;
 import com.festevent.api.services.PublicationService;
 import com.festevent.api.services.UserService;
 import com.festevent.beans.User;
+import com.festevent.database.dao.MediaDAO;
 import com.festevent.database.dao.UserDAO;
 
 import android.app.Activity;
@@ -58,6 +59,11 @@ public class Client {
         userDAO.open();
         userDAO.delete();
         userDAO.close();
+
+        MediaDAO mediaDAO = new MediaDAO(context);
+        mediaDAO.open();
+        mediaDAO.delete();
+        mediaDAO.close();
         Intent launchNextActivity = new Intent(activity, LoginActivity.class);
         launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         launchNextActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

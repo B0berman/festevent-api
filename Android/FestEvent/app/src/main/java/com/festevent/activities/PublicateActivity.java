@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beust.jcommander.internal.Lists;
@@ -36,6 +38,7 @@ import com.festevent.api.Client;
 import com.festevent.api.CustomCallback;
 import com.festevent.beans.Media;
 import com.festevent.beans.Publication;
+import com.festevent.beans.User;
 import com.festevent.utils.JobHelper;
 
 import java.io.ByteArrayOutputStream;
@@ -59,6 +62,7 @@ public class PublicateActivity extends AppCompatActivity {
     private Activity context = this;
     private Media       profil_pic;
     private ImageView profilImage;
+    private TextView  profilName;
     private File image = null;
     private RecyclerView recyclerView;
     private List<Media> medias = Lists.newArrayList();
@@ -73,6 +77,8 @@ public class PublicateActivity extends AppCompatActivity {
         publicateContentView = findViewById(R.id.publicate_content_view);
         publicateButton = findViewById(R.id.publicate_button);
         pictureButton = findViewById(R.id.publicate_picture_button);
+        profilImage = findViewById(R.id.publicate_profil_image_view);
+        profilName = findViewById(R.id.publicate_profil_name_view);
 
         PicturesRecyclerAdapter mAdapter = new PicturesRecyclerAdapter(this, medias);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -141,7 +147,24 @@ public class PublicateActivity extends AppCompatActivity {
         mLoginFormView = findViewById(R.id.publicate_form);
         mProgressView = findViewById(R.id.publicate_progress);
 
-        profilImage = findViewById(R.id.publicate_profil_image_view);
+        User user = Client.getInstance().getUser();
+        if (user.getProfilPicture() != null && user.getProfilPicture().getId() != null && !user.getProfilPicture().getId().isEmpty()) {
+            Call<ResponseBody> ppCall = Client.getInstance().getUserService().getImage(user.getProfilPicture().getId());
+            ppCall.enqueue(new CustomCallback<ResponseBody>(this, 200) {
+                @Override
+                public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                    super.onResponse(call, response);
+                    if (response.code() != 200 || response.body() == null) {
+
+                    } else {
+                        Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+                        profilImage.setImageBitmap(bmp);
+                    }
+                }
+            });
+        }
+
+        profilName.setText(user.getFirstName() + " " + user.getLastName());
     }
 
     @Override
