@@ -55,7 +55,7 @@ public class ActualityFragment extends Fragment {
         precyclerView.setAdapter(pAdapter);
         ((PublicationsRecyclerAdapter) precyclerView.getAdapter()).updateContent(publications);
 
-        Call<List<Publication>> pCall = Client.getInstance().getPublicationService().getFriendsPublications();
+        Call<List<Publication>> pCall = Client.getInstance().getUserService().getUserActuality();
         pCall.enqueue(new CustomCallback<List<Publication>>(getActivity(), 200) {
             @Override
             public void onResponse(Call<List<Publication>> call, retrofit2.Response<List<Publication>> response) {

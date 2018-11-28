@@ -75,4 +75,7 @@ public class UserService extends Service {
         return retrofit.getUserPublications(token);
     }
 
+    public Call<List<Publication>> getUserActuality() {
+        return retrofit.getUserActuality(token);
+    }
 }

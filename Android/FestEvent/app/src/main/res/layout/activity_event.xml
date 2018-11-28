@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/fragment_user"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_event"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="com.festevent.activities.EventActivity">
 
     <ImageView
+        android:id="@+id/event_cover_image_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/usr_img"
         android:adjustViewBounds="true"
         android:layout_marginVertical="5dp"/>
 
@@ -32,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
-                android:id="@+id/eventItemDateTextView"
+                android:id="@+id/eventDateTextView"
                 android:layout_gravity="center_horizontal|center_vertical"/>
         </android.support.v7.widget.CardView>
 
@@ -48,13 +50,13 @@
                 android:layout_height="wrap_content"
                 android:text="robert robert"
                 android:textStyle="bold"
-                android:id="@+id/eventItemNameView"/>
+                android:id="@+id/eventNameView"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:text="12 000 personnes participent"
-                android:id="@+id/eventItemDetailView" />
+                android:id="@+id/eventDetailView" />
         </LinearLayout>
     </LinearLayout>
 
@@ -65,12 +67,12 @@
         android:paddingVertical="5dp"
         android:orientation="horizontal"
         android:background="@color/colorBackground"
-        android:id="@+id/picturesRecyclerView"/>
+        android:id="@+id/eventPicturesRecyclerView"/>
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"
         android:orientation="vertical"
-        android:id="@+id/profilPublicationsRecyclerView"
+        android:id="@+id/eventPublicationsRecyclerView"
         android:background="@color/colorBackground"/>
 </LinearLayout>

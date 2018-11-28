@@ -23,15 +23,20 @@ import com.festevent.R;
 import com.festevent.adapters.EventsRecyclerAdapter;
 import com.festevent.adapters.PublicationsRecyclerAdapter;
 import com.festevent.api.Client;
+import com.festevent.api.CustomCallback;
 import com.festevent.beans.Event;
 import com.festevent.beans.Publication;
 
 import java.util.Date;
 import java.util.List;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+
 public class EventsFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     private SearchView searchView = null;
+    private List<Event> events = Lists.newArrayList();
 
     public EventsFragment() {
         // Required empty public constructor
@@ -49,22 +54,24 @@ public class EventsFragment extends Fragment implements SearchView.OnQueryTextLi
 
         final RecyclerView precyclerView = view.findViewById(R.id.eventsRecyclerView);
 
-        List<Event> events = Lists.newArrayList();
-        Event event = new Event();
-        event.setStart("27 NOV");
-        event.setTitle("Le meilleur Event !");
-        events.add(event);
-        events.add(event);
-        events.add(event);
-        events.add(event);
-        events.add(event);
-
         EventsRecyclerAdapter pAdapter = new EventsRecyclerAdapter(getActivity(), events);
         RecyclerView.LayoutManager pLayoutManager = new LinearLayoutManager(getActivity());
         precyclerView.setLayoutManager(pLayoutManager);
         precyclerView.setItemAnimator(new DefaultItemAnimator());
         precyclerView.setAdapter(pAdapter);
-        ((EventsRecyclerAdapter) precyclerView.getAdapter()).updateContent(events);
+
+        Call<List<Event>> eventsCall = Client.getInstance().getEventService().getAll();
+        eventsCall.enqueue(new CustomCallback<List<Event>>(getActivity(), 200) {
+            @Override
+            public void onResponse(Call<List<Event>> call, retrofit2.Response<List<Event>> response) {
+                super.onResponse(call, response);
+                if (response.code() == 200) {
+                    events = response.body();
+                    ((EventsRecyclerAdapter) precyclerView.getAdapter()).updateContent(events);
+                }
+            }
+        });
+
     }
 
     @Override

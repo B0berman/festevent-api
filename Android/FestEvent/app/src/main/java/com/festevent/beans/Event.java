@@ -1,9 +1,10 @@
 package com.festevent.beans;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Event {
+public class Event implements Serializable {
 
 
     protected String   title;
@@ -20,6 +21,16 @@ public class Event {
     protected List<Media> pictures;
 
     // STAFF
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setPictures(List<Media> pictures) {
+        this.pictures = pictures;
+    }
+
     // ALERTS
     public void addPicture(Media media) {
         pictures.add(media);

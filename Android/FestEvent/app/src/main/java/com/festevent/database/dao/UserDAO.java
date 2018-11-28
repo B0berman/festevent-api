@@ -11,10 +11,11 @@ public class UserDAO extends BasicDAO {
     private static final String TABLE_NAME = "user";
     private static final String ID = "id";
     private static final String TOKEN = "accessToken";
-    private static final String FRIENDS_NB = "friendsNumber";
+    private static final String EMAIL = "email";
     private static final String FIRSTNAME = "firstName";
     private static final String LASTNAME = "lastName";
     public static final String TABLE_CREATE = "CREATE TABLE " + TABLE_NAME + " (" + ID + " INTEGER, " +
+            EMAIL + " TEXT, " +
             FIRSTNAME + " TEXT, " +
             TOKEN + " TEXT, " +
             LASTNAME + " TEXT);";
@@ -27,6 +28,7 @@ public class UserDAO extends BasicDAO {
     public void add(User m) {
         ContentValues value = new ContentValues();
         value.put(ID, 1);
+        value.put(EMAIL, m.getEmail());
         value.put(FIRSTNAME, m.getFirstName());
         value.put(LASTNAME, m.getLastName());
         value.put(TOKEN, m.getAccessToken());
@@ -40,6 +42,7 @@ public class UserDAO extends BasicDAO {
 
     public void set(User m) {
         ContentValues value = new ContentValues();
+        value.put(EMAIL, m.getEmail());
         value.put(FIRSTNAME, m.getFirstName());
         value.put(LASTNAME, m.getLastName());
         value.put(TOKEN, m.getAccessToken());
@@ -52,9 +55,10 @@ public class UserDAO extends BasicDAO {
         if (cursor == null || cursor.getCount() == 0)
             return null;
         User user = new User();
-        user.setFirstName(cursor.getString(1));
-        user.setLastName(cursor.getString(3));
-        user.setAccessToken(cursor.getString(2));
+        user.setFirstName(cursor.getString(2));
+        user.setLastName(cursor.getString(4));
+        user.setAccessToken(cursor.getString(3));
+        user.setEmail(cursor.getString(1));
         cursor.close();
         return user;
     }

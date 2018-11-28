@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.beust.jcommander.internal.Lists;
 import com.festevent.R;
+import com.festevent.activities.EventActivity;
 import com.festevent.activities.LoginActivity;
 import com.festevent.activities.ProfileModifyActivity;
 import com.festevent.activities.PublicateActivity;
@@ -29,6 +30,7 @@ import com.festevent.api.CustomCallback;
 import com.festevent.beans.Comment;
 import com.festevent.beans.Media;
 import com.festevent.beans.Publication;
+import com.festevent.beans.User;
 
 import java.util.List;
 
@@ -43,6 +45,7 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
 
     private final Activity activity;
     private List<Publication> publications;
+    private List<Integer>         likes = Lists.newArrayList();
     private boolean updateEnable = true;
 
     public PublicationsRecyclerAdapter(Activity context, List<Publication> list) {
@@ -91,24 +94,79 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (holder.getItemViewType() == 1) {
             final Publication publication = publications.get(position - 1);
-            ((PublicationHolder) holder).namePublisher.setText(publication.getPublisher().getFirstName() + " " + publication.getPublisher().getLastName());
-            ((PublicationHolder) holder).namePublisher.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (!Client.getInstance().getUser().getEmail().equals(publication.getPublisher().getEmail())) {
+            if (publication.getPublisher() != null) {
+                ((PublicationHolder) holder).namePublisher.setText(publication.getPublisher().getFirstName() + " " + publication.getPublisher().getLastName());
+                ((PublicationHolder) holder).namePublisher.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (!Client.getInstance().getUser().getEmail().equals(publication.getPublisher().getEmail())) {
+                            Bundle b = new Bundle();
+                            b.putSerializable("user", publication.getPublisher());
+                            Intent intent = new Intent(activity, UserActivity.class);
+                            intent.putExtras(b);
+                            activity.startActivity(intent);
+                        }
+                    }
+                });
+                if (publication.getPublisher().getProfilPicture() != null) {
+                    Call<ResponseBody> publisherPicCall = Client.getInstance().getUserService().getImage(publication.getPublisher().getProfilPicture().getId());
+                    publisherPicCall.enqueue(new CustomCallback<ResponseBody>(activity, 200) {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                            super.onResponse(call, response);
+                            if (response.code() != 200 || response.body() == null) {
+
+                            } else {
+                                Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+                                ((PublicationHolder) holder).imagePublisher.setImageBitmap(bmp);
+                            }
+                        }
+                    });
+                }
+            } else if (publication.getEvent() != null) {
+                ((PublicationHolder) holder).namePublisher.setText(publication.getEvent().getTitle());
+                ((PublicationHolder) holder).namePublisher.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         Bundle b = new Bundle();
-                        b.putSerializable("user", publication.getPublisher());
-                        Intent intent = new Intent(activity, UserActivity.class);
+                        b.putSerializable("event", publication.getEvent());
+                        Intent intent = new Intent(activity, EventActivity.class);
                         intent.putExtras(b);
                         activity.startActivity(intent);
                     }
-                }
-            });
+                });
+                Call<ResponseBody> publisherPicCall = Client.getInstance().getUserService().getImage(publication.getEvent().getMainPicture().getId());
+                publisherPicCall.enqueue(new CustomCallback<ResponseBody>(activity, 200) {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                        super.onResponse(call, response);
+                        if (response.code() != 200 || response.body() == null) {
+
+                        } else {
+                            Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
+                            ((PublicationHolder) holder).imagePublisher.setImageBitmap(bmp);
+                        }
+                    }
+                });
+            }
             ((PublicationHolder) holder).publicationContent.setText(publication.getContent());
 
+            Call<List<User>> likesCall = Client.getInstance().getPublicationService().getPublicationLikes(publication.getId());
+            likesCall.enqueue(new CustomCallback<List<User>>(activity, 200) {
+                @Override
+                public void onResponse(Call<List<User>> call, retrofit2.Response<List<User>> response) {
+                    super.onResponse(call, response);
+                    for (User like : response.body()) {
+                        if (like.getEmail().equals(Client.getInstance().getUser().getEmail())) {
+                            ((PublicationHolder) holder).likeButton.setImageResource(R.drawable.like);
+                            likes.add(position);
+                        }
+                    }
+                }
+            });
             RecyclerView commentsView = ((PublicationHolder) holder).commentsView;
             final CommentsRecyclerAdapter pAdapter = new CommentsRecyclerAdapter(activity, publication.getComments(), publication.getId());
             RecyclerView.LayoutManager pLayoutManager = new LinearLayoutManager(activity);
@@ -116,6 +174,32 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
             commentsView.setItemAnimator(new DefaultItemAnimator());
             commentsView.setAdapter(pAdapter);
 
+
+            ((PublicationHolder) holder).likeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View view) {
+                    Call<ResponseBody> likeCall;
+                    if (likes.contains(position))
+                        likeCall = Client.getInstance().getPublicationService().unlikePublication(publication.getId());
+                    else
+                        likeCall = Client.getInstance().getPublicationService().likePublication(publication.getId());
+                    likeCall.enqueue(new CustomCallback<ResponseBody>(activity, 200) {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                            super.onResponse(call, response);
+                            if (response.code() == 200) {
+                                if (likes.contains(position)) {
+                                    ((ImageView)view).setImageResource(R.drawable.unlike);
+                                    likes.remove((Integer)position);
+                                } else {
+                                    likes.add(position);
+                                    ((ImageView)view).setImageResource(R.drawable.like);
+                                }
+                            }
+                        }
+                    });
+                }
+            });
             ((PublicationHolder) holder).commentButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -152,23 +236,6 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
                     }
                 });
             }
-            if (publication.getPublisher().getProfilPicture() != null) {
-                Call<ResponseBody> publisherPicCall = Client.getInstance().getUserService().getImage(publication.getPublisher().getProfilPicture().getId());
-                publisherPicCall.enqueue(new CustomCallback<ResponseBody>(activity, 200) {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                        super.onResponse(call, response);
-                        if (response.code() != 200 || response.body() == null) {
-
-                        } else {
-                            Bitmap bmp = BitmapFactory.decodeStream(response.body().byteStream());
-                            ((PublicationHolder) holder).imagePublisher.setImageBitmap(bmp);
-                        }
-                    }
-                });
-            }
-//                publication.getPublisher().getProfilPicture().getBytes().length));
-//        holder.imagePublication.setImageBitmap(BitmapFactory.decodeByteArray(publication.getMedias().get(0).getBytes(), 0, publication.getMedias().get(0).getBytes().length));
         } else {
             ((PublicateHolder) holder).publicateCard.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -198,12 +265,14 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
         public ImageView imagePublisher;
         public TextView  namePublisher;
         public TextView  publicationContent;
-        public Button    commentButton;
+        public ImageView    commentButton;
+        public ImageView    likeButton;
         public RecyclerView commentsView;
 
         public PublicationHolder(View itemView) {
             super(itemView);
 
+            likeButton = itemView.findViewById(R.id.button_like);
             commentsView = itemView.findViewById(R.id.comment_recycler_view);
             imagePublication = itemView.findViewById(R.id.publicationImageView);
             imagePublisher = itemView.findViewById(R.id.publisher_image_view);

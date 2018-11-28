@@ -51,7 +51,7 @@ public class UserFragment extends Fragment {
         final TextView      eventsView = view.findViewById(R.id.events_link);
         final TextView      groupsView = view.findViewById(R.id.groups_link);
         final ImageView     profilImage = view.findViewById(R.id.profil_image_view);
-        final ImageButton pmodify_button = view.findViewById(R.id.pmodify_button);
+        final ImageView pmodify_button = view.findViewById(R.id.pmodify_button);
         userNameView = view.findViewById(R.id.profil_username_view);
 
         User user = Client.getInstance().getUser();

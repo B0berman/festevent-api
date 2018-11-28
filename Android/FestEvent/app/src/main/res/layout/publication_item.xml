@@ -62,22 +62,23 @@
         style="?android:attr/buttonBarStyle"
         android:orientation="horizontal">
 
-        <Button
+        <ImageView
+            android:id="@+id/button_like"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/zxing_transparent"
-            android:drawableTop="@drawable/ic_notifications_black_24dp" />
+            android:src="@drawable/unlike" />
 
-        <Button
+        <ImageView
             android:id="@+id/comment_button"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="25dp"
             android:layout_weight="1"
             android:background="@color/zxing_transparent"
-            android:drawableTop="@drawable/ic_menu_gallery" />
+            android:src="@drawable/comment" />
 
         <Button
             style="?android:attr/buttonBarButtonStyle"

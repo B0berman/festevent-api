@@ -88,6 +88,9 @@ public interface MyRetrofit {
     @GET("profil/publications")
     Call<List<Publication>> getUserPublications(@Header("token") String token);
 
+    @GET("profil/actuality")
+    Call<List<Publication>> getUserActuality(@Header("token") String token);
+
     /*
      *  Resource Services
      *
@@ -136,6 +139,12 @@ public interface MyRetrofit {
     @GET("events/participants")
     Call<List<User>> getEventParticipants(@Header("token") String token, @Query("id") String id);
 
+    @GET("events/all")
+    Call<List<Event>> getAllEvents();
+
+    @GET("events/publications")
+    Call<List<Publication>> getEventPublications(@Header("token") String token, @Query("id") String id);
+
     @GET("events/pictures")
     Call<List<Media>> getEventPictures(@Header("token") String token, @Query("id") String id);
 
@@ -163,7 +172,7 @@ public interface MyRetrofit {
     @DELETE("publications")
     Call<ResponseBody> deletePublication(@Header("token") String token, @Query("id") String id);
 
-    @PUT("publicatiosn/like")
+    @PUT("publications/like")
     Call<ResponseBody> likePublication(@Header("token") String token, @Query("id") String id);
 
     @PUT("publications/unlike")

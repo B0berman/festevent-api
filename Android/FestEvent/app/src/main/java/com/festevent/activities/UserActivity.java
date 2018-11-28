@@ -46,7 +46,7 @@ public class UserActivity extends AppCompatActivity {
 
         CardView cardView = findViewById(R.id.profile_perso_cardviaw);
         cardView.setVisibility(View.GONE);
-        ImageButton pmodify_button = findViewById(R.id.pmodify_button);
+        ImageView pmodify_button = findViewById(R.id.pmodify_button);
         pmodify_button.setVisibility(View.GONE);
 
         Bundle b = getIntent().getExtras();
