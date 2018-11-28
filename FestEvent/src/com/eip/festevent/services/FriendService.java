@@ -2,6 +2,8 @@ package com.eip.festevent.services;
 
 import com.eip.festevent.authentication.Authenticated;
 import com.eip.festevent.beans.FriendRequest;
+import com.eip.festevent.beans.Media;
+import com.eip.festevent.beans.Publication;
 import com.eip.festevent.beans.User;
 import com.eip.festevent.dao.DAOManager;
 import com.eip.festevent.utils.Utils;
@@ -10,6 +12,9 @@ import io.swagger.annotations.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 @Api(tags = {"Friends"})
 @Path("/friends")
@@ -42,6 +47,43 @@ public class FriendService {
         }
         return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Request not found.")).build();
     }
+
+    @GET
+    @Path("/publications")
+    @Authenticated
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Unauthorized") })
+    @ApiOperation(value = "Get friend publications.", response = Publication.class, responseContainer = "List")
+    public Response getFriendPublications(@ApiParam(value = "Token of sender", required = true) @HeaderParam("token") String token,
+                                          @ApiParam(value = "friend email", required = true) @QueryParam("email") String email) {
+        User user = DAOManager.getFactory().getUserDAO().filter("accessToken", token).getFirst();
+        if (!user.getFriends().contains(email))
+            return Response.status(Response.Status.UNAUTHORIZED).entity(new Utils.Response(email + " is not your friend")).build();
+        List<Publication> result = DAOManager.getFactory().getPublicationDAO().filter("publisher.email", email).getAll();
+
+        Collections.sort(result, new SortByDate());
+
+        return Response.ok(result).build();
+    }
+
+    @GET
+    @Path("/pictures")
+    @Authenticated
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Unauthorized") })
+    @ApiOperation(value = "Get friend publications.", response = Media.class, responseContainer = "List")
+    public Response getFriendPictures(@ApiParam(value = "Token of sender", required = true) @HeaderParam("token") String token,
+                                          @ApiParam(value = "friend email", required = true) @QueryParam("email") String email) {
+        User user = DAOManager.getFactory().getUserDAO().filter("accessToken", token).getFirst();
+        if (!user.getFriends().contains(email))
+            return Response.status(Response.Status.UNAUTHORIZED).entity(new Utils.Response(email + " is not your friend")).build();
+        List<Media> result = DAOManager.getFactory().getUserDAO().filter("email", email).getFirst().getPictures();
+
+        return Response.ok(result).build();
+    }
+
 
     @GET
     @Path("/requests-sent")
@@ -143,5 +185,14 @@ public class FriendService {
         DAOManager.getFactory().getUserDAO().push(sender);
         DAOManager.getFactory().getUserDAO().push(user);
         return Response.ok().build();
+    }
+    class SortByDate implements Comparator<Publication>
+    {
+        // Used for sorting in ascending order of
+        // roll number
+        public int compare(Publication a, Publication b)
+        {
+            return b.getDate().compareTo(a.getDate());
+        }
     }
 }

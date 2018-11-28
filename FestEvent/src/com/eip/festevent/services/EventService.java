@@ -102,6 +102,21 @@ public class EventService {
     }
 
     @GET
+    @Path("/publications")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Bad request"),
+            @ApiResponse(code = 401, message = "Unauthorized") })
+    @ApiOperation(value = "Get event pictures.", response = Publication.class, responseContainer = "List")
+    public Response getEventPublications(@ApiParam(value = "id of event", required = true) @QueryParam("id") String id) {
+        Event event = DAOManager.getFactory().getEventDAO().filter("id", id).getFirst();
+        if (event == null)
+            return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Invalid event id")).build();
+        List<Publication> result = DAOManager.getFactory().getPublicationDAO().filter("event.id", id).getAll();
+        return Response.ok(result).build();
+    }
+
+    @GET
     @Path("/tickets")
     @Authenticated
     @ApiResponses(value = {

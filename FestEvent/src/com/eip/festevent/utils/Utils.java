@@ -1,7 +1,10 @@
 package com.eip.festevent.utils;
 
+import com.eip.festevent.beans.Publication;
+
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.Comparator;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,6 +38,17 @@ public class Utils {
 		}
 		return baos.toByteArray();
 	}
+
+	public static class SortPublicationByDate implements Comparator<Publication>
+	{
+		// Used for sorting in ascending order of
+		// roll number
+		public int compare(Publication a, Publication b)
+		{
+			return b.getDate().compareTo(a.getDate());
+		}
+	}
+
 
 	public static boolean writeToFileServer(byte[] bytes, String fileName) {
 

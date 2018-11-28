@@ -64,8 +64,9 @@ public class RegisterService {
         if (user.getProfilPicture() != null) {
             if (!Utils.writeToFileServer(user.getProfilPicture().getBytes(), user.getProfilPicture().getId()))
                 return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Image " + user.getProfilPicture().getId() + " upload failed.")).build();
-            user.getProfilPicture().setUrl("92.222.82.30:8080/eip/fest-resources/image/" + user.getProfilPicture().getId());
-            user.addPicture(user.getProfilPicture());
+            user.getProfilPicture().setUrl("92.222.82.30:8080/eip/festevent-resources/image/" + user.getProfilPicture().getId());
+            user.getProfilPicture().setBytes(null);
+//            user.addPicture(user.getProfilPicture());
         }
         String salt = BCrypt.gensalt(12);
         String password = user.getPassword();
