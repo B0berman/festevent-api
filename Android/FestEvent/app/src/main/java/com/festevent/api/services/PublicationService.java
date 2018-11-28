@@ -56,8 +56,8 @@ public class PublicationService extends Service {
         return retrofit.getPublicationLikes(token, id);
     }
 
-    public Call<List<Publication>> getFriendsPublications(String id) {
-        return retrofit.getFriendsPublications(token, id);
+    public Call<List<Publication>> getFriendsPublications() {
+        return retrofit.getFriendsPublications(token);
     }
 
     public Call<Comment> commentPublication(String id, Comment comment) {

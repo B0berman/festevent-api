@@ -176,7 +176,7 @@ public interface MyRetrofit {
     Call<List<User>> getPublicationLikes(@Header("token") String token, @Query("id") String id);
 
     @GET("publications/friends")
-    Call<List<Publication>> getFriendsPublications(@Header("token") String token, @Query("id") String id);
+    Call<List<Publication>> getFriendsPublications(@Header("token") String token);
 
     @GET("publications/comments")
     Call<List<Comment>> getPublicationComments(@Header("token") String token, @Query("id") String id);
@@ -208,4 +208,11 @@ public interface MyRetrofit {
 
     @GET("friends/requests-sent")
     Call<List<FriendRequest>> getFriendsRequestsSent(@Header("token") String token);
+
+    @GET("friends/publications")
+    Call<List<Publication>> getFriendPublications(@Header("token") String token, @Query("email") String email);
+
+    @GET("friends/pictures")
+    Call<List<Media>> getFriendPictures(@Header("token") String token, @Query("email") String email);
+
 }

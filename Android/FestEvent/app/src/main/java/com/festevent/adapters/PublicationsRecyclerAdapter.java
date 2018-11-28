@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +23,7 @@ import com.festevent.R;
 import com.festevent.activities.LoginActivity;
 import com.festevent.activities.ProfileModifyActivity;
 import com.festevent.activities.PublicateActivity;
+import com.festevent.activities.UserActivity;
 import com.festevent.api.Client;
 import com.festevent.api.CustomCallback;
 import com.festevent.beans.Comment;
@@ -41,7 +43,6 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
 
     private final Activity activity;
     private List<Publication> publications;
-    private final List<Comment>       comments = null;
     private boolean updateEnable = true;
 
     public PublicationsRecyclerAdapter(Activity context, List<Publication> list) {
@@ -94,10 +95,22 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
         if (holder.getItemViewType() == 1) {
             final Publication publication = publications.get(position - 1);
             ((PublicationHolder) holder).namePublisher.setText(publication.getPublisher().getFirstName() + " " + publication.getPublisher().getLastName());
+            ((PublicationHolder) holder).namePublisher.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!Client.getInstance().getUser().getEmail().equals(publication.getPublisher().getEmail())) {
+                        Bundle b = new Bundle();
+                        b.putSerializable("user", publication.getPublisher());
+                        Intent intent = new Intent(activity, UserActivity.class);
+                        intent.putExtras(b);
+                        activity.startActivity(intent);
+                    }
+                }
+            });
             ((PublicationHolder) holder).publicationContent.setText(publication.getContent());
 
             RecyclerView commentsView = ((PublicationHolder) holder).commentsView;
-            final CommentsRecyclerAdapter pAdapter = new CommentsRecyclerAdapter(activity, comments, publication.getId());
+            final CommentsRecyclerAdapter pAdapter = new CommentsRecyclerAdapter(activity, publication.getComments(), publication.getId());
             RecyclerView.LayoutManager pLayoutManager = new LinearLayoutManager(activity);
             commentsView.setLayoutManager(pLayoutManager);
             commentsView.setItemAnimator(new DefaultItemAnimator());
@@ -118,6 +131,7 @@ public class PublicationsRecyclerAdapter extends RecyclerView.Adapter<RecyclerVi
                             }
                         });
                         ((PublicationHolder) holder).commentsView.setVisibility(View.VISIBLE);
+                        ((PublicationHolder) holder).commentsView.requestFocus();
                     } else {
                         ((PublicationHolder) holder).commentsView.setVisibility(View.GONE);
                     }

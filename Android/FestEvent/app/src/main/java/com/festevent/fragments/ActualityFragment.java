@@ -21,12 +21,17 @@ import com.beust.jcommander.internal.Lists;
 import com.festevent.R;
 import com.festevent.adapters.PublicationsRecyclerAdapter;
 import com.festevent.api.Client;
+import com.festevent.api.CustomCallback;
 import com.festevent.beans.Publication;
+import com.festevent.beans.User;
 
 import java.util.List;
 
+import retrofit2.Call;
+
 public class ActualityFragment extends Fragment {
     private static int firstVisibleInListview = 0;
+    private List <Publication> publications = Lists.newArrayList();
 
     public ActualityFragment() {
         // Required empty public constructor
@@ -43,22 +48,24 @@ public class ActualityFragment extends Fragment {
 
         final RecyclerView precyclerView = view.findViewById(R.id.publicationsRecyclerView);
 
-        List < Publication > publications = Lists.newArrayList();
-        Publication publication = new Publication();
-        publication.setPublisher(Client.getInstance().getUser());
-        publication.setContent("Coucou les gens ceci est ujne publication de test pour test les publications");
-        publications.add(publication);
-        publications.add(publication);
-        publications.add(publication);
-        publications.add(publication);
-        publications.add(publication);
-
         PublicationsRecyclerAdapter pAdapter = new PublicationsRecyclerAdapter(getActivity(), publications);
         RecyclerView.LayoutManager pLayoutManager = new LinearLayoutManager(getActivity());
         precyclerView.setLayoutManager(pLayoutManager);
         precyclerView.setItemAnimator(new DefaultItemAnimator());
         precyclerView.setAdapter(pAdapter);
         ((PublicationsRecyclerAdapter) precyclerView.getAdapter()).updateContent(publications);
+
+        Call<List<Publication>> pCall = Client.getInstance().getPublicationService().getFriendsPublications();
+        pCall.enqueue(new CustomCallback<List<Publication>>(getActivity(), 200) {
+            @Override
+            public void onResponse(Call<List<Publication>> call, retrofit2.Response<List<Publication>> response) {
+                super.onResponse(call, response);
+                if (response.code() == 200) {
+                    publications = response.body();
+                    ((PublicationsRecyclerAdapter) precyclerView.getAdapter()).updateContent(publications);
+                }
+            }
+        });
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.festevent.api.services;
 
 import com.festevent.api.MyRetrofit;
 import com.festevent.beans.FriendRequest;
+import com.festevent.beans.Media;
+import com.festevent.beans.Publication;
 
 import java.util.List;
 
@@ -35,5 +37,13 @@ public class FriendService extends Service {
 
     public Call<List<FriendRequest>> getFriendsRequestsSent() {
         return retrofit.getFriendsRequestsSent(token);
+    }
+
+    public Call<List<Publication>> getFriendPublications(String email) {
+        return retrofit.getFriendPublications(token, email);
+    }
+
+    public Call<List<Media>> getFriendPictures(String email) {
+        return retrofit.getFriendPictures(token, email);
     }
 }

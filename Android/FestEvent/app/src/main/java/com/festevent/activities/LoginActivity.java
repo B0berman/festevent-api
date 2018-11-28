@@ -137,7 +137,8 @@ public class LoginActivity extends AppCompatActivity {
                         uDao.add(user);
                         uDao.close();
 
-                        mDAO.add(user.getProfilPicture());
+                        if (user.getProfilPicture() != null)
+                            mDAO.add(user.getProfilPicture());
                         mDAO.close();
 
                         Client.getInstance().setUser(user);

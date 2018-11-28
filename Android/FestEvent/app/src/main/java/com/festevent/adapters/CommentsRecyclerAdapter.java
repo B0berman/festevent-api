@@ -113,15 +113,7 @@ public class CommentsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (holder.getItemViewType() == 1 && comment != null) {
             ((CommentHolder) holder).commenterNameView.setText(comment.getCommenter().getFirstName() + " " + comment.getCommenter().getLastName());
             ((CommentHolder) holder).commentContentView.setText(comment.getContent());
-            ((CommentHolder) holder).commentContentView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((CommentHolder) holder).commentContentView.requestFocus();
-                }
-            });
-//        holder.imagePublisher.setImageBitmap(BitmapFactory.decodeByteArray(publication.getPublisher().getProfilPicture().getBytes(), 0,
-//                publication.getPublisher().getProfilPicture().getBytes().length));
-//        holder.imagePublication.setImageBitmap(BitmapFactory.decodeByteArray(publication.getMedias().get(0).getBytes(), 0, publication.getMedias().get(0).getBytes().length));
+            ((CommentHolder) holder).commentContentView.requestFocus();
         } else if (holder.getItemViewType() == 0 && comment == null) {
             ((NewCommentHolder) holder).sendButton.setOnClickListener(new View.OnClickListener() {
                 @Override
