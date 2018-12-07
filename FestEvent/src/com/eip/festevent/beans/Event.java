@@ -2,6 +2,7 @@ package com.eip.festevent.beans;
 
 import com.eip.festevent.dao.morphia.QueriesAllowed;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Lists;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
@@ -32,7 +33,11 @@ public class Event {
 
     @JsonIgnore
     @Embedded
-    protected List<Media> pictures;
+    protected List<Media> pictures = Lists.newArrayList();
+
+    public void setPictures(List<Media> pictures) {
+        this.pictures = pictures;
+    }
 
     // STAFF
     // ALERTS

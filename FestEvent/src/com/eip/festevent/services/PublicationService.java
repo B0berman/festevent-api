@@ -38,6 +38,7 @@ public class PublicationService {
                 if (event != null)
                     publication.setEvent(event);
             }
+            DAOManager.getFactory().getPublicationDAO().push(publication);
         }
         return Response.ok().build();
     }

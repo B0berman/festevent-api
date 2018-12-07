@@ -98,6 +98,12 @@ public class EventService {
         Event event = DAOManager.getFactory().getEventDAO().filter("id", id).getFirst();
         if (event == null)
             return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Invalid event id")).build();
+        List<Media> result = event.getPictures();
+        if (result == null) {
+            result = Lists.newArrayList();
+            event.setPictures(result);
+            DAOManager.getFactory().getEventDAO().push(event);
+        }
         return Response.ok(event.getPictures()).build();
     }
 
