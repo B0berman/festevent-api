@@ -24,8 +24,8 @@ public class Publication {
     protected int           comment_nb = 0;
     protected List<Media>			medias = Lists.newArrayList();
 
-    @Reference
-    protected Event event;
+    @Embedded
+    protected Event event = null;
     @Embedded
     protected User publisher;
 

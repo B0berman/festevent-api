@@ -18,6 +18,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Collections;
 import java.util.List;
 
 @Api(tags = {"Users"})
@@ -98,6 +99,29 @@ public class UserProfilService {
     }
 
     @GET
+    @Path("/actuality")
+    @Authenticated
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Unauthorized") })
+    @ApiOperation(value = "Get friends publications.", response = Publication.class, responseContainer = "List")
+    public Response getUserActuality(@ApiParam(value = "Token of sender", required = true) @HeaderParam("token") String token) {
+        User user = DAOManager.getFactory().getUserDAO().filter("accessToken", token).getFirst();
+        List<User> userFriends = DAOManager.getFactory().getUserDAO().filter("friends in", user.getEmail()).getAll();
+        List<Publication> result = Lists.newArrayList();
+
+        for (User friend : userFriends) {
+            result.addAll(DAOManager.getFactory().getPublicationDAO().filter("publisher.email", friend.getEmail()).getAll());
+        }
+
+        result.addAll(DAOManager.getFactory().getPublicationDAO().filter("event !=", null).getAll());
+
+        Collections.sort(result, new Utils.SortPublicationByDate());
+
+        return Response.ok(result).build();
+    }
+
+    @GET
     @Path("/pictures")
     @Authenticated
     @ApiResponses(value = {
@@ -132,11 +156,15 @@ public class UserProfilService {
     public Response setProfilImage(@ApiParam(value = "Token of sender", required = true) @HeaderParam("token") final String token,
                                    @ApiParam(value = "Media object", required = true) final Media media) {
         User user = DAOManager.getFactory().getUserDAO().filter("accessToken", token).getFirst();
-        if (Utils.writeToFileServer(media.getBytes(), media.getId()))
-            return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Image upload failed.")).build();
+        if ((media.getUrl() == null || media.getUrl().isEmpty()) && media.getId() != null) {
+            if (Utils.writeToFileServer(media.getBytes(), media.getId()))
+                return Response.status(Response.Status.BAD_REQUEST).entity(new Utils.Response("Image upload failed.")).build();
+            media.setUrl("92.222.82.30:8080/eip/festevent-resources/image" + media.getId());
+            media.setBytes(null);
+        }
         user.removePicture(user.getProfilPicture());
-        media.setUrl("92.222.82.30:8080/eip-dev/resources/image" + media.getId());
         user.setProfilPicture(media);
+        user.addPicture(media);
         DAOManager.getFactory().getUserDAO().push(user);
         return Response.ok(media).build();
     }
@@ -221,16 +249,17 @@ public class UserProfilService {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 401, message = "Unauthorized") })
     @ApiOperation(value = "Delete sender account.", response = Response.class)
-    public Response deleteUser(@ApiParam(value = "Token of sender", required = true) @HeaderParam("accessToken") final String token) {
+    public Response deleteUser(@ApiParam(value = "Token of sender", required = true) @HeaderParam("token") final String token) {
         User user = DAOManager.getFactory().getUserDAO()
                 .filter("accessToken", token)
                 .getFirst();
         // delete in friends
         List<User> users = DAOManager.getFactory().getUserDAO().filter("friends in", user.getEmail()).getAll();
-        for (User u : users) {
-            u.removeFriend(user.getEmail());
-            DAOManager.getFactory().getUserDAO().push(u);
-        }
+        if (users != null && !users.isEmpty())
+            for (User u : users) {
+                u.removeFriend(user.getEmail());
+                DAOManager.getFactory().getUserDAO().push(u);
+            }
         DAOManager.getFactory().getEventDAO().filter("creator", user).clear();
         DAOManager.getFactory().getPublicationDAO().filter("publisher", user).clear();
         DAOManager.getFactory().getUserDAO().remove(user);
